@@ -2677,7 +2677,7 @@ int PonscripterLabel::dwaveCommand(const pstring& cmd)
     else if (ch >= ONS_MIX_CHANNELS) ch = ONS_MIX_CHANNELS - 1;
 
     if (play_mode == WAVE_PLAY_LOADED) {
-        Mix_PlayChannel(ch, wave_sample[ch], loop_flag ? -1 : 0);
+        Mix_PlayChannelTimed(ch, wave_sample[ch], loop_flag ? -1 : 0, -1);
     }
     else {
         int fmt = SOUND_WAVE | SOUND_OGG;

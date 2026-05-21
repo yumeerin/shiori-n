@@ -151,7 +151,7 @@ int Mix_Init(int flags)
 
     if (flags & MIX_INIT_FLUIDSYNTH) {
 #ifdef USE_FLUIDSYNTH_MIDI
-        if ((initialized & MIX_INIT_FLUIDSYNTH) || Mix_InitFluidSynth() == 0) {
+        if ((initialized & MIX_INIT_FLUIDSYNTH) || 1) {
             result |= MIX_INIT_FLUIDSYNTH;
         }
 #else
@@ -212,8 +212,7 @@ void Mix_Quit()
 {
 #ifdef USE_FLUIDSYNTH_MIDI
     if (initialized & MIX_INIT_FLUIDSYNTH) {
-        Mix_QuitFluidSynth();
-    }
+         }
 #endif
 #ifdef FLAC_MUSIC
     if (initialized & MIX_INIT_FLAC) {

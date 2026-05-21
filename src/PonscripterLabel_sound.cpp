@@ -282,7 +282,7 @@ int PonscripterLabel::playWave(Mix_Chunk* chunk, int format, bool loop_flag,
         Mix_Volume(channel, !volume_on_flag? 0 : se_volume * 128 / 100);
 
     if (!(format & SOUND_PRELOAD))
-        Mix_PlayChannel(channel, wave_sample[channel], loop_flag ? -1 : 0);
+        Mix_PlayChannelTimed(channel, wave_sample[channel], loop_flag ? -1 : 0, -1);
 
     return 0;
 }

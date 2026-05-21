@@ -249,8 +249,8 @@ void PonscripterLabel::flushEventSub(SDL_Event &event)
             if (event.user.code == MIX_LOOPBGM_CHANNEL0
                 && loop_bgm_name[1]
                 && wave_sample[MIX_LOOPBGM_CHANNEL1])
-                Mix_PlayChannel(MIX_LOOPBGM_CHANNEL1,
-                    wave_sample[MIX_LOOPBGM_CHANNEL1], -1);
+                Mix_PlayChannelTimed(MIX_LOOPBGM_CHANNEL1,
+                    wave_sample[MIX_LOOPBGM_CHANNEL1], -1, -1);
         }
     }
 }
