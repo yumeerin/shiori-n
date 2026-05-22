@@ -1,4 +1,4 @@
-# Settings for custom Ponscripter builds.
+# Settings for custom Shiori builds.
 
 # To customize, copy this file to "Makefile.<yourgame>"
 
@@ -32,7 +32,7 @@ ifneq ($(GAME),)
   WIN_ICON ?= resources/$(if $(wildcard resources/$(GAME).ico),$(GAME).ico,default.ico)
 
   # Windows resource file
-  RCFILE ?= $(if $(wildcard resources/$(GAME).rc),$(GAME).rc,ponscr.rc)
+  RCFILE ?= $(if $(wildcard resources/$(GAME).rc),$(GAME).rc,shiori.rc)
 
   # Icon to use for systems other than Windows or Mac OS X
   PNG_ICON ?= resources/$(if $(wildcard resources/$(GAME).png),$(GAME).png,default.png)
@@ -42,20 +42,20 @@ else
   # Default settings
 
   # Game executable
-  TARGET ?= ponscr$(EXESUFFIX)
+  TARGET ?= shiori$(EXESUFFIX)
 
   # Game data folder
   # We do this just so it doesn't include any gamedata in default Pons app build
   GAMEDATA_FOLDER ?= no_gamedata_folder_exists
 
   # Mac App name
-  MAC_APP_NAME ?= Ponscripter
+  MAC_APP_NAME ?= Shiori
 
   # Mac icon
   MAC_ICON ?= resources/default.icns
 
   # Mac game info
-  MAC_BUNDLE_ID ?= com.opensource.ponscripter
+  MAC_BUNDLE_ID ?= com.opensource.shiori
   MAC_INFO_STRING ?= A fork of ONScripter-EN with enhanced support for international text.
   MAC_VERSION ?=
 
@@ -63,7 +63,7 @@ else
   WIN_ICON ?= resources/default.ico
 
   # Windows resource file
-  RCFILE ?= ponscr.rc
+  RCFILE ?= shiori.rc
 
   # Icon to use for systems other than Windows or Mac OS X
   PNG_ICON ?= resources/default.png

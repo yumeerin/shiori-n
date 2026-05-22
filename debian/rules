@@ -9,7 +9,7 @@ configure: configure-stamp
 
 configure-stamp:
 	dh_testdir
-	./configure --with-internal-libs --prefix=debian/ponscripter/usr
+	./configure --with-internal-libs --prefix=debian/shioris/usr
 	touch configure-stamp
 
 build: build-stamp

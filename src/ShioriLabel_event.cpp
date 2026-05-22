@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel_event.cpp - Event handler of Ponscripter
+ *  ShioriLabel_event.cpp - Event handler of Shiori
  *
  *  Copyright (c) 2001-2007 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,13 +23,13 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 #ifdef LINUX
 #include <sys/types.h>
 #include <sys/wait.h>
 #endif
 
-#include "PonscripterUserEvents.h"
+#include "ShioriUserEvents.h"
 
 #define EDIT_MODE_PREFIX "[EDIT MODE]  "
 #define EDIT_SELECT_STRING "MP3 vol (m)  SE vol (s)  Voice vol (v)  Numeric variable (n)"
@@ -46,7 +46,7 @@ SDL_TimerID timer_midi_id = 0;
 #endif
 bool ext_music_play_once_flag = false;
 
-extern long decodeOggVorbis(PonscripterLabel::MusicStruct *music_struct, Uint8 *buf_dst, long len, bool do_rate_conversion);
+extern long decodeOggVorbis(ShioriLabel::MusicStruct *music_struct, Uint8 *buf_dst, long len, bool do_rate_conversion);
 
 /* **************************************** *
 * Callback functions
@@ -63,7 +63,7 @@ extern "C" void mp3callback(void* userdata, Uint8* stream, int len)
 
 extern "C" void oggcallback(void* userdata, Uint8* stream, int len)
 {
-    if (decodeOggVorbis((PonscripterLabel::MusicStruct*)userdata, stream, len, true) == 0){
+    if (decodeOggVorbis((ShioriLabel::MusicStruct*)userdata, stream, len, true) == 0){
         SDL_Event event;
         event.type = ONS_SOUND_EVENT;
         SDL_PushEvent(&event);
@@ -184,7 +184,7 @@ SDL_KeyboardEvent transJoystickAxis(SDL_JoyAxisEvent &jaxis)
 }
 
 
-void PonscripterLabel::flushEventSub(SDL_Event &event)
+void ShioriLabel::flushEventSub(SDL_Event &event)
 {
     if (event.type == ONS_SOUND_EVENT) {
         if (music_play_loop_flag) {
@@ -256,7 +256,7 @@ void PonscripterLabel::flushEventSub(SDL_Event &event)
 }
 
 
-void PonscripterLabel::flushEvent()
+void ShioriLabel::flushEvent()
 {
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -264,7 +264,7 @@ void PonscripterLabel::flushEvent()
 }
 
 
-void PonscripterLabel::startTimer(int count)
+void ShioriLabel::startTimer(int count)
 {
     int duration = proceedAnimation();
 
@@ -282,7 +282,7 @@ void PonscripterLabel::startTimer(int count)
 }
 
 
-void PonscripterLabel::advancePhase(int count) {
+void ShioriLabel::advancePhase(int count) {
     timer_event_time = SDL_GetTicks() + count;
     timer_event_flag = true;
 
@@ -291,7 +291,7 @@ void PonscripterLabel::advancePhase(int count) {
     SDL_PushEvent(&event);
 }
 
-void PonscripterLabel::queueRerender() {
+void ShioriLabel::queueRerender() {
     SDL_Event rerender_event;
     rerender_event.type = INTERNAL_REDRAW_EVENT;
     SDL_PushEvent(&rerender_event);
@@ -312,7 +312,7 @@ void midiCallback(int sig)
 }
 
 
-// Pushes the midi loop event onto the stack.  Part of a workaround for Ponscripter
+// Pushes the midi loop event onto the stack.  Part of a workaround for Shiori
 // crashing in Mac OS X after a midi is looped for the first time.  Recommend for
 // integration.  This is the work of Ben Carter.  [Seung Park, 20060621]
 #ifdef MACOSX
@@ -350,7 +350,7 @@ void musicCallback(int sig)
 }
 
 
-void PonscripterLabel::trapHandler()
+void ShioriLabel::trapHandler()
 {
     trap_mode = TRAP_NONE;
     setCurrentLabel(trap_dist);
@@ -364,7 +364,7 @@ void PonscripterLabel::trapHandler()
 /* **************************************** *
 * Event handlers
 * **************************************** */
-void PonscripterLabel::mouseMoveEvent(SDL_MouseMotionEvent* event)
+void ShioriLabel::mouseMoveEvent(SDL_MouseMotionEvent* event)
 {
     current_button_state.x = event->x;
     current_button_state.y = event->y;
@@ -374,7 +374,7 @@ void PonscripterLabel::mouseMoveEvent(SDL_MouseMotionEvent* event)
 }
 
 
-void PonscripterLabel::mousePressEvent(SDL_MouseButtonEvent* event)
+void ShioriLabel::mousePressEvent(SDL_MouseButtonEvent* event)
 {
     if (variable_edit_mode) return;
 
@@ -447,7 +447,7 @@ void PonscripterLabel::mousePressEvent(SDL_MouseButtonEvent* event)
     }
 }
 
-void PonscripterLabel::mouseWheelEvent(SDL_MouseWheelEvent* event) {
+void ShioriLabel::mouseWheelEvent(SDL_MouseWheelEvent* event) {
     if (variable_edit_mode) return;
 
 
@@ -494,7 +494,7 @@ void PonscripterLabel::mouseWheelEvent(SDL_MouseWheelEvent* event) {
 }
 
 
-void PonscripterLabel::variableEditMode(SDL_KeyboardEvent* event)
+void ShioriLabel::variableEditMode(SDL_KeyboardEvent* event)
 {
     switch (event->keysym.sym) {
     case SDLK_m:
@@ -672,7 +672,7 @@ void PonscripterLabel::variableEditMode(SDL_KeyboardEvent* event)
 }
 
 
-void PonscripterLabel::shiftCursorOnButton(int diff)
+void ShioriLabel::shiftCursorOnButton(int diff)
 {
     // TODO Chronotrig did this, I'm so sorry, I'll fix it later
     if (true) {
@@ -708,7 +708,7 @@ void PonscripterLabel::shiftCursorOnButton(int diff)
 }
 
 
-void PonscripterLabel::keyDownEvent(SDL_KeyboardEvent* event)
+void ShioriLabel::keyDownEvent(SDL_KeyboardEvent* event)
 {
     switch (event->keysym.sym) {
     case SDLK_RCTRL:
@@ -739,7 +739,7 @@ void PonscripterLabel::keyDownEvent(SDL_KeyboardEvent* event)
 }
 
 
-void PonscripterLabel::keyUpEvent(SDL_KeyboardEvent* event)
+void ShioriLabel::keyUpEvent(SDL_KeyboardEvent* event)
 {
     switch (event->keysym.sym) {
     case SDLK_RCTRL:
@@ -760,7 +760,7 @@ void PonscripterLabel::keyUpEvent(SDL_KeyboardEvent* event)
 }
 
 
-void PonscripterLabel::keyPressEvent(SDL_KeyboardEvent* event)
+void ShioriLabel::keyPressEvent(SDL_KeyboardEvent* event)
 {
     current_button_state.button = 0;
     current_button_state.down_flag = false;
@@ -1060,7 +1060,7 @@ void PonscripterLabel::keyPressEvent(SDL_KeyboardEvent* event)
 }
 
 
-void PonscripterLabel::timerEvent(void)
+void ShioriLabel::timerEvent(void)
 {
     timerEventTop:
 
@@ -1154,7 +1154,7 @@ void PonscripterLabel::timerEvent(void)
     volatile_button_state.button = 0;
 }
 
-Uint32 PonscripterLabel::getRefreshRateDelay() {
+Uint32 ShioriLabel::getRefreshRateDelay() {
     SDL_DisplayMode mode;
     SDL_GetWindowDisplayMode(screen, &mode);
     if(mode.refresh_rate == 0) return 16; //~60 hz
@@ -1166,7 +1166,7 @@ Uint32 PonscripterLabel::getRefreshRateDelay() {
 /* **************************************** *
 * Event loop
 * **************************************** */
-int PonscripterLabel::eventLoop()
+int ShioriLabel::eventLoop()
 {
     SDL_Event event, tmp_event;
 

@@ -2,23 +2,23 @@
 <book xmlns="http://docbook.org/ns/docbook"
 xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
 
-<refentry xml:id="ponscr.6">
+<refentry xml:id="shioriscr.6">
   <info>
     <date><?D?></date>
   </info>
   <refmeta>
-    <refentrytitle>ponscr</refentrytitle>
+    <refentrytitle>shioriscr</refentrytitle>
     <manvolnum>6</manvolnum>
   </refmeta>
   
   <refnamediv>
-    <refname>ponscr</refname>
-    <refpurpose>the Ponscripter novel-game interpreter</refpurpose>
+    <refname>shioriscr</refname>
+    <refpurpose>the shioriscripter novel-game interpreter</refpurpose>
   </refnamediv>
   
   <refsynopsisdiv>
     <cmdsynopsis>
-      <command>ponscr</command>
+      <command>shioriscr</command>
       <arg choice="opt">
         <replaceable class="option">options</replaceable>
       </arg>
@@ -34,12 +34,12 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
   <refsect1>
     <title>Description</title>
     <para>
-      This manpage documents the <command>ponscr</command> command
-      itself.  See &ponscripter.7; for an overview of other
+      This manpage documents the <command>shioriscr</command> command
+      itself.  See &shioriscripter.7; for an overview of other
       documentation.
     </para>
     <para>
-      <command>ponscr</command> should be invoked in one of two ways:
+      <command>shioriscr</command> should be invoked in one of two ways:
       either from within a game directory, or from an arbitrary
       location with a game directory specified as an option.
     </para>
@@ -47,18 +47,18 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
       On Unix-like operating systems other than Mac OS X, it is
       recommended that you use the second option.  Game packagers
       will ideally provide wrapper scripts that launch
-      <command>ponscr</command> indirectly, so users will not have
+      <command>shioriscr</command> indirectly, so users will not have
       to know anything about the underlying interpreter.
     </para>
     <para>
       On Mac OS X, the recommended approach is to create an
-      application bundle containing a Ponscripter binary and the
+      application bundle containing a shioriscripter binary and the
       game data in the bundle's Resources directory; things will
       then <quote>just work</quote>.
     </para>
     <para>
       On Microsoft Windows, the simplest approach is to store a
-      Ponscripter binary in the game directory.
+      shioriscripter binary in the game directory.
     </para>
   </refsect1>
 
@@ -71,7 +71,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
       given an implicit <option>-r</option>; otherwise it is given
       an implicit <option>-s</option>.  If a filename is encountered
       that includes a path, and no root path has been provided at
-      this point, then <command>ponscr</command> assumes that the
+      this point, then <command>shioriscr</command> assumes that the
       path part of the filename should be the root path.
     </para>
     <para>
@@ -79,7 +79,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
     </para>
     <para>
       The following named options are recognised by
-      <command>ponscr</command>, in addition to the standard
+      <command>shioriscr</command>, in addition to the standard
       <option>--help</option> and <option>--version</option> flags
       (which should need no explanation):
     </para>
@@ -118,7 +118,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
             If this option is not provided at all, a script file is
             sought automatically in the root path.  The filenames
             searched for, and their corresponding formats, are
-            described in &ponscripter.7;.  The same naming conventions
+            described in &shioriscripter.7;.  The same naming conventions
             are observed if this option is used, except that multipart
             scripts cannot currently be loaded this way, and
             unobfuscated scripts may have non-numeric names.
@@ -141,7 +141,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
             <filename>~/.<replaceable>GAME</replaceable></filename> (where
             <varname>GAME</varname> is the name of the game being
             played, or a semi-unique default if no name was provided.
-            See <?link directives: directives?> in &ponscripter.7;.)
+            See <?link directives: directives?> in &shioriscripter.7;.)
           </simpara>
           <simpara>
             On Mac OS X,
@@ -196,7 +196,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
         <term><option>--registry</option> <replaceable>file</replaceable></term>
         <listitem>
           <simpara>
-            Ponscripter simulates NScripter's Windows registry access
+            shioriscripter simulates NScripter's Windows registry access
             commands by reading from a fixed text file.  This option
             is used to specify that file.
           </simpara>
@@ -211,7 +211,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
         <term><option>--dll</option> <replaceable>file</replaceable></term>
         <listitem>
           <simpara>
-            Ponscripter simulates access to arbitrary NScripter DLL
+            shioriscripter simulates access to arbitrary NScripter DLL
             extensions by reading predefined function results from a
             fixed text file.  This is enough to make games work,
             though often not enough to make them work
@@ -219,7 +219,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
           </simpara>
           <simpara>
             Proper support for some extensions may be built into
-            Ponscripter itself.
+            shioriscripter itself.
           </simpara>
           <simpara>
             (This applies even on Microsoft Windows; real DLL
@@ -232,7 +232,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
         <term><option>--fullscreen</option></term>
         <listitem>
           <simpara>
-            Force Ponscripter to start in fullscreen mode.
+            Force shioriscripter to start in fullscreen mode.
           </simpara>
         </listitem>
       </varlistentry>
@@ -241,7 +241,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
         <term><option>--window</option></term>
         <listitem>
           <simpara>
-            Force Ponscripter to start in windowed mode.
+            Force shioriscripter to start in windowed mode.
           </simpara>
         </listitem>
       </varlistentry>
@@ -299,9 +299,9 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
             Specify key file to use to read obfuscated
             <filename>nscript.___</filename> files and their
             accompanying archives.  This option is provided only for
-            use with legacy games; native Ponscripter games cannot be
+            use with legacy games; native shioriscripter games cannot be
             obfuscated with this method.  (What would the point be?
-            Anyone could adapt Ponscripter to extract the files.)
+            Anyone could adapt shioriscripter to extract the files.)
           </simpara>
         </listitem>
       </varlistentry>
@@ -340,7 +340,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
           <filename>stdout</filename> and <filename>stderr</filename>
           is stored in files in the
           <filename>
-            <replaceable>%COMMON_APPDATA%</replaceable>\Ponscripter
+            <replaceable>%COMMON_APPDATA%</replaceable>\shioriscripter
           </filename>
           directory.  These are clobbered each time the program is
           launched and deleted upon termination if empty.  Output is
@@ -382,7 +382,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
         image, and the right-hand side being a greyscale mask).
       </para>
       <para>
-        By default, Ponscripter uses a heuristic approach: if a PNG
+        By default, shioriscripter uses a heuristic approach: if a PNG
         has an alpha channel that is not completely opaque, that is
         used, otherwise an NScripter-style mask is used if present.
         If this fails to work for some images, and you cannot fix the
@@ -396,7 +396,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
 
   <refsect1>
     <title>See Also</title>
-    <simpara>&ponscripter.7;</simpara>
+    <simpara>&shioriscripter.7;</simpara>
   </refsect1>
   
 </refentry>

@@ -2,51 +2,51 @@
 <book xmlns="http://docbook.org/ns/docbook"
 xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
 
-<refentry xml:id="ponscr-ext.7">
+<refentry xml:id="shioriscr-ext.7">
   <info>
     <date><?D?></date>
   </info>
   <refmeta>
-    <refentrytitle>ponscr-ext</refentrytitle>
+    <refentrytitle>shioriscr-ext</refentrytitle>
     <manvolnum>7</manvolnum>
   </refmeta>
 
   <refnamediv>
-    <refname>ponscr-ext</refname>
-    <refpurpose>Ponscripter extension commands</refpurpose>
+    <refname>shioriscr-ext</refname>
+    <refpurpose>shioriscripter extension commands</refpurpose>
   </refnamediv>
 
   <refsect1>
     <title>Description</title>
     <para>
-      This page documents Ponscripter-specific extensions,
+      This page documents shioriscripter-specific extensions,
       i.e. commands that are not present (or operate differently) in
       NScripter or ONScripter.
     </para>
     <para>
-      See &ponscripter.7; for an overview of other documentation.
+      See &shioriscripter.7; for an overview of other documentation.
     </para>
 
     <refsect2>
-      <title>Detecting Ponscripter</title>
+      <title>Detecting shioriscripter</title>
       <para>
         It may occasionally be desirable to have a single script that
-        will load in both Ponscripter and other NScripter-type
-        interpreters.  (The test scripts in the Ponscripter
+        will load in both shioriscripter and other NScripter-type
+        interpreters.  (The test scripts in the shioriscripter
         distribution are an example of such a case.)
       </para>
       <para>
-        A script can detect whether it is running under Ponscripter by
+        A script can detect whether it is running under shioriscripter by
         defining a numalias:
         <programlisting>
-<function>numalias</function> <constant>PONSCRIPTER</constant>, 0
+<function>numalias</function> <constant>shioriscrIPTER</constant>, 0
         </programlisting>
       </para>
       <para>
-        Ponscripter treats this as a special case, and gives the
+        shioriscripter treats this as a special case, and gives the
         numalias the value 1 instead, so platform-specific code can
         then be included by testing the value of
-        <constant>PONSCRIPTER</constant> and branching as appropriate.
+        <constant>shioriscrIPTER</constant> and branching as appropriate.
       </para>
     </refsect2>
     
@@ -83,10 +83,10 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
               <filename>fonts</filename> subdirectory of the data
               path, then in the game's archive, and then the game
               binary itself is checked in case the font has been
-              embedded there.  Finally, for compatibility, Ponscripter
+              embedded there.  Finally, for compatibility, shioriscripter
               checks for a file named <filename>default.ttf</filename>
               in the game's data path, and uses that if it exists.
-              Note that at no stage does Ponscripter look at the fonts
+              Note that at no stage does shioriscripter look at the fonts
               installed on the user's computer; games must distribute
               their own fonts.  Note also that fonts are loaded
               lazily, so the point of failure if a file is missing
@@ -105,7 +105,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
               the fonts however you like, but following the convention
               permits straightforward use of mnemonic formatting tags.
               See <?link f-sel-t: Font selection tags?> in
-              &ponscr-syntax.7; for details of font selection.
+              &shioriscr-syntax.7; for details of font selection.
             </simpara>
             <simpara>
               Mapping fonts in this way is optional.  If a slot is
@@ -220,7 +220,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
           <listitem>
             <para>
               Add or remove shortcut sequences.  (See <?link ligs:
-              Ligatures and shortcuts?> in &ponscr-syntax.7;.)
+              Ligatures and shortcuts?> in &shioriscr-syntax.7;.)
             </para>
             <para>
               The two-argument form of this command adds or removes a
@@ -397,7 +397,7 @@ cell
 
   <refsect1>
     <title>See also</title>
-    <simpara>&ponscripter.7;</simpara>
+    <simpara>&shioriscripter.7;</simpara>
   </refsect1>
   
 </refentry>

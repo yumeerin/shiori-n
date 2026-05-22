@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel.cpp - Execution block parser of Ponscripter
+ *  ShioriLabel.cpp - Execution block parser of Shiori
  *
  *  Copyright (c) 2001-2008 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,8 +23,8 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
-#include "PonscripterMessage.h"
+#include "ShioriLabel.h"
+#include "ShioriMessage.h"
 #include "resources.h"
 #include <ctype.h>
 
@@ -88,266 +88,266 @@ extern "C" void waveCallback(int channel);
 #define DLL_FILE "dll.txt"
 #define DEFAULT_ENV_FONT "Sans"
 
-typedef int (PonscripterLabel::*PonscrFun)(const pstring&);
+typedef int (ShioriLabel::*ShioriFun)(const pstring&);
 static class sfunc_lut_t {
-    typedef dictionary<pstring, PonscrFun>::t dic_t;
+    typedef dictionary<pstring, ShioriFun>::t dic_t;
     dic_t dict;
 public:
     sfunc_lut_t();
-    PonscrFun get(pstring what) const {
+    ShioriFun get(pstring what) const {
         dic_t::const_iterator it = dict.find(what);
         if (it == dict.end()) return 0;
         return it->second;
     }
 } func_lut;
 sfunc_lut_t::sfunc_lut_t() {
-    dict["abssetcursor"]     = &PonscripterLabel::setcursorCommand;
-    dict["allsphide"]        = &PonscripterLabel::allsphideCommand;
-    dict["allsp2hide"]       = &PonscripterLabel::allsp2hideCommand;
-    dict["allspresume"]      = &PonscripterLabel::allspresumeCommand;
-    dict["allsp2resume"]     = &PonscripterLabel::allsp2resumeCommand;
-    dict["amsp"]             = &PonscripterLabel::mspCommand;
-    dict["amsp2"]            = &PonscripterLabel::mspCommand;
-    dict["autoclick"]        = &PonscripterLabel::autoclickCommand;
-    dict["automode_time"]    = &PonscripterLabel::automode_timeCommand;
-    dict["avi"]              = &PonscripterLabel::aviCommand;
-    dict["bar"]              = &PonscripterLabel::barCommand;
-    dict["barclear"]         = &PonscripterLabel::barclearCommand;
-    dict["bg"]               = &PonscripterLabel::bgCommand;
-    dict["bgcopy"]           = &PonscripterLabel::bgcopyCommand;
-    dict["bgcpy"]            = &PonscripterLabel::bgcopyCommand;
-    dict["bgm"]              = &PonscripterLabel::mp3Command;
-    dict["bgmonce"]          = &PonscripterLabel::mp3Command;
-    dict["bgmstop"]          = &PonscripterLabel::playstopCommand;
-    dict["bgmvol"]           = &PonscripterLabel::mp3volCommand;
-    dict["bidirect"]         = &PonscripterLabel::bidirectCommand;
-    dict["blt"]              = &PonscripterLabel::bltCommand;
-    dict["endroll"]          = &PonscripterLabel::endrollCommand; //for Umineko
-    dict["br"]               = &PonscripterLabel::brCommand;
-    dict["br2"]              = &PonscripterLabel::brCommand;
-    dict["btn"]              = &PonscripterLabel::btnCommand;
-    dict["btndef"]           = &PonscripterLabel::btndefCommand;
-    dict["btndown"]          = &PonscripterLabel::btndownCommand;
-    dict["btntime"]          = &PonscripterLabel::btntimeCommand;
-    dict["btntime2"]         = &PonscripterLabel::btntimeCommand;
-    dict["btnwait"]          = &PonscripterLabel::btnwaitCommand;
-    dict["btnwait2"]         = &PonscripterLabel::btnwaitCommand;
-    dict["caption"]          = &PonscripterLabel::captionCommand;
-    dict["cell"]             = &PonscripterLabel::cellCommand;
-    dict["cellcheckexbtn"]   = &PonscripterLabel::exbtnCommand;
-    dict["cellcheckspbtn"]   = &PonscripterLabel::spbtnCommand;
-    dict["checkpage"]        = &PonscripterLabel::checkpageCommand;
-    dict["chvol"]            = &PonscripterLabel::chvolCommand;
-    dict["cl"]               = &PonscripterLabel::clCommand;
-    dict["click"]            = &PonscripterLabel::clickCommand;
-    dict["csel"]             = &PonscripterLabel::selectCommand;
-    dict["cselbtn"]          = &PonscripterLabel::cselbtnCommand;
-    dict["cselgoto"]         = &PonscripterLabel::cselgotoCommand;
-    dict["csp"]              = &PonscripterLabel::cspCommand;
-    dict["csp2"]             = &PonscripterLabel::cspCommand;
-    dict["definereset"]      = &PonscripterLabel::defineresetCommand;
-    dict["delay"]            = &PonscripterLabel::delayCommand;
-    dict["deletescreenshot"] = &PonscripterLabel::deletescreenshotCommand;
-    dict["draw"]             = &PonscripterLabel::drawCommand;
-    dict["drawbg"]           = &PonscripterLabel::drawbgCommand;
-    dict["drawbg2"]          = &PonscripterLabel::drawbg2Command;
-    dict["drawclear"]        = &PonscripterLabel::drawclearCommand;
-    dict["drawfill"]         = &PonscripterLabel::drawfillCommand;
-    dict["drawsp"]           = &PonscripterLabel::drawspCommand;
-    dict["drawsp2"]          = &PonscripterLabel::drawsp2Command;
-    dict["drawsp3"]          = &PonscripterLabel::drawsp3Command;
-    dict["drawtext"]         = &PonscripterLabel::drawtextCommand;
-    dict["dwave"]            = &PonscripterLabel::dwaveCommand;
-    dict["dwaveload"]        = &PonscripterLabel::dwaveCommand;
-    dict["dwaveloop"]        = &PonscripterLabel::dwaveCommand;
-    dict["dwaveplay"]        = &PonscripterLabel::dwaveCommand;
-    dict["dwaveplayloop"]    = &PonscripterLabel::dwaveCommand;
-    dict["dwavestop"]        = &PonscripterLabel::dwavestopCommand;
-    dict["end"]              = &PonscripterLabel::endCommand;
-    dict["erasetextwindow"]  = &PonscripterLabel::erasetextwindowCommand;
-    dict["exbtn"]            = &PonscripterLabel::exbtnCommand;
-    dict["exbtn_d"]          = &PonscripterLabel::exbtnCommand;
-    dict["exec_dll"]         = &PonscripterLabel::exec_dllCommand;
-    dict["existspbtn"]       = &PonscripterLabel::spbtnCommand;
-    dict["fileexist"]        = &PonscripterLabel::fileexistCommand;
-    dict["game"]             = &PonscripterLabel::gameCommand;
-    dict["getbgmvol"]        = &PonscripterLabel::getmp3volCommand;
-    dict["getbtntimer"]      = &PonscripterLabel::gettimerCommand;
-    dict["getcselnum"]       = &PonscripterLabel::getcselnumCommand;
-    dict["getcselstr"]       = &PonscripterLabel::getcselstrCommand;
-    dict["getcursor"]        = &PonscripterLabel::getcursorCommand;
-    dict["getcursorpos"]     = &PonscripterLabel::getcursorposCommand;
-    dict["getenter"]         = &PonscripterLabel::getenterCommand;
-    dict["getfunction"]      = &PonscripterLabel::getfunctionCommand;
-    dict["getinsert"]        = &PonscripterLabel::getinsertCommand;
-    dict["getlog"]           = &PonscripterLabel::getlogCommand;
-    dict["getmousepos"]      = &PonscripterLabel::getmouseposCommand;
-    dict["getmp3vol"]        = &PonscripterLabel::getmp3volCommand;
-    dict["getpage"]          = &PonscripterLabel::getpageCommand;
-    dict["getpageup"]        = &PonscripterLabel::getpageupCommand;
-    dict["getreg"]           = &PonscripterLabel::getregCommand;
-    dict["getret"]           = &PonscripterLabel::getretCommand;
-    dict["getscreenshot"]    = &PonscripterLabel::getscreenshotCommand;
-    dict["getsevol"]         = &PonscripterLabel::getsevolCommand;
-    dict["getspmode"]        = &PonscripterLabel::getspmodeCommand;
-    dict["getspsize"]        = &PonscripterLabel::getspsizeCommand;
-    dict["gettab"]           = &PonscripterLabel::gettabCommand;
-    dict["gettag"]           = &PonscripterLabel::gettagCommand;
-    dict["gettext"]          = &PonscripterLabel::gettextCommand;
-    dict["gettextextent"]    = &PonscripterLabel::haeleth_text_extentCommand;
-    dict["gettextheight"]    = &PonscripterLabel::haeleth_text_heightCommand;
-    dict["gettextspeed"]     = &PonscripterLabel::gettextspeedCommand;
+    dict["abssetcursor"]     = &ShioriLabel::setcursorCommand;
+    dict["allsphide"]        = &ShioriLabel::allsphideCommand;
+    dict["allsp2hide"]       = &ShioriLabel::allsp2hideCommand;
+    dict["allspresume"]      = &ShioriLabel::allspresumeCommand;
+    dict["allsp2resume"]     = &ShioriLabel::allsp2resumeCommand;
+    dict["amsp"]             = &ShioriLabel::mspCommand;
+    dict["amsp2"]            = &ShioriLabel::mspCommand;
+    dict["autoclick"]        = &ShioriLabel::autoclickCommand;
+    dict["automode_time"]    = &ShioriLabel::automode_timeCommand;
+    dict["avi"]              = &ShioriLabel::aviCommand;
+    dict["bar"]              = &ShioriLabel::barCommand;
+    dict["barclear"]         = &ShioriLabel::barclearCommand;
+    dict["bg"]               = &ShioriLabel::bgCommand;
+    dict["bgcopy"]           = &ShioriLabel::bgcopyCommand;
+    dict["bgcpy"]            = &ShioriLabel::bgcopyCommand;
+    dict["bgm"]              = &ShioriLabel::mp3Command;
+    dict["bgmonce"]          = &ShioriLabel::mp3Command;
+    dict["bgmstop"]          = &ShioriLabel::playstopCommand;
+    dict["bgmvol"]           = &ShioriLabel::mp3volCommand;
+    dict["bidirect"]         = &ShioriLabel::bidirectCommand;
+    dict["blt"]              = &ShioriLabel::bltCommand;
+    dict["endroll"]          = &ShioriLabel::endrollCommand; //for Umineko
+    dict["br"]               = &ShioriLabel::brCommand;
+    dict["br2"]              = &ShioriLabel::brCommand;
+    dict["btn"]              = &ShioriLabel::btnCommand;
+    dict["btndef"]           = &ShioriLabel::btndefCommand;
+    dict["btndown"]          = &ShioriLabel::btndownCommand;
+    dict["btntime"]          = &ShioriLabel::btntimeCommand;
+    dict["btntime2"]         = &ShioriLabel::btntimeCommand;
+    dict["btnwait"]          = &ShioriLabel::btnwaitCommand;
+    dict["btnwait2"]         = &ShioriLabel::btnwaitCommand;
+    dict["caption"]          = &ShioriLabel::captionCommand;
+    dict["cell"]             = &ShioriLabel::cellCommand;
+    dict["cellcheckexbtn"]   = &ShioriLabel::exbtnCommand;
+    dict["cellcheckspbtn"]   = &ShioriLabel::spbtnCommand;
+    dict["checkpage"]        = &ShioriLabel::checkpageCommand;
+    dict["chvol"]            = &ShioriLabel::chvolCommand;
+    dict["cl"]               = &ShioriLabel::clCommand;
+    dict["click"]            = &ShioriLabel::clickCommand;
+    dict["csel"]             = &ShioriLabel::selectCommand;
+    dict["cselbtn"]          = &ShioriLabel::cselbtnCommand;
+    dict["cselgoto"]         = &ShioriLabel::cselgotoCommand;
+    dict["csp"]              = &ShioriLabel::cspCommand;
+    dict["csp2"]             = &ShioriLabel::cspCommand;
+    dict["definereset"]      = &ShioriLabel::defineresetCommand;
+    dict["delay"]            = &ShioriLabel::delayCommand;
+    dict["deletescreenshot"] = &ShioriLabel::deletescreenshotCommand;
+    dict["draw"]             = &ShioriLabel::drawCommand;
+    dict["drawbg"]           = &ShioriLabel::drawbgCommand;
+    dict["drawbg2"]          = &ShioriLabel::drawbg2Command;
+    dict["drawclear"]        = &ShioriLabel::drawclearCommand;
+    dict["drawfill"]         = &ShioriLabel::drawfillCommand;
+    dict["drawsp"]           = &ShioriLabel::drawspCommand;
+    dict["drawsp2"]          = &ShioriLabel::drawsp2Command;
+    dict["drawsp3"]          = &ShioriLabel::drawsp3Command;
+    dict["drawtext"]         = &ShioriLabel::drawtextCommand;
+    dict["dwave"]            = &ShioriLabel::dwaveCommand;
+    dict["dwaveload"]        = &ShioriLabel::dwaveCommand;
+    dict["dwaveloop"]        = &ShioriLabel::dwaveCommand;
+    dict["dwaveplay"]        = &ShioriLabel::dwaveCommand;
+    dict["dwaveplayloop"]    = &ShioriLabel::dwaveCommand;
+    dict["dwavestop"]        = &ShioriLabel::dwavestopCommand;
+    dict["end"]              = &ShioriLabel::endCommand;
+    dict["erasetextwindow"]  = &ShioriLabel::erasetextwindowCommand;
+    dict["exbtn"]            = &ShioriLabel::exbtnCommand;
+    dict["exbtn_d"]          = &ShioriLabel::exbtnCommand;
+    dict["exec_dll"]         = &ShioriLabel::exec_dllCommand;
+    dict["existspbtn"]       = &ShioriLabel::spbtnCommand;
+    dict["fileexist"]        = &ShioriLabel::fileexistCommand;
+    dict["game"]             = &ShioriLabel::gameCommand;
+    dict["getbgmvol"]        = &ShioriLabel::getmp3volCommand;
+    dict["getbtntimer"]      = &ShioriLabel::gettimerCommand;
+    dict["getcselnum"]       = &ShioriLabel::getcselnumCommand;
+    dict["getcselstr"]       = &ShioriLabel::getcselstrCommand;
+    dict["getcursor"]        = &ShioriLabel::getcursorCommand;
+    dict["getcursorpos"]     = &ShioriLabel::getcursorposCommand;
+    dict["getenter"]         = &ShioriLabel::getenterCommand;
+    dict["getfunction"]      = &ShioriLabel::getfunctionCommand;
+    dict["getinsert"]        = &ShioriLabel::getinsertCommand;
+    dict["getlog"]           = &ShioriLabel::getlogCommand;
+    dict["getmousepos"]      = &ShioriLabel::getmouseposCommand;
+    dict["getmp3vol"]        = &ShioriLabel::getmp3volCommand;
+    dict["getpage"]          = &ShioriLabel::getpageCommand;
+    dict["getpageup"]        = &ShioriLabel::getpageupCommand;
+    dict["getreg"]           = &ShioriLabel::getregCommand;
+    dict["getret"]           = &ShioriLabel::getretCommand;
+    dict["getscreenshot"]    = &ShioriLabel::getscreenshotCommand;
+    dict["getsevol"]         = &ShioriLabel::getsevolCommand;
+    dict["getspmode"]        = &ShioriLabel::getspmodeCommand;
+    dict["getspsize"]        = &ShioriLabel::getspsizeCommand;
+    dict["gettab"]           = &ShioriLabel::gettabCommand;
+    dict["gettag"]           = &ShioriLabel::gettagCommand;
+    dict["gettext"]          = &ShioriLabel::gettextCommand;
+    dict["gettextextent"]    = &ShioriLabel::haeleth_text_extentCommand;
+    dict["gettextheight"]    = &ShioriLabel::haeleth_text_heightCommand;
+    dict["gettextspeed"]     = &ShioriLabel::gettextspeedCommand;
     //these "lang" cmds are for bilingual support for Umineko
-    dict["langjp"]           = &PonscripterLabel::langjpCommand;
-    dict["langen"]           = &PonscripterLabel::langenCommand;
-    dict["langall"]          = &PonscripterLabel::langallCommand;
-    dict["getreadlang"]      = &PonscripterLabel::getreadlangCommand;
-    dict["showlangen"]       = &PonscripterLabel::showlangenCommand;
-    dict["showlangjp"]       = &PonscripterLabel::showlangjpCommand;
-    dict["gettimer"]         = &PonscripterLabel::gettimerCommand;
-    dict["getversion"]       = &PonscripterLabel::getversionCommand;
-    dict["getvoicevol"]      = &PonscripterLabel::getvoicevolCommand;
-    dict["getzxc"]           = &PonscripterLabel::getzxcCommand;
-    dict["h_breakstr"]       = &PonscripterLabel::haeleth_char_setCommand;
-    dict["h_centreline"]     = &PonscripterLabel::haeleth_centre_lineCommand;
-    dict["h_fontstyle"]      = &PonscripterLabel::haeleth_font_styleCommand;
-    dict["h_indentstr"]      = &PonscripterLabel::haeleth_char_setCommand;
-    dict["h_ligate"]         = &PonscripterLabel::haeleth_ligate_controlCommand;
-    dict["h_locate"]         = &PonscripterLabel::locateCommand;
-    dict["h_mapfont"]        = &PonscripterLabel::haeleth_map_fontCommand;
-    dict["h_rendering"]      = &PonscripterLabel::haeleth_hinting_modeCommand;
-    dict["h_textheight"]     = &PonscripterLabel::haeleth_text_heightCommand;
-    dict["h_textextent"]     = &PonscripterLabel::haeleth_text_extentCommand;
-    dict["h_defwindow"]      = &PonscripterLabel::haeleth_defwindowCommand;
-    dict["h_usewindow"]      = &PonscripterLabel::haeleth_usewindowCommand;
-    dict["h_usewindow3"]     = &PonscripterLabel::haeleth_usewindowCommand;
-    dict["h_speedpercent"]   = &PonscripterLabel::haeleth_speedpercentCommand;
-    dict["humanorder"]       = &PonscripterLabel::humanorderCommand;
-    dict["indent"]           = &PonscripterLabel::indentCommand;
-    dict["input"]            = &PonscripterLabel::inputCommand;
-    dict["isdown"]           = &PonscripterLabel::isdownCommand;
-    dict["isfull"]           = &PonscripterLabel::isfullCommand;
-    dict["ispage"]           = &PonscripterLabel::ispageCommand;
-    dict["isskip"]           = &PonscripterLabel::isskipCommand;
-    dict["jumpb"]            = &PonscripterLabel::jumpbCommand;
-    dict["jumpf"]            = &PonscripterLabel::jumpfCommand;
-    dict["tachistate"]       = &PonscripterLabel::tachistateCommand;
-    dict["ld"]               = &PonscripterLabel::ldCommand;
-    dict["loadgame"]         = &PonscripterLabel::loadgameCommand;
-    dict["localestring"]     = &PonscripterLabel::localestringCommand;
-    dict["locate"]           = &PonscripterLabel::locateCommand;
-    dict["logsp"]            = &PonscripterLabel::logspCommand;
-    dict["logsp2"]           = &PonscripterLabel::logspCommand;
-    dict["logsp2utf"]        = &PonscripterLabel::logspCommand;
-    dict["lookbackbutton"]   = &PonscripterLabel::lookbackbuttonCommand;
-    dict["lookbackflush"]    = &PonscripterLabel::lookbackflushCommand;
-    dict["loopbgm"]          = &PonscripterLabel::loopbgmCommand;
-    dict["loopbgmstop"]      = &PonscripterLabel::loopbgmstopCommand;
-    dict["lr_trap"]          = &PonscripterLabel::trapCommand;
-    dict["lsp"]              = &PonscripterLabel::lspCommand;
-    dict["lsp2"]             = &PonscripterLabel::lspCommand;
-    dict["lsph"]             = &PonscripterLabel::lspCommand;
-    dict["lsph2"]            = &PonscripterLabel::lspCommand;
-    dict["menu_automode"]    = &PonscripterLabel::menu_automodeCommand;
-    dict["menu_full"]        = &PonscripterLabel::menu_fullCommand;
-    dict["menu_window"]      = &PonscripterLabel::menu_windowCommand;
-    dict["monocro"]          = &PonscripterLabel::monocroCommand;
-    dict["movemousecursor"]  = &PonscripterLabel::movemousecursorCommand;
-    dict["mp3"]              = &PonscripterLabel::mp3Command;
-    dict["mp3fadeout"]       = &PonscripterLabel::mp3fadeoutCommand;
-    dict["mp3loop"]          = &PonscripterLabel::mp3Command;
-    dict["mp3save"]          = &PonscripterLabel::mp3Command;
-    dict["mp3stop"]          = &PonscripterLabel::playstopCommand;
-    dict["mp3vol"]           = &PonscripterLabel::mp3volCommand;
-    dict["mpegplay"]         = &PonscripterLabel::mpegplayCommand;
-    dict["msp"]              = &PonscripterLabel::mspCommand;
-    dict["msp2"]             = &PonscripterLabel::mspCommand;
-    dict["nega"]             = &PonscripterLabel::negaCommand;
-    dict["ofscopy"]          = &PonscripterLabel::ofscopyCommand;
-    dict["ofscpy"]           = &PonscripterLabel::ofscopyCommand;
-    dict["pbreakstr"]        = &PonscripterLabel::haeleth_char_setCommand;
-    dict["pcenterline"]      = &PonscripterLabel::haeleth_centre_lineCommand;
-    dict["pdefwindow"]       = &PonscripterLabel::haeleth_defwindowCommand;
-    dict["pfontstyle"]       = &PonscripterLabel::haeleth_font_styleCommand;
-    dict["pindentstr"]       = &PonscripterLabel::haeleth_char_setCommand;
-    dict["play"]             = &PonscripterLabel::playCommand;
-    dict["playonce"]         = &PonscripterLabel::playCommand;
-    dict["playstop"]         = &PonscripterLabel::playstopCommand;
-    dict["plocate"]          = &PonscripterLabel::locateCommand;
-    dict["pligate"]          = &PonscripterLabel::haeleth_ligate_controlCommand;
-    dict["pmapfont"]         = &PonscripterLabel::haeleth_map_fontCommand;
-    dict["prendering"]       = &PonscripterLabel::haeleth_hinting_modeCommand;
-    dict["print"]            = &PonscripterLabel::printCommand;
-    dict["prnum"]            = &PonscripterLabel::prnumCommand;
-    dict["prnumclear"]       = &PonscripterLabel::prnumclearCommand;
-    dict["pspeedpercent"]    = &PonscripterLabel::haeleth_speedpercentCommand;
-    dict["pusewindow"]       = &PonscripterLabel::haeleth_usewindowCommand;
-    dict["pusewindow3"]      = &PonscripterLabel::haeleth_usewindowCommand;
-    dict["puttext"]          = &PonscripterLabel::puttextCommand;
-    dict["quake"]            = &PonscripterLabel::quakeCommand;
-    dict["quakex"]           = &PonscripterLabel::quakeCommand;
-    dict["quakey"]           = &PonscripterLabel::quakeCommand;
-    dict["repaint"]          = &PonscripterLabel::repaintCommand;
-    dict["reset"]            = &PonscripterLabel::resetCommand;
-    dict["resettimer"]       = &PonscripterLabel::resettimerCommand;
-    dict["rmode"]            = &PonscripterLabel::rmodeCommand;
-    dict["rnd"]              = &PonscripterLabel::rndCommand;
-    dict["rnd2"]             = &PonscripterLabel::rndCommand;
-    dict["say"]              = &PonscripterLabel::haeleth_sayCommand;
-    dict["savefileexist"]    = &PonscripterLabel::savefileexistCommand;
-    dict["savegame"]         = &PonscripterLabel::savegameCommand;
-    dict["saveoff"]          = &PonscripterLabel::saveoffCommand;
-    dict["saveon"]           = &PonscripterLabel::saveonCommand;
-    dict["savescreenshot"]   = &PonscripterLabel::savescreenshotCommand;
-    dict["savescreenshot2"]  = &PonscripterLabel::savescreenshotCommand;
-    dict["savetime"]         = &PonscripterLabel::savetimeCommand;
-    dict["select"]           = &PonscripterLabel::selectCommand;
-    dict["selectbtnwait"]    = &PonscripterLabel::btnwaitCommand;
-    dict["selgosub"]         = &PonscripterLabel::selectCommand;
-    dict["selnum"]           = &PonscripterLabel::selectCommand;
-    dict["setcursor"]        = &PonscripterLabel::setcursorCommand;
-    dict["setwindow"]        = &PonscripterLabel::setwindowCommand;
-    dict["setwindow2"]       = &PonscripterLabel::setwindow2Command;
-    dict["setwindow3"]       = &PonscripterLabel::setwindow3Command;
-    dict["sevol"]            = &PonscripterLabel::sevolCommand;
-    dict["skipoff"]          = &PonscripterLabel::skipoffCommand;
-    dict["shell"]          = &PonscripterLabel::shellCommand;
-    dict["sp_rgb_gradation"] = &PonscripterLabel::sp_rgb_gradationCommand;
-    dict["spbtn"]            = &PonscripterLabel::spbtnCommand;
-    dict["spclclk"]          = &PonscripterLabel::spclclkCommand;
-    dict["split"]            = &PonscripterLabel::splitCommand;
-    dict["splitstring"]      = &PonscripterLabel::splitCommand;
-    dict["spreload"]         = &PonscripterLabel::spreloadCommand;
-    dict["spstr"]            = &PonscripterLabel::spstrCommand;
-    dict["steamsetachieve"]  = &PonscripterLabel::steamsetachieveCommand;
-    dict["stop"]             = &PonscripterLabel::stopCommand;
-    dict["strsp"]            = &PonscripterLabel::strspCommand;
-    dict["systemcall"]       = &PonscripterLabel::systemcallCommand;
-    dict["tablegoto"]        = &PonscripterLabel::tablegotoCommand;
-    dict["tablegoto1"]       = &PonscripterLabel::tablegotoCommand;
-    dict["debugtablegoto"]   = &PonscripterLabel::tablegotoCommand;
-    dict["tal"]              = &PonscripterLabel::talCommand;
-    dict["tateyoko"]         = &PonscripterLabel::tateyokoCommand;
-    dict["texec"]            = &PonscripterLabel::texecCommand;
-    dict["textbtnwait"]      = &PonscripterLabel::btnwaitCommand;
-    dict["textclear"]        = &PonscripterLabel::textclearCommand;
-    dict["texthide"]         = &PonscripterLabel::texthideCommand;
-    dict["textoff"]          = &PonscripterLabel::textoffCommand;
-    dict["texton"]           = &PonscripterLabel::textonCommand;
-    dict["textshow"]         = &PonscripterLabel::textshowCommand;
-    dict["textspeed"]        = &PonscripterLabel::textspeedCommand;
-    dict["transbtn"]         = &PonscripterLabel::transbtnCommand;
-    dict["trap"]             = &PonscripterLabel::trapCommand;
-    dict["voicevol"]         = &PonscripterLabel::voicevolCommand;
-    dict["vsp"]              = &PonscripterLabel::vspCommand;
-    dict["vsp2"]             = &PonscripterLabel::vspCommand;
-    dict["vsp_when"]         = &PonscripterLabel::vsp_whenCommand;
-    dict["vsp2_when"]        = &PonscripterLabel::vsp_whenCommand;
-    dict["wait"]             = &PonscripterLabel::waitCommand;
-    dict["waittimer"]        = &PonscripterLabel::waittimerCommand;
-    dict["wave"]             = &PonscripterLabel::waveCommand;
-    dict["waveloop"]         = &PonscripterLabel::waveCommand;
-    dict["wavestop"]         = &PonscripterLabel::wavestopCommand;
+    dict["langjp"]           = &ShioriLabel::langjpCommand;
+    dict["langen"]           = &ShioriLabel::langenCommand;
+    dict["langall"]          = &ShioriLabel::langallCommand;
+    dict["getreadlang"]      = &ShioriLabel::getreadlangCommand;
+    dict["showlangen"]       = &ShioriLabel::showlangenCommand;
+    dict["showlangjp"]       = &ShioriLabel::showlangjpCommand;
+    dict["gettimer"]         = &ShioriLabel::gettimerCommand;
+    dict["getversion"]       = &ShioriLabel::getversionCommand;
+    dict["getvoicevol"]      = &ShioriLabel::getvoicevolCommand;
+    dict["getzxc"]           = &ShioriLabel::getzxcCommand;
+    dict["h_breakstr"]       = &ShioriLabel::haeleth_char_setCommand;
+    dict["h_centreline"]     = &ShioriLabel::haeleth_centre_lineCommand;
+    dict["h_fontstyle"]      = &ShioriLabel::haeleth_font_styleCommand;
+    dict["h_indentstr"]      = &ShioriLabel::haeleth_char_setCommand;
+    dict["h_ligate"]         = &ShioriLabel::haeleth_ligate_controlCommand;
+    dict["h_locate"]         = &ShioriLabel::locateCommand;
+    dict["h_mapfont"]        = &ShioriLabel::haeleth_map_fontCommand;
+    dict["h_rendering"]      = &ShioriLabel::haeleth_hinting_modeCommand;
+    dict["h_textheight"]     = &ShioriLabel::haeleth_text_heightCommand;
+    dict["h_textextent"]     = &ShioriLabel::haeleth_text_extentCommand;
+    dict["h_defwindow"]      = &ShioriLabel::haeleth_defwindowCommand;
+    dict["h_usewindow"]      = &ShioriLabel::haeleth_usewindowCommand;
+    dict["h_usewindow3"]     = &ShioriLabel::haeleth_usewindowCommand;
+    dict["h_speedpercent"]   = &ShioriLabel::haeleth_speedpercentCommand;
+    dict["humanorder"]       = &ShioriLabel::humanorderCommand;
+    dict["indent"]           = &ShioriLabel::indentCommand;
+    dict["input"]            = &ShioriLabel::inputCommand;
+    dict["isdown"]           = &ShioriLabel::isdownCommand;
+    dict["isfull"]           = &ShioriLabel::isfullCommand;
+    dict["ispage"]           = &ShioriLabel::ispageCommand;
+    dict["isskip"]           = &ShioriLabel::isskipCommand;
+    dict["jumpb"]            = &ShioriLabel::jumpbCommand;
+    dict["jumpf"]            = &ShioriLabel::jumpfCommand;
+    dict["tachistate"]       = &ShioriLabel::tachistateCommand;
+    dict["ld"]               = &ShioriLabel::ldCommand;
+    dict["loadgame"]         = &ShioriLabel::loadgameCommand;
+    dict["localestring"]     = &ShioriLabel::localestringCommand;
+    dict["locate"]           = &ShioriLabel::locateCommand;
+    dict["logsp"]            = &ShioriLabel::logspCommand;
+    dict["logsp2"]           = &ShioriLabel::logspCommand;
+    dict["logsp2utf"]        = &ShioriLabel::logspCommand;
+    dict["lookbackbutton"]   = &ShioriLabel::lookbackbuttonCommand;
+    dict["lookbackflush"]    = &ShioriLabel::lookbackflushCommand;
+    dict["loopbgm"]          = &ShioriLabel::loopbgmCommand;
+    dict["loopbgmstop"]      = &ShioriLabel::loopbgmstopCommand;
+    dict["lr_trap"]          = &ShioriLabel::trapCommand;
+    dict["lsp"]              = &ShioriLabel::lspCommand;
+    dict["lsp2"]             = &ShioriLabel::lspCommand;
+    dict["lsph"]             = &ShioriLabel::lspCommand;
+    dict["lsph2"]            = &ShioriLabel::lspCommand;
+    dict["menu_automode"]    = &ShioriLabel::menu_automodeCommand;
+    dict["menu_full"]        = &ShioriLabel::menu_fullCommand;
+    dict["menu_window"]      = &ShioriLabel::menu_windowCommand;
+    dict["monocro"]          = &ShioriLabel::monocroCommand;
+    dict["movemousecursor"]  = &ShioriLabel::movemousecursorCommand;
+    dict["mp3"]              = &ShioriLabel::mp3Command;
+    dict["mp3fadeout"]       = &ShioriLabel::mp3fadeoutCommand;
+    dict["mp3loop"]          = &ShioriLabel::mp3Command;
+    dict["mp3save"]          = &ShioriLabel::mp3Command;
+    dict["mp3stop"]          = &ShioriLabel::playstopCommand;
+    dict["mp3vol"]           = &ShioriLabel::mp3volCommand;
+    dict["mpegplay"]         = &ShioriLabel::mpegplayCommand;
+    dict["msp"]              = &ShioriLabel::mspCommand;
+    dict["msp2"]             = &ShioriLabel::mspCommand;
+    dict["nega"]             = &ShioriLabel::negaCommand;
+    dict["ofscopy"]          = &ShioriLabel::ofscopyCommand;
+    dict["ofscpy"]           = &ShioriLabel::ofscopyCommand;
+    dict["pbreakstr"]        = &ShioriLabel::haeleth_char_setCommand;
+    dict["pcenterline"]      = &ShioriLabel::haeleth_centre_lineCommand;
+    dict["pdefwindow"]       = &ShioriLabel::haeleth_defwindowCommand;
+    dict["pfontstyle"]       = &ShioriLabel::haeleth_font_styleCommand;
+    dict["pindentstr"]       = &ShioriLabel::haeleth_char_setCommand;
+    dict["play"]             = &ShioriLabel::playCommand;
+    dict["playonce"]         = &ShioriLabel::playCommand;
+    dict["playstop"]         = &ShioriLabel::playstopCommand;
+    dict["plocate"]          = &ShioriLabel::locateCommand;
+    dict["pligate"]          = &ShioriLabel::haeleth_ligate_controlCommand;
+    dict["pmapfont"]         = &ShioriLabel::haeleth_map_fontCommand;
+    dict["prendering"]       = &ShioriLabel::haeleth_hinting_modeCommand;
+    dict["print"]            = &ShioriLabel::printCommand;
+    dict["prnum"]            = &ShioriLabel::prnumCommand;
+    dict["prnumclear"]       = &ShioriLabel::prnumclearCommand;
+    dict["pspeedpercent"]    = &ShioriLabel::haeleth_speedpercentCommand;
+    dict["pusewindow"]       = &ShioriLabel::haeleth_usewindowCommand;
+    dict["pusewindow3"]      = &ShioriLabel::haeleth_usewindowCommand;
+    dict["puttext"]          = &ShioriLabel::puttextCommand;
+    dict["quake"]            = &ShioriLabel::quakeCommand;
+    dict["quakex"]           = &ShioriLabel::quakeCommand;
+    dict["quakey"]           = &ShioriLabel::quakeCommand;
+    dict["repaint"]          = &ShioriLabel::repaintCommand;
+    dict["reset"]            = &ShioriLabel::resetCommand;
+    dict["resettimer"]       = &ShioriLabel::resettimerCommand;
+    dict["rmode"]            = &ShioriLabel::rmodeCommand;
+    dict["rnd"]              = &ShioriLabel::rndCommand;
+    dict["rnd2"]             = &ShioriLabel::rndCommand;
+    dict["say"]              = &ShioriLabel::haeleth_sayCommand;
+    dict["savefileexist"]    = &ShioriLabel::savefileexistCommand;
+    dict["savegame"]         = &ShioriLabel::savegameCommand;
+    dict["saveoff"]          = &ShioriLabel::saveoffCommand;
+    dict["saveon"]           = &ShioriLabel::saveonCommand;
+    dict["savescreenshot"]   = &ShioriLabel::savescreenshotCommand;
+    dict["savescreenshot2"]  = &ShioriLabel::savescreenshotCommand;
+    dict["savetime"]         = &ShioriLabel::savetimeCommand;
+    dict["select"]           = &ShioriLabel::selectCommand;
+    dict["selectbtnwait"]    = &ShioriLabel::btnwaitCommand;
+    dict["selgosub"]         = &ShioriLabel::selectCommand;
+    dict["selnum"]           = &ShioriLabel::selectCommand;
+    dict["setcursor"]        = &ShioriLabel::setcursorCommand;
+    dict["setwindow"]        = &ShioriLabel::setwindowCommand;
+    dict["setwindow2"]       = &ShioriLabel::setwindow2Command;
+    dict["setwindow3"]       = &ShioriLabel::setwindow3Command;
+    dict["sevol"]            = &ShioriLabel::sevolCommand;
+    dict["skipoff"]          = &ShioriLabel::skipoffCommand;
+    dict["shell"]          = &ShioriLabel::shellCommand;
+    dict["sp_rgb_gradation"] = &ShioriLabel::sp_rgb_gradationCommand;
+    dict["spbtn"]            = &ShioriLabel::spbtnCommand;
+    dict["spclclk"]          = &ShioriLabel::spclclkCommand;
+    dict["split"]            = &ShioriLabel::splitCommand;
+    dict["splitstring"]      = &ShioriLabel::splitCommand;
+    dict["spreload"]         = &ShioriLabel::spreloadCommand;
+    dict["spstr"]            = &ShioriLabel::spstrCommand;
+    dict["steamsetachieve"]  = &ShioriLabel::steamsetachieveCommand;
+    dict["stop"]             = &ShioriLabel::stopCommand;
+    dict["strsp"]            = &ShioriLabel::strspCommand;
+    dict["systemcall"]       = &ShioriLabel::systemcallCommand;
+    dict["tablegoto"]        = &ShioriLabel::tablegotoCommand;
+    dict["tablegoto1"]       = &ShioriLabel::tablegotoCommand;
+    dict["debugtablegoto"]   = &ShioriLabel::tablegotoCommand;
+    dict["tal"]              = &ShioriLabel::talCommand;
+    dict["tateyoko"]         = &ShioriLabel::tateyokoCommand;
+    dict["texec"]            = &ShioriLabel::texecCommand;
+    dict["textbtnwait"]      = &ShioriLabel::btnwaitCommand;
+    dict["textclear"]        = &ShioriLabel::textclearCommand;
+    dict["texthide"]         = &ShioriLabel::texthideCommand;
+    dict["textoff"]          = &ShioriLabel::textoffCommand;
+    dict["texton"]           = &ShioriLabel::textonCommand;
+    dict["textshow"]         = &ShioriLabel::textshowCommand;
+    dict["textspeed"]        = &ShioriLabel::textspeedCommand;
+    dict["transbtn"]         = &ShioriLabel::transbtnCommand;
+    dict["trap"]             = &ShioriLabel::trapCommand;
+    dict["voicevol"]         = &ShioriLabel::voicevolCommand;
+    dict["vsp"]              = &ShioriLabel::vspCommand;
+    dict["vsp2"]             = &ShioriLabel::vspCommand;
+    dict["vsp_when"]         = &ShioriLabel::vsp_whenCommand;
+    dict["vsp2_when"]        = &ShioriLabel::vsp_whenCommand;
+    dict["wait"]             = &ShioriLabel::waitCommand;
+    dict["waittimer"]        = &ShioriLabel::waittimerCommand;
+    dict["wave"]             = &ShioriLabel::waveCommand;
+    dict["waveloop"]         = &ShioriLabel::waveCommand;
+    dict["wavestop"]         = &ShioriLabel::wavestopCommand;
 }
 
 static void SDL_Quit_Wrapper()
@@ -359,14 +359,14 @@ static void SDL_Quit_Wrapper()
 }
 
 #ifdef STEAM
-void PonscripterLabel::initSteam() {
+void ShioriLabel::initSteam() {
     if(!SteamAPI_Init()) {
       fprintf(stderr, "Unable to initialize steam; cloud and achievements won't work\n");
     }
 }
 #endif
 
-void PonscripterLabel::initSDL()
+void ShioriLabel::initSDL()
 {
     /* ---------------------------------------- */
     /* Initialize SDL */
@@ -571,7 +571,7 @@ void PonscripterLabel::initSDL()
 }
 
 
-void PonscripterLabel::openAudio(int freq, Uint16 format, int channels)
+void ShioriLabel::openAudio(int freq, Uint16 format, int channels)
 {
     if (Mix_OpenAudio(freq, format, channels, DEFAULT_AUDIOBUF) < 0) {
         fprintf(stderr, "Couldn't open audio device!\n"
@@ -592,7 +592,7 @@ void PonscripterLabel::openAudio(int freq, Uint16 format, int channels)
 }
 
 
-PonscripterLabel::PonscripterLabel()
+ShioriLabel::ShioriLabel()
     : registry_file(REGISTRY_FILE),
       dll_file(DLL_FILE),
       sin_table(NULL), cos_table(NULL), whirl_table(NULL),
@@ -693,7 +693,7 @@ PonscripterLabel::PonscripterLabel()
 }
 
 
-PonscripterLabel::~PonscripterLabel()
+ShioriLabel::~ShioriLabel()
 {
     reset();
     delete[] sprite_info;
@@ -701,25 +701,25 @@ PonscripterLabel::~PonscripterLabel()
 }
 
 
-void PonscripterLabel::setDebugMode()
+void ShioriLabel::setDebugMode()
 {
     ++debug_level;
 }
 
 
-void PonscripterLabel::setRegistryFile(const char* filename)
+void ShioriLabel::setRegistryFile(const char* filename)
 {
     registry_file = filename;
 }
 
 
-void PonscripterLabel::setDLLFile(const char* filename)
+void ShioriLabel::setDLLFile(const char* filename)
 {
     dll_file = filename;
 }
 
 
-void PonscripterLabel::setArchivePath(const pstring& path)
+void ShioriLabel::setArchivePath(const pstring& path)
 {
     archive_path.clear();
     archive_path.add(path);
@@ -727,39 +727,39 @@ void PonscripterLabel::setArchivePath(const pstring& path)
 }
 
 
-void PonscripterLabel::setSavePath(const pstring& path)
+void ShioriLabel::setSavePath(const pstring& path)
 {
     script_h.save_path = path + DELIMITER;
 }
 
 
-void PonscripterLabel::setFullscreenMode()
+void ShioriLabel::setFullscreenMode()
 {
     fullscreen_mode = true;
 }
 
 
-void PonscripterLabel::setWindowMode()
+void ShioriLabel::setWindowMode()
 {
     window_mode = true;
 }
 
 
 #ifdef WIN32
-void PonscripterLabel::setUserAppData()
+void ShioriLabel::setUserAppData()
 {
     current_user_appdata = true;
 }
 #endif
 
 
-void PonscripterLabel::setUseAppIcons()
+void ShioriLabel::setUseAppIcons()
 {
     use_app_icons = true;
 }
 
 
-void PonscripterLabel::setPreferredWidth(const char *widthstr)
+void ShioriLabel::setPreferredWidth(const char *widthstr)
 {
     int width = atoi(widthstr);
     //minimum preferred window width of 160 (gets ridiculous if smaller)
@@ -770,43 +770,43 @@ void PonscripterLabel::setPreferredWidth(const char *widthstr)
 }
 
 
-void PonscripterLabel::enableButtonShortCut()
+void ShioriLabel::enableButtonShortCut()
 {
     force_button_shortcut_flag = true;
 }
 
 
-void PonscripterLabel::enableWheelDownAdvance()
+void ShioriLabel::enableWheelDownAdvance()
 {
     enable_wheeldown_advance_flag = true;
 }
 
 
-void PonscripterLabel::disableCpuGfx()
+void ShioriLabel::disableCpuGfx()
 {
     AnimationInfo::setCpufuncs(AnimationInfo::CPUF_NONE);
 }
 
 
-void PonscripterLabel::disableRescale()
+void ShioriLabel::disableRescale()
 {
     disable_rescale_flag = true;
 }
 
 
-void PonscripterLabel::enableEdit()
+void ShioriLabel::enableEdit()
 {
     edit_flag = true;
 }
 
 
-void PonscripterLabel::setKeyEXE(const char* filename)
+void ShioriLabel::setKeyEXE(const char* filename)
 {
     key_exe_file = filename;
 }
 
 
-void PonscripterLabel::setGameIdentifier(const char *gameid)
+void ShioriLabel::setGameIdentifier(const char *gameid)
 {
     cmdline_game_id = gameid;
 }
@@ -861,7 +861,7 @@ pstring Local_GetSavePath()
     pstring rv = "";
 
     // if we're bundled, return the dir just outside the bundle
-    // eg: parent dir will contain:   Ponscripter.app   and   saves/
+    // eg: parent dir will contain:   Shiori.app   and   saves/
     using namespace Carbon;
     CFURLRef url;
     const CFIndex max_path = 32768;
@@ -1028,7 +1028,7 @@ pstring Platform_GetSavePath(pstring gameid) // MacOS X version
         return rv;
     // If that fails, die.
     CFOptionFlags *alert_flags;
-    PonscripterMessage(Error, "Save Directory Failure", "Could not create save directory.");
+    ShioriMessage(Error, "Save Directory Failure", "Could not create save directory.");
     exit(1);
 }
 #elif defined LINUX
@@ -1066,7 +1066,7 @@ pstring Platform_GetSavePath(const pstring& gameid)
 }
 #endif
 
-pstring PonscripterLabel::getSavePath(const pstring gameid) {
+pstring ShioriLabel::getSavePath(const pstring gameid) {
 #ifdef STEAM
     return Steam_GetSavePath();
 #else
@@ -1124,11 +1124,11 @@ pstring getGameId(ScriptHandler& script_h)
 
     // The fallback position is to generate a semi-unique ID using the
     // length of the script file as a cheap hash.
-    caption.format("Ponscripter-%x", script_h.getScriptBufferLength());
+    caption.format("Shiori-%x", script_h.getScriptBufferLength());
     return caption;
 }
 
-int PonscripterLabel::init(const char* preferred_script)
+int ShioriLabel::init(const char* preferred_script)
 {
 #ifdef STEAM
     initSteam();
@@ -1200,7 +1200,7 @@ int PonscripterLabel::init(const char* preferred_script)
 #ifdef WIN32
     if (debug_level > 0) {
         // to make it easier to debug user issues on Windows, open
-        // the current directory, save_path and Ponscripter output folders
+        // the current directory, save_path and Shiori output folders
         // in Explorer
         HMODULE shdll = LoadLibrary("shell32");
         if (shdll) {
@@ -1213,7 +1213,7 @@ int PonscripterLabel::init(const char* preferred_script)
                 if (res != S_FALSE && res != E_FAIL && res != E_INVALIDARG) {
                     havefp = true;
                     sprintf((char *)&hpath + strlen(hpath), "%s%s",
-                            DELIMITER, "Ponscripter");
+                            DELIMITER, "Shiori");
                 }
             }
             typedef HINSTANCE (WINAPI *SHELLEXECUTE)(HWND, LPCSTR, LPCSTR,
@@ -1315,7 +1315,7 @@ int PonscripterLabel::init(const char* preferred_script)
 }
 
 
-void PonscripterLabel::reset()
+void ShioriLabel::reset()
 {
     automode_flag  = false;
     automode_time  = 3000;
@@ -1380,7 +1380,7 @@ void PonscripterLabel::reset()
 }
 
 
-void PonscripterLabel::resetSub()
+void ShioriLabel::resetSub()
 {
     int i;
 
@@ -1442,7 +1442,7 @@ void PonscripterLabel::resetSub()
 }
 
 
-void PonscripterLabel::resetSentenceFont()
+void ShioriLabel::resetSentenceFont()
 {
     Fontinfo::default_encoding = Default;
     sentence_font.reset();
@@ -1461,13 +1461,13 @@ void PonscripterLabel::resetSentenceFont()
     sentence_font_info.pos.h = screen_height;
 }
 
-void PonscripterLabel::rerender() {
+void ShioriLabel::rerender() {
   SDL_RenderClear(renderer);
   SDL_RenderCopy(renderer, screen_tex, NULL, NULL);
   SDL_RenderPresent(renderer);
 }
 
-void PonscripterLabel::flush(int refresh_mode, SDL_Rect* rect, bool clear_dirty_flag,
+void ShioriLabel::flush(int refresh_mode, SDL_Rect* rect, bool clear_dirty_flag,
       bool direct_flag)
 {
     if (direct_flag) {
@@ -1495,7 +1495,7 @@ void PonscripterLabel::flush(int refresh_mode, SDL_Rect* rect, bool clear_dirty_
 }
 
 
-void PonscripterLabel::flushDirect(SDL_Rect &rect, int refresh_mode, bool updaterect)
+void ShioriLabel::flushDirect(SDL_Rect &rect, int refresh_mode, bool updaterect)
 {
   refreshSurface(accumulation_surface, &rect, refresh_mode);
 
@@ -1508,7 +1508,7 @@ void PonscripterLabel::flushDirect(SDL_Rect &rect, int refresh_mode, bool update
 }
 
 
-void PonscripterLabel::mouseOverCheck(int x, int y)
+void ShioriLabel::mouseOverCheck(int x, int y)
 {
     size_t c = 0;
 
@@ -1624,12 +1624,12 @@ void PonscripterLabel::mouseOverCheck(int x, int y)
 }
 
 
-void PonscripterLabel::executeLabel()
+void ShioriLabel::executeLabel()
 {
     executeLabelTop:
 
     // Protect against infinite loops (these should only occur when
-    // there's a bug in Ponscripter, but as I've just found such a
+    // there's a bug in Shiori, but as I've just found such a
     // bug, it's clearly not unthinkable!)
     //    Mion: a bug like not initializing loops to zero?
     int loops = 0;
@@ -1726,7 +1726,7 @@ void PonscripterLabel::executeLabel()
 }
 
 
-bool PonscripterLabel::check_orphan_control()
+bool ShioriLabel::check_orphan_control()
 {
     // Check whether the current break point follows a logical break
     // in the text.  This is used to prevent short words being
@@ -1744,7 +1744,7 @@ bool PonscripterLabel::check_orphan_control()
         || p == '!' || p == 0xff01 || p == '?' || p == 0xff1f;
 }
 
-int PonscripterLabel::parseLine()
+int ShioriLabel::parseLine()
 {
     int ret = 0;
     pstring cmd = script_h.getStrBuf();
@@ -1764,7 +1764,7 @@ int PonscripterLabel::parseLine()
                  cmd[2] <= '9')
             return dvCommand(cmd);
 
-        PonscrFun f = func_lut.get(cmd);
+        ShioriFun f = func_lut.get(cmd);
         if (f) {
             if (is_orig_cmd && (debug_level > 0)) {
                 printf("** executing builtin command '%s' **\n",
@@ -1926,13 +1926,13 @@ int PonscripterLabel::parseLine()
 
 
 /* ---------------------------------------- */
-void PonscripterLabel::refreshMouseOverButton()
+void ShioriLabel::refreshMouseOverButton()
 {
     current_over_button = 0;
     mouseOverCheck(current_button_state.x, current_button_state.y);
 }
 
-void PonscripterLabel::warpMouse(int x, int y) {
+void ShioriLabel::warpMouse(int x, int y) {
   /* Convert logical to window coordinates
      since SDL_WarpMouse takes real coordinates,
      but practically everything else uses logical */
@@ -1954,7 +1954,7 @@ void PonscripterLabel::warpMouse(int x, int y) {
 }
 
 
-void PonscripterLabel::clearCurrentTextBuffer(int j)
+void ShioriLabel::clearCurrentTextBuffer(int j)
 {
     if (current_read_language == -1 || current_read_language == current_language) {
         sentence_font.clear();
@@ -1971,7 +1971,7 @@ void PonscripterLabel::clearCurrentTextBuffer(int j)
     cached_text_buffer[j] = current_text_buffer[j];
 }
 
-void PonscripterLabel::clearAllCurrentTextBuffers()
+void ShioriLabel::clearAllCurrentTextBuffers()
 {
     int j;
     for (j = 0; j < 2; j++) {
@@ -1980,7 +1980,7 @@ void PonscripterLabel::clearAllCurrentTextBuffers()
 }
 
 
-void PonscripterLabel::shadowTextDisplay(SDL_Surface* surface, SDL_Rect &clip)
+void ShioriLabel::shadowTextDisplay(SDL_Surface* surface, SDL_Rect &clip)
 {
     if (current_font->is_transparent) {
         SDL_Rect rect = { 0, 0, (uint16_t)screen_width, (uint16_t)screen_height };
@@ -2018,7 +2018,7 @@ void PonscripterLabel::shadowTextDisplay(SDL_Surface* surface, SDL_Rect &clip)
 }
 
 
-void PonscripterLabel::newPage(bool next_flag)
+void ShioriLabel::newPage(bool next_flag)
 {
     int j;
     /* ---------------------------------------- */
@@ -2044,8 +2044,8 @@ void PonscripterLabel::newPage(bool next_flag)
 }
 
 
-PonscripterLabel::ButtonElt
-PonscripterLabel::getSelectableSentence(const pstring& buffer, Fontinfo* info,
+ShioriLabel::ButtonElt
+ShioriLabel::getSelectableSentence(const pstring& buffer, Fontinfo* info,
                                         bool flush_flag, bool nofile_flag)
 {
     ButtonElt rv;
@@ -2084,7 +2084,7 @@ PonscripterLabel::getSelectableSentence(const pstring& buffer, Fontinfo* info,
 
 
 void
-PonscripterLabel::decodeExbtnControl(const pstring& ctl_string,
+ShioriLabel::decodeExbtnControl(const pstring& ctl_string,
                                      SDL_Rect* check_src_rect,
                                      SDL_Rect* check_dst_rect)
 {
@@ -2149,7 +2149,7 @@ PonscripterLabel::decodeExbtnControl(const pstring& ctl_string,
 }
 
 
-void PonscripterLabel::loadCursor(int no, const char* str, int x, int y,
+void ShioriLabel::loadCursor(int no, const char* str, int x, int y,
                                  bool abs_flag)
 {
     cursor_info[no].setImageName(str);
@@ -2167,7 +2167,7 @@ void PonscripterLabel::loadCursor(int no, const char* str, int x, int y,
 }
 
 
-void PonscripterLabel::saveAll()
+void ShioriLabel::saveAll()
 {
     saveEnvData();
     saveGlobalData();
@@ -2177,7 +2177,7 @@ void PonscripterLabel::saveAll()
 }
 
 
-void PonscripterLabel::loadEnvData()
+void ShioriLabel::loadEnvData()
 {
     volume_on_flag      = true;
     text_speed_no       = 1;
@@ -2218,7 +2218,7 @@ void PonscripterLabel::loadEnvData()
         if (dummy == 1000)
             dummy = readInt(); //Mion: in case it's an older envdata
         if (dummy == 0x534e4f50) {
-            // Ponscripter extras
+            // Shiori extras
             fullscreen_flags = readInt();
         }
 
@@ -2235,7 +2235,7 @@ void PonscripterLabel::loadEnvData()
 }
 
 
-void PonscripterLabel::saveEnvData()
+void ShioriLabel::saveEnvData()
 {
     file_io_buf_ptr = 0;
     bool output_flag = false;
@@ -2255,7 +2255,7 @@ void PonscripterLabel::saveEnvData()
         writeStr(savedir, output_flag);
         writeInt(1000, output_flag); //automode_time
 
-        // Ponscripter extras
+        // Shiori extras
         writeInt(0x534e4f50, output_flag);
         writeInt(fullscreen_flags, output_flag);
 
@@ -2268,14 +2268,14 @@ void PonscripterLabel::saveEnvData()
 }
 
 
-int PonscripterLabel::refreshMode()
+int ShioriLabel::refreshMode()
 {
     return (display_mode == TEXT_DISPLAY_MODE) ?
            refresh_shadow_text_mode : (int) REFRESH_NORMAL_MODE;
 }
 
 
-void PonscripterLabel::quit()
+void ShioriLabel::quit()
 {
     saveAll();
 
@@ -2293,7 +2293,7 @@ void PonscripterLabel::quit()
 }
 
 
-void PonscripterLabel::disableGetButtonFlag()
+void ShioriLabel::disableGetButtonFlag()
 {
     btndown_flag     = false;
     transbtn_flag = false;
@@ -2310,7 +2310,7 @@ void PonscripterLabel::disableGetButtonFlag()
 }
 
 
-int PonscripterLabel::getNumberFromBuffer(const char** buf)
+int ShioriLabel::getNumberFromBuffer(const char** buf)
 {
     int ret = 0;
     while (**buf >= '0' && **buf <= '9')
@@ -2319,7 +2319,7 @@ int PonscripterLabel::getNumberFromBuffer(const char** buf)
     return ret;
 }
 
-void PonscripterLabel::setAutoMode(bool mode)
+void ShioriLabel::setAutoMode(bool mode)
 {
     if (mode) setSkipMode(false);
     if (mode != automode_flag) {
@@ -2354,7 +2354,7 @@ void PonscripterLabel::setAutoMode(bool mode)
     }
 }
 
-void PonscripterLabel::setSkipMode(bool mode)
+void ShioriLabel::setSkipMode(bool mode)
 {
     skip_flag = mode;
 }

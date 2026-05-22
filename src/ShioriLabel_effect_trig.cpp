@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  * 
- *  PonscripterLabel_effect_trig.cpp - for ONScripter-EN trig-tables,
+ *  ShioriLabel_effect_trig.cpp - for ONScripter-EN trig-tables,
  *    emulation of Takashi Toyama's "whirl.dll" and "trvswave.dll"
  *    NScripter plugin effects
  *
@@ -24,9 +24,9 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 
-void PonscripterLabel::buildSinTable()
+void ShioriLabel::buildSinTable()
 {
     if (!sin_table) {
         //integer-based trig table, scaled up by TRIG_FACTOR
@@ -38,7 +38,7 @@ void PonscripterLabel::buildSinTable()
     }
 }
 
-void PonscripterLabel::buildCosTable()
+void ShioriLabel::buildCosTable()
 {
     if (!cos_table) {
         //integer-based trig table, scaled up by TRIG_FACTOR
@@ -53,7 +53,7 @@ void PonscripterLabel::buildCosTable()
 //
 // Emulation of Takashi Toyama's "trvswave.dll" NScripter plugin effect
 //
-void PonscripterLabel::effectTrvswave( char *params, int duration )
+void ShioriLabel::effectTrvswave( char *params, int duration )
 {
     enum {
         //some constants for trvswave
@@ -96,7 +96,7 @@ void PonscripterLabel::effectTrvswave( char *params, int duration )
 #define CENTER_X (screen_width/2)
 #define CENTER_Y (screen_height/2)
 
-void PonscripterLabel::buildWhirlTable()
+void ShioriLabel::buildWhirlTable()
 {
     if (whirl_table) return;
 
@@ -113,7 +113,7 @@ void PonscripterLabel::buildWhirlTable()
     }
 }
 
-void PonscripterLabel::effectWhirl( char *params, int duration )
+void ShioriLabel::effectWhirl( char *params, int duration )
 {
 //#define OMEGA (M_PI / 64)
 

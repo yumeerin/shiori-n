@@ -1,7 +1,7 @@
 /* -*- C++ -*-
  *
  *  encoding.h -- utility functions for handling Unicode text and
- *                ligatures in Ponscripter
+ *                ligatures in Shiori
  *
  *  Copyright (c) 2007 Peter Jolly
  *

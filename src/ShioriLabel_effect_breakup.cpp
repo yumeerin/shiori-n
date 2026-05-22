@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  * 
- *  PonscripterLabel_effect_breakup.cpp
+ *  ShioriLabel_effect_breakup.cpp
  *    - Emulation of Takashi Toyama's "breakup.dll" NScripter plugin effect
  *
  *  Copyright (c) 2008-2011 "Uncle" Mion Sonozaki
@@ -23,7 +23,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 
 #define BREAKUP_CELLWIDTH 24
 #define BREAKUP_CELLFORMS 16
@@ -45,7 +45,7 @@ int n_cells, tot_frames, last_frame;
 int breakup_mode;
 SDL_Rect breakup_window;  // window of _cells_, not pixels
 
-void PonscripterLabel::buildBreakupCellforms()
+void ShioriLabel::buildBreakupCellforms()
 {
 // build the 32x32 mask for each cellform
     if (breakup_cellforms) return;
@@ -66,7 +66,7 @@ void PonscripterLabel::buildBreakupCellforms()
     }
 }
 
-void PonscripterLabel::buildBreakupMask()
+void ShioriLabel::buildBreakupMask()
 {
 // build the cell area mask for the breakup effect
     int w = BREAKUP_CELLWIDTH * BREAKUP_MAX_CELL_X;
@@ -148,7 +148,7 @@ void PonscripterLabel::buildBreakupMask()
     SDL_UnlockSurface( effect_src_surface );
 }
 
-void PonscripterLabel::initBreakup( char *params )
+void ShioriLabel::initBreakup( char *params )
 {
     buildBreakupCellforms();
 
@@ -213,7 +213,7 @@ void PonscripterLabel::initBreakup( char *params )
     }
 }
 
-void PonscripterLabel::effectBreakup( char *params, int duration )
+void ShioriLabel::effectBreakup( char *params, int duration )
 {
     int x_dir = -1;
     int y_dir = -1;

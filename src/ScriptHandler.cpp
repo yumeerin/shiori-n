@@ -24,7 +24,7 @@
  */
 
 #include "ScriptHandler.h"
-#include "PonscripterMessage.h"
+#include "ShioriMessage.h"
 #include "Fontinfo.h"
 #include <ctype.h>
 #include <sys/stat.h>
@@ -70,7 +70,7 @@ ScriptHandler::ScriptHandler()
     screen_size = SCREEN_SIZE_640x480;
     global_variable_border = 200;
 
-    // Prefer Ponscripter files over NScripter files, and prefer
+    // Prefer Shiori files over NScripter files, and prefer
     // unencoded files over encoded files.
     script_filenames.push_back(ScriptFilename("0.utf",        0, UTF8));
     script_filenames.push_back(ScriptFilename("00.utf",       0, UTF8));
@@ -888,22 +888,22 @@ int ScriptHandler::readScript(DirPaths *path, const char* prefer_name)
     }
     
     if (fp == NULL) {
-        PonscripterMessage(Error, "Missing Game Data",
+        ShioriMessage(Error, "Missing Game Data",
             "No game script found. This application must be run "
             "from a directory containing NScripter, ONScripter, "
-            "or Ponscripter game data.");
+            "or Shiori game data.");
         return -1;
     }
 
     if (enc == UTF8) {
         file_encoding = new UTF8Encoding;
         utf_encoding = file_encoding;
-        is_ponscripter = true;
+        is_shiori = true;
     }
     else {
         file_encoding = new CP932Encoding;
         utf_encoding = new UTF8Encoding;
-        is_ponscripter = false;
+        is_shiori = false;
     }
     
     fseek(fp, 0, SEEK_END);

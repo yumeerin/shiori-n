@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel_text.cpp - Text parser of Ponscripter
+ *  ShioriLabel_text.cpp - Text parser of Shiori
  *
  *  Copyright (c) 2001-2007 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,10 +23,10 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 
 Glyph
-PonscripterLabel::renderGlyph(Font* font, Uint16 text, int size,
+ShioriLabel::renderGlyph(Font* font, Uint16 text, int size,
                               float x_fractional_part)
 {
     font->set_size(size);
@@ -41,7 +41,7 @@ PonscripterLabel::renderGlyph(Font* font, Uint16 text, int size,
 
 
 void
-PonscripterLabel::drawGlyph(SDL_Surface* dst_surface, Fontinfo* info,
+ShioriLabel::drawGlyph(SDL_Surface* dst_surface, Fontinfo* info,
         SDL_Color &color, unsigned short unicode, float x, int y,
     bool shadow_flag, AnimationInfo* cache_info, SDL_Rect* clip,
     SDL_Rect &dst_rect)
@@ -98,7 +98,7 @@ PonscripterLabel::drawGlyph(SDL_Surface* dst_surface, Fontinfo* info,
 // Returns character bytes.
 // This is where we process ligatures for display text!
 int
-PonscripterLabel::drawChar(const char* text, Fontinfo* info, bool flush_flag,
+ShioriLabel::drawChar(const char* text, Fontinfo* info, bool flush_flag,
         bool lookback_flag, SDL_Surface* surface, AnimationInfo* cache_info,
     SDL_Rect* clip)
 {
@@ -168,7 +168,7 @@ PonscripterLabel::drawChar(const char* text, Fontinfo* info, bool flush_flag,
 
 
 void
-PonscripterLabel::drawString(const char* str, rgb_t color, Fontinfo* info,
+ShioriLabel::drawString(const char* str, rgb_t color, Fontinfo* info,
                              bool flush_flag, SDL_Surface* surface,
                              SDL_Rect* rect, AnimationInfo* cache_info,
                              bool skip_whitespace_flag)
@@ -221,7 +221,7 @@ PonscripterLabel::drawString(const char* str, rgb_t color, Fontinfo* info,
 }
 
 
-void PonscripterLabel::restoreTextBuffer()
+void ShioriLabel::restoreTextBuffer()
 {
     text_info.fill(0, 0, 0, 0);
 
@@ -246,7 +246,7 @@ void PonscripterLabel::restoreTextBuffer()
 }
 
 
-int PonscripterLabel::enterTextDisplayMode(bool text_flag)
+int ShioriLabel::enterTextDisplayMode(bool text_flag)
 {
     if (line_enter_status <= 1 && saveon_flag && internal_saveon_flag &&
     text_flag && current_read_language == 1) {
@@ -277,7 +277,7 @@ int PonscripterLabel::enterTextDisplayMode(bool text_flag)
 }
 
 
-int PonscripterLabel::leaveTextDisplayMode(bool force_leave_flag)
+int ShioriLabel::leaveTextDisplayMode(bool force_leave_flag)
 {
     if (!force_leave_flag && (skip_flag || draw_one_page_flag || ctrl_pressed_status)) {
         did_leavetext = true;
@@ -310,7 +310,7 @@ int PonscripterLabel::leaveTextDisplayMode(bool force_leave_flag)
 }
 
 
-void PonscripterLabel::doClickEnd()
+void ShioriLabel::doClickEnd()
 {
     skip_to_wait = 0;
 
@@ -335,7 +335,7 @@ void PonscripterLabel::doClickEnd()
 }
 
 
-int PonscripterLabel::clickWait(bool display_char)
+int ShioriLabel::clickWait(bool display_char)
 {
     const char* c = script_h.getStrBuf(string_buffer_offset);
 
@@ -392,7 +392,7 @@ int PonscripterLabel::clickWait(bool display_char)
 }
 
 
-int PonscripterLabel::clickNewPage(bool display_char)
+int ShioriLabel::clickNewPage(bool display_char)
 {
     const char* c = script_h.getStrBuf(string_buffer_offset);
 
@@ -437,7 +437,7 @@ int PonscripterLabel::clickNewPage(bool display_char)
 }
 
 
-int PonscripterLabel::textCommand()
+int ShioriLabel::textCommand()
 {
     if (pretextgosub_label
         && (line_enter_status == 0
@@ -462,7 +462,7 @@ int PonscripterLabel::textCommand()
 }
 
 
-int PonscripterLabel::processText()
+int ShioriLabel::processText()
 {
     if (string_buffer_restore > 0) {
         string_buffer_offset = string_buffer_restore;

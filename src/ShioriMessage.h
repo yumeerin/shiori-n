@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterMessage.h - User message handling
+ *  ShioriMessage.h - User message handling
  *
  *  Copyright (c) 2001-2008 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,8 +23,8 @@
  *  02111-1307 USA
  */
 
-#ifndef __PONSCRIPTER_MESSAGE_H__
-#define __PONSCRIPTER_MESSAGE_H__
+#ifndef __SHIORI_MESSAGE_H__
+#define __SHIORI_MESSAGE_H__
 
 #define SEVERITY_BUFFER_LENGTH (20)
 #include <SDL.h>
@@ -35,8 +35,8 @@ enum MessageType {
     Note,
 };
 
-int PonscripterMessage(MessageType message_type, const char* title, const char* message, SDL_Window *screen = NULL);
+int ShioriMessage(MessageType message_type, const char* title, const char* message, SDL_Window *screen = NULL);
 //private:
-int PonscripterFallbackMessage(MessageType message_type, const char* title, const char* message);
+int ShioriFallbackMessage(MessageType message_type, const char* title, const char* message);
 
-#endif // __PONSCRIPTER_MESSAGE_H__
+#endif // __SHIORI_MESSAGE_H__

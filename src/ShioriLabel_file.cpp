@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel_file.cpp - FILE I/O of Ponscripter
+ *  ShioriLabel_file.cpp - FILE I/O of Shiori
  *
  *  Copyright (c) 2001-2007 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,7 +23,7 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 
 #if defined (LINUX) || defined (MACOSX)
 #include <sys/types.h>
@@ -46,7 +46,7 @@ extern "C" void c2pstrcpy(Str255 dst, const char* src);
 
 #define READ_LENGTH 4096
 
-void PonscripterLabel::searchSaveFile(SaveFileInfo &save_file_info, int no)
+void ShioriLabel::searchSaveFile(SaveFileInfo &save_file_info, int no)
 {
     save_file_info.no = no;
 
@@ -130,7 +130,7 @@ void PonscripterLabel::searchSaveFile(SaveFileInfo &save_file_info, int no)
 }
 
 
-int PonscripterLabel::loadSaveFile(int no)
+int ShioriLabel::loadSaveFile(int no)
 {
     pstring filename;
     filename.format("save%d.dat", no);
@@ -148,7 +148,7 @@ int PonscripterLabel::loadSaveFile(int no)
     if (c == 'O' || c == 'P') {
 	int d = readChar();
 	if (d == 'N' && readChar() == 'S')
-	    file_type = c == 'O' ? ONScripter : Ponscripter;
+	    file_type = c == 'O' ? ONScripter : Shiori;
     }
     
     if (file_type == NScripter) { // if not ONS save file
@@ -183,7 +183,7 @@ int PonscripterLabel::loadSaveFile(int no)
 
     if (file_version > SAVEFILE_VERSION_MAJOR * 100 + SAVEFILE_VERSION_MINOR) {
         fprintf(stderr, "Save file is newer than %d.%d, please use the "
-		"latest Ponscripter.\n",
+		"latest Shiori.\n",
 		SAVEFILE_VERSION_MAJOR, SAVEFILE_VERSION_MINOR);
         return -1;
     }
@@ -197,7 +197,7 @@ int PonscripterLabel::loadSaveFile(int no)
 }
 
 
-void PonscripterLabel::saveMagicNumber(bool output_flag)
+void ShioriLabel::saveMagicNumber(bool output_flag)
 {
     writeChar('P', output_flag);
     writeChar('N', output_flag);
@@ -207,7 +207,7 @@ void PonscripterLabel::saveMagicNumber(bool output_flag)
 }
 
 
-int PonscripterLabel::saveSaveFile(int no, const char* savestr)
+int ShioriLabel::saveSaveFile(int no, const char* savestr)
 {
     // make save data structure on memory
     if (no < 0 || (saveon_flag && internal_saveon_flag)) {

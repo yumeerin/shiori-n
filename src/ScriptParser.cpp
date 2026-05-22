@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  ScriptParser.cpp - Define block parser of Ponscripter
+ *  ScriptParser.cpp - Define block parser of Shiori
  *
  *  Copyright (c) 2001-2007 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -33,7 +33,7 @@ namespace Carbon {
 }
 #endif
 
-#define VERSION_STR1 "Ponscripter"
+#define VERSION_STR1 "Shiori"
 #define VERSION_STR2 "Copyright (C) 2001-2006 Studio O.G.A., 2006-2007 Haeleth."
 
 #define DEFAULT_SAVE_MENU_NAME "Save"
@@ -398,7 +398,7 @@ int ScriptParser::open(const char* preferred_script)
 #ifdef MACOSX
 void ScriptParser::checkBundled()
 {
-    // check whether this ponscripter is bundled, and if so find the
+    // check whether this Shiori is bundled, and if so find the
     // resources and app directories
     using namespace Carbon;
     CFURLRef url;

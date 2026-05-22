@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel_effect.cpp - Effect executer of Ponscripter
+ *  ShioriLabel_effect.cpp - Effect executer of Shiori
  *
  *  Copyright (c) 2001-2009 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,7 +23,7 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 
 #define EFFECT_STRIPE_WIDTH (16 * screen_ratio1 / screen_ratio2)
 #define EFFECT_STRIPE_CURTAIN_WIDTH (24 * screen_ratio1 / screen_ratio2)
@@ -31,7 +31,7 @@
 
 static char *dll=NULL, *params=NULL; //for dll-based effects
 
-int PonscripterLabel::setEffect(Effect& effect, bool generate_effect_dst, bool update_backup_surface)
+int ShioriLabel::setEffect(Effect& effect, bool generate_effect_dst, bool update_backup_surface)
 {
     if (effect.effect == 0) return RET_CONTINUE;
 
@@ -110,7 +110,7 @@ int PonscripterLabel::setEffect(Effect& effect, bool generate_effect_dst, bool u
 }
 
 
-int PonscripterLabel::doEffect(Effect& effect, bool clear_dirty_region)
+int ShioriLabel::doEffect(Effect& effect, bool clear_dirty_region)
 {
     bool first_time = (effect_counter == 0);
 
@@ -429,7 +429,7 @@ int PonscripterLabel::doEffect(Effect& effect, bool clear_dirty_region)
 }
 
 
-void PonscripterLabel::drawEffect(SDL_Rect* dst_rect, SDL_Rect* src_rect, SDL_Surface* surface)
+void ShioriLabel::drawEffect(SDL_Rect* dst_rect, SDL_Rect* src_rect, SDL_Surface* surface)
 {
     SDL_Rect clipped_rect;
     if (AnimationInfo::doClipping(dst_rect, &dirty_rect.bounding_box, &clipped_rect)) return;
@@ -445,7 +445,7 @@ void PonscripterLabel::drawEffect(SDL_Rect* dst_rect, SDL_Rect* src_rect, SDL_Su
 }
 
 
-void PonscripterLabel::generateMosaic(SDL_Surface* src_surface, int level)
+void ShioriLabel::generateMosaic(SDL_Surface* src_surface, int level)
 {
     int i, j, ii, jj;
     int width = 160;

@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  Fontinfo.h - Font information storage class of Ponscripter
+ *  Fontinfo.h - Font information storage class of Shiori
  *
  *  Copyright (c) 2001-2005 Ogapee (original ONScripter, of which this
  *  is a fork).

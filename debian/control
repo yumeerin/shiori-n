@@ -1,7 +1,7 @@
-Source: ponscripter
+Source: shiori 
 Section: games
 Priority: optional
-Maintainer: Peter Jolly <haeleth@haeleth.net>
+Maintainer: Yash <yurumee@proton.me>
 Build-Depends: debhelper (>= 7)
 Standards-Version: 3.6.2
 
@@ -9,6 +9,6 @@ Package: ponscripter
 Architecture: any
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: NScripter-like novel-game interpreter with Unicode support
- Ponscripter is an interpreter for visual-novel-type games, derived
+Shiori is an interpreter for visual-novel-type games, derived
  from ONScripter but modified significantly to improve support for
  Western languages (at the cost of diminished support for Japanese).

@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  ScriptParser_command.cpp - Define command executer of Ponscripter
+ *  ScriptParser_command.cpp - Define command executer of Shiori
  *
  *  Copyright (c) 2001-2007 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -373,10 +373,10 @@ int ScriptParser::numaliasCommand(const pstring& cmd)
     pstring label = script_h.readStrValue();
     label.tolower();
     int no = script_h.readIntValue();
-    // Extension: allow detection of Ponscripter in compatibility mode
-    // by allowing the user to define an alias "ponscripter, 0" that
-    // Ponscripter actually defines as 1.
-    if (!script_h.is_ponscripter && label == "ponscripter") no = 1;
+    // Extension: allow detection of Shiori in compatibility mode
+    // by allowing the user to define an alias "shiori, 0" that
+    // Shiori actually defines as 1.
+    if (!script_h.is_shiori && label == "shiori") no = 1;
     script_h.addNumAlias(label, no);
     return RET_CONTINUE;
 }
@@ -481,7 +481,7 @@ int ScriptParser::movCommand(const pstring& cmd)
               : atoi(((const char*) cmd) + 3);
 
     // ONScripter has been a bit permissive in the past.
-    if (!script_h.is_ponscripter && e.is_array() &&
+    if (!script_h.is_shiori && e.is_array() &&
         (cmd != "movl") && (cmd != "movz") && (cmd != "mov"))
         errorAndCont("NScripter does not permit `" + cmd + " " +
                      e.debug_string() + ", ...': for portability, use "
@@ -716,7 +716,7 @@ int ScriptParser::itoaCommand(const pstring& cmd)
     Expression e = script_h.readStrExpr();
     pstring v;
     v.format("%d", script_h.readIntValue());
-    if (!script_h.is_ponscripter && cmd == "itoa2") {
+    if (!script_h.is_shiori && cmd == "itoa2") {
 	// Handle zenkaku output in compatibility mode
 	e.mutate("");
 	for (pstrIter it(v); it.get() >= 0; it.next())
@@ -1202,7 +1202,7 @@ int ScriptParser::arcCommand(const pstring& cmd)
 int ScriptParser::addCommand(const pstring& cmd)
 {
     Expression e = script_h.readExpr();
-    if (!script_h.is_ponscripter && e.is_array())
+    if (!script_h.is_shiori && e.is_array())
 	errorAndCont("NScripter does not permit `add ?array, val': for "
 		     "portability, use `mov ?array,?array + val' instead.");
 

@@ -34,10 +34,10 @@
     <productnumber><?I version-number ?></productnumber>
   </info>
 
-  <?I ponscripter.7.xml   ?>
-  <?I ponscr.6.xml        ?>
-  <?I ponscr-syntax.7.xml ?>
-  <?I ponscr-ext.7.xml    ?>
+  <?I shiori.7.xml   ?>
+  <?I shioriscr.6.xml        ?>
+  <?I shioriscr-syntax.7.xml ?>
+  <?I shioriscr-ext.7.xml    ?>
 
   <?L <!-- ?><refentry><refnamediv><refname/><refpurpose/></refnamediv>
   <refsect1><title/><para/></refsect1></refentry><?L --> ?>

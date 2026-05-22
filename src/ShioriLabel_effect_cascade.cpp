@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  * 
- *  PonscripterLabel_effect_cascade.cpp
+ *  ShioriLabel_effect_cascade.cpp
  *    - Emulation of Takashi Toyama's "cascade.dll" NScripter plugin effect
  *
  *  Copyright (c) 2008-2011 "Uncle" Mion Sonozaki
@@ -23,9 +23,9 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 
-void PonscripterLabel::effectCascade( char *params, int duration )
+void ShioriLabel::effectCascade( char *params, int duration )
 {
     enum {
         //some constants for cascade

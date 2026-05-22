@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterMessage.cpp - User message handling
+ *  ShioriMessage.cpp - User message handling
  *
  *  Copyright (c) 2001-2008 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,8 +23,8 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h" //DEFAULT_WM_TITLE
-#include "PonscripterMessage.h"
+#include "ShioriLabel.h" //DEFAULT_WM_TITLE
+#include "ShioriMessage.h"
 
 // system-specific libraries
 #ifdef MACOSX
@@ -55,12 +55,12 @@
 
 // Displays a message to the user
 // If possible, interrupts game (as it means something REALLY BAD happened)
-int PonscripterMessage(MessageType message_type, const char* title, const char* message, SDL_Window *screen)
+int ShioriMessage(MessageType message_type, const char* title, const char* message, SDL_Window *screen)
 {
 
     // General
     // Print it to stderr regardless; good to have handy terminal output
-    PonscripterFallbackMessage(message_type, title, message);
+    ShioriFallbackMessage(message_type, title, message);
 
     // OS X
     // Pops up an OS X Cocoa message box
@@ -155,7 +155,7 @@ int PonscripterMessage(MessageType message_type, const char* title, const char* 
 
 // A fallback that should work on any OS; used if any of the
 // preferably methods aren't available
-int PonscripterFallbackMessage(MessageType message_type, const char* title, const char *message) {
+int ShioriFallbackMessage(MessageType message_type, const char* title, const char *message) {
     char *severity = new char[SEVERITY_BUFFER_LENGTH];
     FILE *stream = stderr;
 

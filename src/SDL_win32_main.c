@@ -286,7 +286,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
             HRESULT res = gfp(0, CSIDL_APPDATA, 0, 0, hpath); //now user-based
 
             if (res != S_FALSE && res != E_FAIL && res != E_INVALIDARG) {
-                sprintf(outputPath, "%s\\Ponscripter\\", hpath);
+                sprintf(outputPath, "%s\\Shiori\\", hpath);
                 CreateDirectory(outputPath, 0);
                 pathlen = strlen(outputPath);
             }

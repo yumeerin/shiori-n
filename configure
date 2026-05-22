@@ -272,7 +272,7 @@ then
     internalise_SDL
 fi
 
-echo "Configuring Ponscripter $VERSION"
+echo "Configuring Shiori $VERSION"
 
 # Platform
 $echo_n "Checking platform type... ${nobr}"
@@ -889,7 +889,7 @@ cat > $MAKEFILE <<_EOF
 # run again.  If you wish to customise it, please be sure to give your
 # version a different filename.
 #
-# Makefile for Ponscripter
+# Makefile for Shiori
 
 WIN32=$W32
 OBJSUFFIX=$OBJ
@@ -914,7 +914,7 @@ export GNUMAKE := $MAKE
 export AR      := $AR
 export RANLIB  := $RANLIB
 
-# Ponscripter variables
+# Shiori variables
 PSCFLAGS = $CFLAGSEXTRA
 INCS = $OURINCS \$(shell \$(SHELLENV) \$(SDL_CONFIG) --cflags)      \\
                 \$(shell \$(SHELLENV) $SMPEG_CONFIG --cflags)    \\
@@ -1100,7 +1100,7 @@ else
   include Makefile.game
 endif
 include Makefile.extlibs
-include Makefile.ponscripter
+include Makefile.shiori
 
 TARGET ?= ponscr\$(EXESUFFIX)
 
@@ -1169,7 +1169,7 @@ cat > Makefile <<_EOF
 # run again.  If you wish to customise it, please be sure to give your
 # version a different filename.
 #
-# Top-level makefile for Ponscripter
+# Top-level makefile for Shiori
 
 .PHONY: all install install-bin uninstall pclean clean \\
         distclean distdir dist deb rpm $MAKEDOC clean-doc
@@ -1217,15 +1217,15 @@ clean:
 distclean: $CLEANDOC
 	\$(MAKE) -C $SRC distclean
 	\$(RM) Makefile
-	\$(RM) ponscripter.spec
+	\$(RM) shiori.spec
 	\$(RM) \$(DIST)*.tar.bz2
 	\$(RM) -r \$(DIST)
 
-ponscripter.spec: ponscripter.spec.in
+shiori.spec: shiori.spec.in
 	sed 's/^Version:/& $VERSION/' \$< > \$@
 
-DIST = ponscripter-$VERSION
-distdir: ponscripter.spec $MAKEMAN
+DIST = shiori-$VERSION
+distdir: shiori.spec $MAKEMAN
 	\$(RM) \$(DIST)*.tar.bz2
 	\$(RM) -r \$(DIST)
 	svn export --depth files . \$(DIST)
@@ -1233,7 +1233,7 @@ distdir: ponscripter.spec $MAKEMAN
 	for t in $SRC/resources misc doc util test debian; do \\
 	    svn export \$\$t \$(DIST)/\$\$t;                 \\
 	done
-	cp ponscripter.spec \$(DIST)
+	cp shiori.spec \$(DIST)
 	cp doc/*.[0-9] \$(DIST)/doc
 
 dist: distdir
@@ -1296,7 +1296,7 @@ $CLEANDOC:
 
 doc: $DEFAULTDOC
 
-man:  doc/ponscripter.7
+man:  doc/shiori.7
 html: doc/index.html
 
 doc/manual-%.xml: doc/manual.xml.in doc/%.entities doc/ponscr*.xml doc/version-number
@@ -1322,4 +1322,4 @@ _EOF
 fi
 
 echo "done"
-echo "Now run \"$MAKE\" to build Ponscripter."
+echo "Now run \"$MAKE\" to build Shiori."

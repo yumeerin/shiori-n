@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel_image.cpp - Image processing in Ponscripter
+ *  ShioriLabel_image.cpp - Image processing in Shiori
  *
  *  Copyright (c) 2001-2008 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,12 +23,12 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 #include <cstdio>
 
 #include "graphics_common.h"
 
-SDL_Surface *PonscripterLabel::loadImage(const pstring& filename,
+SDL_Surface *ShioriLabel::loadImage(const pstring& filename,
                                         bool *has_alpha, bool twox)
 {
     if (!filename) return NULL;
@@ -122,7 +122,7 @@ SDL_Surface *PonscripterLabel::loadImage(const pstring& filename,
     
 }
 
-SDL_Surface *PonscripterLabel::createRectangleSurface(const pstring& filename)
+SDL_Surface *ShioriLabel::createRectangleSurface(const pstring& filename)
 {
     int c=1, w=0, h=0;
     while (filename[c] != 0x0a && filename[c] != 0x00){
@@ -176,7 +176,7 @@ SDL_Surface *PonscripterLabel::createRectangleSurface(const pstring& filename)
     return tmp;
 }
 
-SDL_Surface *PonscripterLabel::createSurfaceFromFile(const pstring& filename,
+SDL_Surface *ShioriLabel::createSurfaceFromFile(const pstring& filename,
                                                     int *location)
 {
     pstring alt_filename= "";
@@ -239,7 +239,7 @@ SDL_Surface *PonscripterLabel::createSurfaceFromFile(const pstring& filename,
 // dst: accumulation_surface
 // src1: effect_src_surface
 // src2: effect_dst_surface
-void PonscripterLabel::alphaMaskBlend(SDL_Surface *mask_surface, int trans_mode,
+void ShioriLabel::alphaMaskBlend(SDL_Surface *mask_surface, int trans_mode,
                                       Uint32 mask_value, SDL_Rect *clip,
                                       SDL_Surface *src1, SDL_Surface *src2,
                                       SDL_Surface *dst)
@@ -327,7 +327,7 @@ void PonscripterLabel::alphaMaskBlend(SDL_Surface *mask_surface, int trans_mode,
 // alphaBlendText
 // dst: ONSBuf surface (accumulation_surface)
 // txt: 8bit surface (TTF_RenderGlyph_Shaded())
-void PonscripterLabel::alphaBlendText(SDL_Surface *dst_surface, SDL_Rect dst_rect,
+void ShioriLabel::alphaBlendText(SDL_Surface *dst_surface, SDL_Rect dst_rect,
                                       SDL_Surface *txt_surface, SDL_Color &color,
                                       SDL_Rect *clip, bool rotate_flag)
 {
@@ -396,7 +396,7 @@ void PonscripterLabel::alphaBlendText(SDL_Surface *dst_surface, SDL_Rect dst_rec
 }
 
 
-void PonscripterLabel::makeNegaSurface( SDL_Surface *surface, SDL_Rect &clip )
+void ShioriLabel::makeNegaSurface( SDL_Surface *surface, SDL_Rect &clip )
 {
     SDL_LockSurface( surface );
     ONSBuf *buf = (ONSBuf *)surface->pixels + clip.y * surface->w + clip.x;
@@ -412,7 +412,7 @@ void PonscripterLabel::makeNegaSurface( SDL_Surface *surface, SDL_Rect &clip )
 }
 
 
-void PonscripterLabel::makeMonochromeSurface( SDL_Surface *surface, SDL_Rect &clip )
+void ShioriLabel::makeMonochromeSurface( SDL_Surface *surface, SDL_Rect &clip )
 {
     SDL_LockSurface( surface );
     ONSBuf *buffer = (ONSBuf *)surface->pixels + clip.y * surface->w + clip.x;
@@ -432,7 +432,7 @@ void PonscripterLabel::makeMonochromeSurface( SDL_Surface *surface, SDL_Rect &cl
 
 
 void
-PonscripterLabel::refreshSurface(SDL_Surface* surface, SDL_Rect* clip_src,
+ShioriLabel::refreshSurface(SDL_Surface* surface, SDL_Rect* clip_src,
 				 int refresh_mode)
 {
     if (refresh_mode == REFRESH_NONE_MODE) return;
@@ -532,7 +532,7 @@ PonscripterLabel::refreshSurface(SDL_Surface* surface, SDL_Rect* clip_src,
 }
 
 
-void PonscripterLabel::refreshSprite(int sprite_no, bool active_flag,
+void ShioriLabel::refreshSprite(int sprite_no, bool active_flag,
                                      int cell_no, SDL_Rect* check_src_rect,
                                      SDL_Rect* check_dst_rect)
 {
@@ -551,7 +551,7 @@ void PonscripterLabel::refreshSprite(int sprite_no, bool active_flag,
 }
 
 
-void PonscripterLabel::createBackground()
+void ShioriLabel::createBackground()
 {
     bg_info.num_of_cells = 1;
     bg_info.trans_mode = AnimationInfo::TRANS_COPY;

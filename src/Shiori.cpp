@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  Ponscripter.cpp -- main function of Ponscripter
+ * Shiori.cpp -- main function of Shiori
  *
  *  Copyright (c) 2001-2006 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,7 +23,7 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 #include <sys/stat.h>
 #include "version.h"
 
@@ -36,13 +36,13 @@ static void optionHelp()
 //Mion: a number of these options are stubs; will be commented-out
 // in this function until they are actually implemented
 #ifdef PNS_CODENAME
-    printf("Ponscripter version %s '%s' (NScr %d.%02d)\n",
+    printf("Shiori version %s '%s' (NScr %d.%02d)\n",
         PNS_VERSION, PNS_CODENAME, NSC_VERSION / 100, NSC_VERSION % 100);
 #else
-    printf("Ponscripter version %s (NScr %d.%02d)\n",
+    printf("Shiori version %s (NScr %d.%02d)\n",
         PNS_VERSION, NSC_VERSION / 100, NSC_VERSION % 100);
 #endif
-    printf("Usage: ponscripter [option ...] [root path]\n");
+    printf("Usage: shiori [option ...] [root path]\n");
     printf("      --registry file\tset a registry file\n");
     printf("      --dll file\tset a dll file\n");
     printf("  -r, --root path\tset the root path to the archives\n");
@@ -94,10 +94,10 @@ static void optionHelp()
 static void optionVersion()
 {
 #ifdef PNS_CODENAME
-    printf("Ponscripter version %s '%s' (NScr %d.%02d)\n",
+    printf("Shiori version %s '%s' (NScr %d.%02d)\n",
         PNS_VERSION, PNS_CODENAME, NSC_VERSION / 100, NSC_VERSION % 100);
 #else
-    printf("Ponscripter version %s (NScr %d.%02d)\n",
+    printf("Shiori version %s (NScr %d.%02d)\n",
         PNS_VERSION, NSC_VERSION / 100, NSC_VERSION % 100);
 #endif
     printf("Based on ONScripter by Ogapee <ogapee@aqua.dti2.ne.jp>\n");
@@ -108,7 +108,7 @@ static void optionVersion()
 }
 
 
-static void parseOptions(int argc, char **argv, PonscripterLabel &ons,
+static void parseOptions(int argc, char **argv, ShioriLabel &ons,
                          pstring &preferred_script, bool &hasArchivePath)
 {
     argv++;
@@ -267,7 +267,7 @@ static void parseOptions(int argc, char **argv, PonscripterLabel &ons,
     }
 }
 
-static bool parseOptionFile(const char *filename, PonscripterLabel &ons,
+static bool parseOptionFile(const char *filename, ShioriLabel &ons,
                             pstring &preferred_script, bool &hasArchivePath)
 {
     int argc;
@@ -360,7 +360,7 @@ extern "C" int main(int argc, char** argv)
 int main(int argc, char** argv)
 #endif
 {
-    PonscripterLabel ons;
+    ShioriLabel ons;
     pstring preferred_script = "";
 
 #ifdef PSP
@@ -396,7 +396,7 @@ int main(int argc, char** argv)
     parseOptions(argc, argv, ons, preferred_script, hasArchivePath);
 
     // ----------------------------------------
-    // Run Ponscripter
+    // Run Shiori
 
     const char* s = preferred_script;
     if (*s == 0) s = NULL;

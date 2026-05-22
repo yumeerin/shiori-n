@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel.h - Execution block parser of Ponscripter
+ *  ShioriLabel.h - Execution block parser of Shiori
  *
  *  Copyright (c) 2001-2008 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,8 +23,8 @@
  *  02111-1307 USA
  */
 
-#ifndef __PONSCRIPTER_LABEL_H__
-#define __PONSCRIPTER_LABEL_H__
+#ifndef __SHIORI_LABEL_H__
+#define __SHIORI_LABEL_H__
 
 #include "DirPaths.h"
 #include "ScriptParser.h"
@@ -58,9 +58,9 @@
 #define MIX_LOOPBGM_CHANNEL1 (ONS_MIX_CHANNELS+4)
 
 #ifndef DEFAULT_WM_TITLE
-#define DEFAULT_WM_TITLE "Ponscripter"
+#define DEFAULT_WM_TITLE "Shiori"
 #endif
-#define DEFAULT_WM_ICON "Ponscripter"
+#define DEFAULT_WM_ICON "Shiori"
 
 #define NUM_GLYPH_CACHE 30
 
@@ -92,12 +92,12 @@ public:
     int alpha(int no) { return subs[no].alpha; }
 };
 
-class PonscripterLabel : public ScriptParser {
+class ShioriLabel : public ScriptParser {
 public:
     typedef AnimationInfo::ONSBuf ONSBuf;
 
-    PonscripterLabel();
-    ~PonscripterLabel();
+    ShioriLabel();
+    ~ShioriLabel();
 
     // ----------------------------------------
     // start-up options
@@ -877,7 +877,7 @@ private:
 
     /* ---------------------------------------- */
     /* File I/O */
-    enum SaveFileType { NScripter, ONScripter, Ponscripter };
+    enum SaveFileType { NScripter, ONScripter, Shiori };
 
     void searchSaveFile(SaveFileInfo &info, int no);
     int  loadSaveFile(int no);
@@ -956,4 +956,4 @@ private:
 	} locale;
 };
 
-#endif // __PONSCRIPTER_LABEL_H__
+#endif // __SHORI_LABEL_H__

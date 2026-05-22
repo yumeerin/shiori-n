@@ -31,7 +31,7 @@
 #include <avm_output.h>
 #include <stdlib.h>
 #include <string.h>
-#include "PonscripterUserEvents.h"
+#include "ShioriUserEvents.h"
 
 #define DEFAULT_AUDIOBUF 4096
 #define AVI_FINISH_EVENT 12345

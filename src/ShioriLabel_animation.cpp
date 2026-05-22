@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  Ponscripter_animation.cpp - Methods to manipulate AnimationInfo
+ *  Shiori_animation.cpp - Methods to manipulate AnimationInfo
  *
  *  Copyright (c) 2001-2008 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,9 +23,9 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 
-int PonscripterLabel::proceedAnimation()
+int ShioriLabel::proceedAnimation()
 {
     int i, minimum_duration = -1;
     AnimationInfo* anim;
@@ -80,7 +80,7 @@ int PonscripterLabel::proceedAnimation()
 }
 
 
-int PonscripterLabel::estimateNextDuration(AnimationInfo* anim, SDL_Rect &rect, int minimum)
+int ShioriLabel::estimateNextDuration(AnimationInfo* anim, SDL_Rect &rect, int minimum)
 {
     if (anim->remaining_time == 0) {
         if (minimum == -1
@@ -100,7 +100,7 @@ int PonscripterLabel::estimateNextDuration(AnimationInfo* anim, SDL_Rect &rect, 
 }
 
 
-void PonscripterLabel::resetRemainingTime(int t)
+void ShioriLabel::resetRemainingTime(int t)
 {
     int i;
     AnimationInfo* anim;
@@ -191,7 +191,7 @@ void downscale4x(SDL_Surface* src, SDL_Rect* srcpos, SDL_Surface* dst, SDL_Rect*
 }
 
 
-void PonscripterLabel::setupAnimationInfo(AnimationInfo* anim, Fontinfo* info)
+void ShioriLabel::setupAnimationInfo(AnimationInfo* anim, Fontinfo* info)
 {
     anim->deleteImage();
     anim->abs_flag = true;
@@ -199,7 +199,7 @@ void PonscripterLabel::setupAnimationInfo(AnimationInfo* anim, Fontinfo* info)
     if (anim->trans_mode == AnimationInfo::TRANS_STRING) {
         Fontinfo f_info = info ? *info : sentence_font;
 
-        // parse ponscripter tags if a standard text string,
+        // parse Shiori tags if a standard text string,
         //otherwise don't; logsp strings are "predigested", as it were,
         //so they shouldn't be parsed for tags again
         // ...really should do some more explicit indication
@@ -268,7 +268,7 @@ void PonscripterLabel::setupAnimationInfo(AnimationInfo* anim, Fontinfo* info)
 }
 
 
-void PonscripterLabel::parseTaggedString(AnimationInfo* anim, bool is_mask)
+void ShioriLabel::parseTaggedString(AnimationInfo* anim, bool is_mask)
 {
     if (!anim->image_name) return;
 
@@ -385,7 +385,7 @@ void PonscripterLabel::parseTaggedString(AnimationInfo* anim, bool is_mask)
         anim->num_of_cells = getNumberFromBuffer((const char**) &buffer);
         buffer++;
         if (anim->num_of_cells == 0) {
-            fprintf(stderr, "PonscripterLabel::parseTaggedString  The number of cells is 0\n");
+            fprintf(stderr, "ShioriLabel::parseTaggedString  The number of cells is 0\n");
             return;
         }
 
@@ -424,7 +424,7 @@ void PonscripterLabel::parseTaggedString(AnimationInfo* anim, bool is_mask)
 }
 
 
-void PonscripterLabel::drawTaggedSurface(SDL_Surface* dst_surface, AnimationInfo* anim, SDL_Rect &clip)
+void ShioriLabel::drawTaggedSurface(SDL_Surface* dst_surface, AnimationInfo* anim, SDL_Rect &clip)
 {
     SDL_Rect poly_rect = anim->pos;
     if (!anim->abs_flag) {
@@ -441,7 +441,7 @@ void PonscripterLabel::drawTaggedSurface(SDL_Surface* dst_surface, AnimationInfo
 }
 
 
-void PonscripterLabel::stopAnimation(int click)
+void ShioriLabel::stopAnimation(int click)
 {
     int no;
 

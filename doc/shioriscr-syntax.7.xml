@@ -2,29 +2,29 @@
 <book xmlns="http://docbook.org/ns/docbook"
 xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
 
-<refentry xml:id="ponscr-syntax.7">
+<refentry xml:id="shioriscr-syntax.7">
   <info>
     <date><?D?></date>
   </info>
   <refmeta>
-    <refentrytitle>ponscr-syntax</refentrytitle>
+    <refentrytitle>shioriscr-syntax</refentrytitle>
     <manvolnum>7</manvolnum>
   </refmeta>
 
   <refnamediv>
-    <refname>ponscr-syntax</refname>
-    <refpurpose>description of Ponscripter syntax</refpurpose>
+    <refname>shioriscr-syntax</refname>
+    <refpurpose>description of shioriscripter syntax</refpurpose>
   </refnamediv>
 
   <refsect1>
     <title>Description</title>
     <para>
-      This page documents the syntax of Ponscripter scripts.  See
-      &ponscripter.7; for an overview of other documentation.
+      This page documents the syntax of shioriscripter scripts.  See
+      &shioriscripter.7; for an overview of other documentation.
     </para>
     <para>
       Note that this cannot be considered NScripter documentation.
-      NScripter itself is largely unspecified.  Ponscripter's
+      NScripter itself is largely unspecified.  shioriscripter's
       implementation is ultimately based on observation and
       documentation rather than on reverse-engineering as such: it
       inevitably adopts different parsing strategies, and is more
@@ -64,7 +64,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
         was no intersection between printable characters and command
         characters; the <code>`</code> text marker was introduced in
         ONScripter as a means of supporting English text, and replaced
-        in Ponscripter with <code>^</code> to free up <code>`</code>
+        in shioriscripter with <code>^</code> to free up <code>`</code>
         for other uses.  Since unmarked text serves no useful purpose,
         and complicates parsing, it is deprecated and will be removed
         without notice at some point in the future.)
@@ -198,7 +198,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
             <simpara>
               <emphasis role='strong'>Note:</emphasis> this differs
               from ONScripter (and some pre-release versions of
-              Ponscripter), where double-quoted strings had semantics
+              shioriscripter), where double-quoted strings had semantics
               similar to unmarked text: in particular, whitespace was
               ignored.
             </simpara>
@@ -224,7 +224,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
             </simpara>
             <simpara>
               Unlike NScripter, which accepts only decimal integers,
-              Ponscripter also understands the C-style
+              shioriscripter also understands the C-style
               <literal>0x<replaceable>NN</replaceable></literal>
               notation for hexadecimal numbers.
             </simpara>
@@ -476,7 +476,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
               Either strings or integers may be compared.  The
               ordering of strings is deliberately left undefined; it
               may change without warning in the future.  However, for
-              any given Ponscripter version, the ordering will be the
+              any given shioriscripter version, the ordering will be the
               same across all platforms and will not be affected by
               users' locale settings.
             </para>
@@ -778,7 +778,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
           <listitem>
             <para>
               The tags in this section, with the exception of
-              <function>c</function>, assume that Ponscripter's eight
+              <function>c</function>, assume that shioriscripter's eight
               font slots are assigned according to the following
               convention:
             </para>
@@ -798,7 +798,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
               not behave as documented; you should use
               <function>c</function> in this case.  Font slots are
               assigned using the <function>h_mapfont</function>
-              command, which is documented in &ponscr-ext.7;.
+              command, which is documented in &shioriscr-ext.7;.
             </para>
 
             <variablelist>
@@ -1011,7 +1011,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
             <para>
               The set of indent characters can be configured with the
               <function>h_indentstr</function> command (described in
-              &ponscr-ext.7;).  By default it includes opening quotes
+              &shioriscr-ext.7;).  By default it includes opening quotes
               and em dashes.
             </para>
           </listitem>
@@ -1055,7 +1055,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
       <title>Ligatures and shortcuts</title>
       <para>
         To assist in typing Unicode scripts with ASCII keyboards,
-        Ponscripter has the ability to replace sequences of characters
+        shioriscripter has the ability to replace sequences of characters
         with Unicode symbols.  This facility is also used to implement
         the hash-escaping of single-character control codes, and can
         be used to add ligatures automatically.  It is only enabled in
@@ -1102,7 +1102,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
       </variablelist>
       <para>
         Additional sequences can be defined by use of the
-        <function>h_ligate</function> command: see &ponscr-ext.7;.
+        <function>h_ligate</function> command: see &shioriscr-ext.7;.
       </para>
     </refsect2>
 
@@ -1183,7 +1183,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
 
   <refsect1>
     <title>See also</title>
-    <simpara>&ponscripter.7;</simpara>
+    <simpara>&shioriscripter.7;</simpara>
   </refsect1>
   
 </refentry>

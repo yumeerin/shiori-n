@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel_rmenu.cpp - Right click menu handler of Ponscripter
+ *  ShioriLabel_rmenu.cpp - Right click menu handler of Shiori
  *
  *  Copyright (c) 2001-2007 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,9 +23,9 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 
-void PonscripterLabel::enterSystemCall()
+void ShioriLabel::enterSystemCall()
 {
     shelter_buttons.swap(buttons);
     buttons.clear();
@@ -44,7 +44,7 @@ void PonscripterLabel::enterSystemCall()
 }
 
 
-void PonscripterLabel::leaveSystemCall(bool restore_flag)
+void ShioriLabel::leaveSystemCall(bool restore_flag)
 {
     int i;
     current_font = &sentence_font;
@@ -82,7 +82,7 @@ void PonscripterLabel::leaveSystemCall(bool restore_flag)
 }
 
 
-void PonscripterLabel::executeSystemCall()
+void ShioriLabel::executeSystemCall()
 {
     //printf("*****  executeSystemCall %d %d %d*****\n", system_menu_enter_flag, volatile_button_state.button, system_menu_mode );
     dirty_rect.fill(screen_width, screen_height);
@@ -128,7 +128,7 @@ void PonscripterLabel::executeSystemCall()
 }
 
 
-void PonscripterLabel::executeSystemMenu()
+void ShioriLabel::executeSystemMenu()
 {
     int counter = 1;
 
@@ -193,7 +193,7 @@ void PonscripterLabel::executeSystemMenu()
 }
 
 
-void PonscripterLabel::executeSystemSkip()
+void ShioriLabel::executeSystemSkip()
 {
     setSkipMode(true);
     if (!(shelter_event_mode & WAIT_BUTTON_MODE))
@@ -203,7 +203,7 @@ void PonscripterLabel::executeSystemSkip()
 }
 
 
-void PonscripterLabel::executeSystemAutomode()
+void ShioriLabel::executeSystemAutomode()
 {
     setAutoMode(true);
     printf("systemcall_automode: change to automode\n");
@@ -211,7 +211,7 @@ void PonscripterLabel::executeSystemAutomode()
 }
 
 
-void PonscripterLabel::executeSystemReset()
+void ShioriLabel::executeSystemReset()
 {
     if (yesno_caller == SYSTEM_RESET) {
         leaveSystemCall();
@@ -224,7 +224,7 @@ void PonscripterLabel::executeSystemReset()
 }
 
 
-void PonscripterLabel::executeSystemEnd()
+void ShioriLabel::executeSystemEnd()
 {
     if (yesno_caller == SYSTEM_END) {
         leaveSystemCall();
@@ -237,7 +237,7 @@ void PonscripterLabel::executeSystemEnd()
 }
 
 
-void PonscripterLabel::executeWindowErase()
+void ShioriLabel::executeWindowErase()
 {
     if (event_mode & WAIT_BUTTON_MODE) {
         event_mode = IDLE_EVENT_MODE;
@@ -254,7 +254,7 @@ void PonscripterLabel::executeWindowErase()
 }
 
 
-void PonscripterLabel::createSaveLoadMenu(bool is_save)
+void ShioriLabel::createSaveLoadMenu(bool is_save)
 {
     SaveFileInfo save_file_info;
     text_info.fill(0, 0, 0, 0);
@@ -328,7 +328,7 @@ void PonscripterLabel::createSaveLoadMenu(bool is_save)
         current_font->SetXY(0);
 
         pstring tmp = "";
-        if (script_h.is_ponscripter)
+        if (script_h.is_shiori)
             tmp.format("~x%d~", int(item_x));
         else {
             int num_sp = ceil((spacing + 0.0) / 
@@ -360,7 +360,7 @@ void PonscripterLabel::createSaveLoadMenu(bool is_save)
 }
 
 
-void PonscripterLabel::executeSystemLoad()
+void ShioriLabel::executeSystemLoad()
 {
     SaveFileInfo save_file_info;
 
@@ -396,7 +396,7 @@ void PonscripterLabel::executeSystemLoad()
 }
 
 
-void PonscripterLabel::executeSystemSave()
+void ShioriLabel::executeSystemSave()
 {
     current_font = &menu_font;
     if (event_mode & WAIT_BUTTON_MODE) {
@@ -423,7 +423,7 @@ void PonscripterLabel::executeSystemSave()
 }
 
 
-void PonscripterLabel::executeSystemYesNo()
+void ShioriLabel::executeSystemYesNo()
 {
     current_font = &menu_font;
     if (event_mode & WAIT_BUTTON_MODE) {
@@ -535,7 +535,7 @@ void PonscripterLabel::executeSystemYesNo()
 }
 
 
-void PonscripterLabel::setupLookbackButton()
+void ShioriLabel::setupLookbackButton()
 {
     deleteButtons();
 
@@ -615,7 +615,7 @@ void PonscripterLabel::setupLookbackButton()
 }
 
 
-void PonscripterLabel::executeSystemLookback()
+void ShioriLabel::executeSystemLookback()
 {
     current_font = &sentence_font;
     if (event_mode & WAIT_BUTTON_MODE) {

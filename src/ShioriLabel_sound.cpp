@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel_sound.cpp - Methods for playing sound
+ *  ShioriLabel_sound.cpp - Methods for playing sound
  *
  *  Copyright (c) 2001-2008 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,8 +23,8 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
-#include "PonscripterUserEvents.h"
+#include "ShioriLabel.h"
+#include "ShioriUserEvents.h"
 #ifdef LINUX
 #include <signal.h>
 #endif
@@ -85,7 +85,7 @@ extern SDL_TimerID timer_midi_id;
             *(bptr+1) = tmpb;            \
         }
 
-extern long decodeOggVorbis(PonscripterLabel::MusicStruct *music_struct, Uint8 *buf_dst, long len, bool do_rate_conversion)
+extern long decodeOggVorbis(ShioriLabel::MusicStruct *music_struct, Uint8 *buf_dst, long len, bool do_rate_conversion)
 {
     int  current_section;
     long total_len = 0;
@@ -160,7 +160,7 @@ extern long decodeOggVorbis(PonscripterLabel::MusicStruct *music_struct, Uint8 *
 }
 
 
-int PonscripterLabel::playSound(const pstring& filename, int format,
+int ShioriLabel::playSound(const pstring& filename, int format,
                                 bool loop_flag, int channel)
 {
     if ( !audio_open_flag ) return SOUND_NONE;
@@ -264,7 +264,7 @@ int PonscripterLabel::playSound(const pstring& filename, int format,
 }
 
 
-int PonscripterLabel::playWave(Mix_Chunk* chunk, int format, bool loop_flag,
+int ShioriLabel::playWave(Mix_Chunk* chunk, int format, bool loop_flag,
 			       int channel)
 {
     if (!chunk) return -1;
@@ -288,7 +288,7 @@ int PonscripterLabel::playWave(Mix_Chunk* chunk, int format, bool loop_flag,
 }
 
 
-int PonscripterLabel::playMP3()
+int ShioriLabel::playMP3()
 {
     if (SMPEG_error(mp3_sample)) {
         //printf(" failed. [%s]\n",SMPEG_error( mp3_sample ));
@@ -324,7 +324,7 @@ int PonscripterLabel::playMP3()
 }
 
 
-int PonscripterLabel::playOGG(int format, unsigned char* buffer, long length, bool loop_flag, int channel)
+int ShioriLabel::playOGG(int format, unsigned char* buffer, long length, bool loop_flag, int channel)
 {
     int channels, rate;
     OVInfo* ovi = openOggVorbis(buffer, length, channels, rate);
@@ -378,7 +378,7 @@ int PonscripterLabel::playOGG(int format, unsigned char* buffer, long length, bo
 }
 
 
-int PonscripterLabel::playExternalMusic(bool loop_flag)
+int ShioriLabel::playExternalMusic(bool loop_flag)
 {
     int music_looping = loop_flag ? -1 : 0;
 #ifdef LINUX
@@ -403,7 +403,7 @@ int PonscripterLabel::playExternalMusic(bool loop_flag)
 }
 
 
-int PonscripterLabel::playMIDI(bool loop_flag)
+int ShioriLabel::playMIDI(bool loop_flag)
 {
     Mix_SetMusicCMD(midi_cmd);
 
@@ -446,7 +446,7 @@ int PonscripterLabel::playMIDI(bool loop_flag)
 }
 
 
-int PonscripterLabel::playingMusic()
+int ShioriLabel::playingMusic()
 {
     if ((Mix_GetMusicHookData() != NULL) || (Mix_Playing(MIX_BGM_CHANNEL) == 1)
         || (Mix_PlayingMusic() == 1))
@@ -455,7 +455,7 @@ int PonscripterLabel::playingMusic()
         return 0;
 }
 
-int PonscripterLabel::setCurMusicVolume( int volume )
+int ShioriLabel::setCurMusicVolume( int volume )
 {
     if (Mix_GetMusicHookData() != NULL) { // for streamed MP3 & OGG
         if ( mp3_sample ) SMPEG_setvolume( mp3_sample, !volume_on_flag? 0 : volume ); // mp3
@@ -469,7 +469,7 @@ int PonscripterLabel::setCurMusicVolume( int volume )
     return 0;
 }
 
-int PonscripterLabel::setVolumeMute( bool do_mute )
+int ShioriLabel::setVolumeMute( bool do_mute )
 {
     if (Mix_GetMusicHookData() != NULL) { // for streamed MP3 & OGG
         if ( mp3_sample ) SMPEG_setvolume( mp3_sample, do_mute? 0 : music_volume ); // mp3
@@ -514,7 +514,7 @@ void UpdateMPEG(void *data, SMPEG_Frame *frame) {
   c->dirty = 1;
 }
 
-int PonscripterLabel::playMPEG(const pstring& filename, bool click_flag,
+int ShioriLabel::playMPEG(const pstring& filename, bool click_flag,
                                SubtitleDefs& subtitles)
 {
     int ret = 0;
@@ -759,7 +759,7 @@ int PonscripterLabel::playMPEG(const pstring& filename, bool click_flag,
 }
 
 
-void PonscripterLabel::playAVI(const pstring& filename, bool click_flag)
+void ShioriLabel::playAVI(const pstring& filename, bool click_flag)
 {
 #ifdef USE_AVIFILE
     pstring abs_fname = archive_path + filename;
@@ -787,7 +787,7 @@ void PonscripterLabel::playAVI(const pstring& filename, bool click_flag)
 }
 
 
-void PonscripterLabel::stopBGM(bool continue_flag)
+void ShioriLabel::stopBGM(bool continue_flag)
 {
 #ifdef EXTERNAL_MIDI_PROGRAM
     FILE* com_file;
@@ -854,7 +854,7 @@ void PonscripterLabel::stopBGM(bool continue_flag)
 }
 
 
-void PonscripterLabel::stopAllDWAVE()
+void ShioriLabel::stopAllDWAVE()
 {
     for (int ch = 0; ch < ONS_MIX_CHANNELS; ++ch) {
         if (wave_sample[ch]) {
@@ -866,7 +866,7 @@ void PonscripterLabel::stopAllDWAVE()
 }
 
 
-void PonscripterLabel::playClickVoice()
+void ShioriLabel::playClickVoice()
 {
     if (clickstr_state == CLICK_NEWPAGE) {
         if (clickvoice_file_name[CLICKVOICE_NEWPAGE].length() > 0)
@@ -881,7 +881,7 @@ void PonscripterLabel::playClickVoice()
 }
 
 
-void PonscripterLabel::setupWaveHeader(unsigned char *buffer, int channels,
+void ShioriLabel::setupWaveHeader(unsigned char *buffer, int channels,
                                        int rate, int bits,
                                        unsigned long data_length )
 {
@@ -974,7 +974,7 @@ static long oc_tell_func(void* datasource)
 
 
 #endif
-OVInfo* PonscripterLabel::openOggVorbis(unsigned char* buf, long len,
+OVInfo* ShioriLabel::openOggVorbis(unsigned char* buf, long len,
                                         int &channels, int &rate)
 {
     OVInfo* ovi = NULL;
@@ -1022,7 +1022,7 @@ OVInfo* PonscripterLabel::openOggVorbis(unsigned char* buf, long len,
 }
 
 
-int PonscripterLabel::closeOggVorbis(OVInfo* ovi)
+int ShioriLabel::closeOggVorbis(OVInfo* ovi)
 {
     if (ovi->buf) {
         ovi->buf = NULL;

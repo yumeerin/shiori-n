@@ -18,11 +18,11 @@ fi
 
 if $restart
 then
-    rm -f ponscr.ppc ponscr.intel ponscr
+    rm -f shioriscr.ppc shioriscr.intel shioriscr
     make distclean &>/dev/null
 fi
 
-if [ ! -f ponscr.ppc ]
+if [ ! -f shioriscr.ppc ]
 then
     export LDFLAGS="-Wl,-syslibroot,/Developer/SDKs/MacOSX10.3.9.sdk"
     export CC="gcc -arch ppc -isysroot /Developer/SDKs/MacOSX10.3.9.sdk -Wl,-framework,OpenGL"
@@ -35,11 +35,11 @@ then
 	"$@" \
         2> >(grep -E -v 'linker input file unused|ranlib.*no symbols$' >&2) \
         || exit
-    mv ponscr ponscr.ppc
+    mv shioriscr shioriscr.ppc
     make distclean &>/dev/null
 fi
 
-if [ ! -f ponscr.intel ]
+if [ ! -f shioriscr.intel ]
 then
     export LDFLAGS="-Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk"
     export CC="gcc -arch i386 -isysroot /Developer/SDKs/MacOSX10.4u.sdk -Wl,-framework,OpenGL"
@@ -51,10 +51,10 @@ then
 	"$@" \
         2> >(grep -E -v 'linker input file unused|ranlib.*no symbols$' >&2) \
         || exit
-    mv ponscr ponscr.intel
+    mv shioriscr shioriscr.intel
 fi
 
 lipo -create \
-     -arch ppc ponscr.ppc \
-     -arch i386 ponscr.intel \
-     -output ponscr
+     -arch ppc shioriscr.ppc \
+     -arch i386 shioriscr.intel \
+     -output shioriscr

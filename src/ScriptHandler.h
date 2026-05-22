@@ -35,7 +35,7 @@ const int VARIABLE_RANGE = 4096;
 
 class ScriptHandler {
 public:
-    bool is_ponscripter;
+    bool is_shiori;
 
     enum encoding_t { UTF8, CP932 };
     Encoding *utf_encoding;

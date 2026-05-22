@@ -2,24 +2,24 @@
 <book xmlns="http://docbook.org/ns/docbook"
 xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
 
-<refentry xml:id="ponscripter.7">
+<refentry xml:id="shiori.7">
   <info>
     <date><?D?></date>
   </info>
   <refmeta>
-    <refentrytitle>ponscripter</refentrytitle>
+    <refentrytitle>shiori</refentrytitle>
     <manvolnum>7</manvolnum>
   </refmeta>
   
   <refnamediv>
-    <refname>ponscripter</refname>
-    <refpurpose>Ponscripter overview</refpurpose>
+    <refname>shiori</refname>
+    <refpurpose>shiori overview</refpurpose>
   </refnamediv>
 
   <refsect1>
     <title>Description</title>
     <para>
-      <firstterm>Ponscripter</firstterm> is an interpreter for
+      <firstterm>Shiori</firstterm> is an interpreter for
       visual-novel-type games, derived from the NScripter design but
       modified significantly to improve support for Western languages
       (at the cost of diminished support for Japanese).
@@ -28,10 +28,10 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
     <refsect2>
       <title>Documentation contents</title>
       <para>
-        Ponscripter documentation is split into a number of sections.
+        Shiori documentation is split into a number of sections.
       </para>
       <para>
-        This page provides an overview of Ponscripter itself and the
+        This page provides an overview of Shiori itself and the
         overall structure of a game.
       </para>
       <para>
@@ -50,7 +50,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
             <term>&ponscr-syntax.7;</term>
             <listitem>
               <simpara>
-                Syntax of a Ponscripter script.
+                Syntax of a Shiori script.
               </simpara>
             </listitem>
           </varlistentry>
@@ -100,7 +100,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
         English support as standard.
       </para>
       <para>
-        <firstterm>Ponscripter</firstterm> is a fork of ONScripter-En
+        <firstterm>Shiori</firstterm> is a fork of ONScripter-En
         that drops any attempt to remain in synch with the upstream
         source code, and instead concentrates on providing the best
         possible support for Western languages.  It is no longer fully
@@ -118,7 +118,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
     <refsect2>
       <title>Basic game structure</title>
       <para>
-        Ponscripter games consist of a directory containing scripts,
+        Shiori games consist of a directory containing scripts,
         either in NScripter format or an extended derived format, plus
         other files (graphics, sound, fonts, etc) on which the script
         depends; these may be packed into archives in the NScripter
@@ -127,7 +127,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
       <para>
         Unlike other NScripter-derived interpreters, which attempt to
         a greater or lesser degree to support Japanese filenames,
-        Ponscripter requires that all files have plain ASCII names.
+        Shiori requires that all files have plain ASCII names.
         It's the only way to be portable.
       </para>
     </refsect2>
@@ -135,13 +135,13 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
     <refsect2>
       <title>Script files</title>
       <para>
-        Ponscripter is able to read two styles of script: native and
+        Shiori is able to read two styles of script: native and
         legacy.  Native scripts are encoded in UTF-8, and provide
         all the features documented below.  Legacy scripts are an
         attempt to provide a modicum of backwards-compatibility:
         they are NScripter-format scripts, in CP932 (Microsoft's
         version of Shift_JIS) with some of the same extensions as
-        provided by ONScripter-En.  Many Ponscripter features are
+        provided by ONScripter-En.  Many Shiori features are
         disabled when processing a legacy script.  There is little
         reason to use them, unless you want to try to play an
         unported NScripter game using proportional fonts.  It's
@@ -306,7 +306,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
                 such as &emacs.1; to identify the format of a file.
               </simpara>
               <simpara>
-                Ponscripter ignores everything between the
+                Shiori ignores everything between the
                 <literal>-*-</literal> delimiters, so users of such
                 editors can use this feature as expected.
               </simpara>
@@ -330,7 +330,7 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
       </para>
       <para>
         Ideally you should always specify a gameid with this
-        directive.  If you don't, Ponscripter tries to determine the
+        directive.  If you don't, Shiori tries to determine the
         name of the game by looking for a <function>caption</function>
         or <function>versionstr</function> command; if that also
         fails, a semi-unique identifier is generated based on the
@@ -339,13 +339,13 @@ xmlns:xl="http://www.w3.org/1999/xlink"><reference><title/><?L --> ?>
       <para>
         A complete directives section might thus have the form
         <programlisting>
-;mode800,value500,-*- ponscripter -*-
-;gameid My Ponscripter game
+;mode800,value500,-*- Shiori -*-
+;gameid My Shiori game
         </programlisting>
-        which would specify a game called <quote>My Ponscripter
+        which would specify a game called <quote>My Shiori
         game</quote> that used an 800x600 display, treated all
         variables indexed 500 and above as globals, and would be
-        easily identified as a Ponscripter script.
+        easily identified as a Shiori script.
       </para>
     </refsect2>
 

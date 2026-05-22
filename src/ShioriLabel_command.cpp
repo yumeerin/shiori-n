@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel_command.cpp - Command executer of Ponscripter
+ *  ShioriLabel_command.cpp - Command executer of Shiori
  *
  *  Copyright (c) 2001-2008 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,7 +23,7 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 #include "version.h"
 
 #include <sys/stat.h>
@@ -69,7 +69,7 @@ namespace Carbon {
 extern SDL_TimerID timer_mp3fadeout_id;
 extern "C" Uint32 SDLCALL mp3fadeoutCallback(Uint32 interval, void* param);
 
-int PonscripterLabel::waveCommand(const pstring& cmd)
+int ShioriLabel::waveCommand(const pstring& cmd)
 {
     wavestopCommand("wavestop");
 
@@ -81,7 +81,7 @@ int PonscripterLabel::waveCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::wavestopCommand(const pstring& cmd)
+int ShioriLabel::wavestopCommand(const pstring& cmd)
 {
     if (wave_sample[MIX_WAVE_CHANNEL]) {
         Mix_Pause(MIX_WAVE_CHANNEL);
@@ -95,14 +95,14 @@ int PonscripterLabel::wavestopCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::waittimerCommand(const pstring& cmd)
+int ShioriLabel::waittimerCommand(const pstring& cmd)
 {
     startTimer(script_h.readIntValue() + internal_timer - SDL_GetTicks());
     return RET_WAIT;
 }
 
 
-int PonscripterLabel::waitCommand(const pstring& cmd)
+int ShioriLabel::waitCommand(const pstring& cmd)
 {
     int count = script_h.readIntValue();
     if (skip_flag || draw_one_page_flag || ctrl_pressed_status) {
@@ -121,7 +121,7 @@ int PonscripterLabel::waitCommand(const pstring& cmd)
     return RET_WAIT;
 }
 
-int PonscripterLabel::vspCommand(const pstring& cmd)
+int ShioriLabel::vspCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -148,7 +148,7 @@ int PonscripterLabel::vspCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::voicevolCommand(const pstring& cmd)
+int ShioriLabel::voicevolCommand(const pstring& cmd)
 {
     voice_volume = script_h.readIntValue();
 
@@ -161,7 +161,7 @@ int PonscripterLabel::voicevolCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::vCommand(const pstring& cmd)
+int ShioriLabel::vCommand(const pstring& cmd)
 {
     playSound("wav" DELIMITER + cmd.midstr(1, cmd.length()),
 	      SOUND_WAVE | SOUND_OGG, false, MIX_WAVE_CHANNEL);
@@ -169,7 +169,7 @@ int PonscripterLabel::vCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::trapCommand(const pstring& cmd)
+int ShioriLabel::trapCommand(const pstring& cmd)
 {
     if (cmd == "lr_trap")
         trap_mode = TRAP_LEFT_CLICK | TRAP_RIGHT_CLICK;
@@ -190,27 +190,27 @@ int PonscripterLabel::trapCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::transbtnCommand(const pstring& cmd)
+int ShioriLabel::transbtnCommand(const pstring& cmd)
 {
     transbtn_flag = true;
 
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::textspeedCommand(const pstring& cmd)
+int ShioriLabel::textspeedCommand(const pstring& cmd)
 {
     sentence_font.wait_time = script_h.readIntValue();
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::gettextspeedCommand(const pstring& cmd)
+int ShioriLabel::gettextspeedCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(sentence_font.wait_time);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::textshowCommand(const pstring& cmd)
+int ShioriLabel::textshowCommand(const pstring& cmd)
 {
     dirty_rect.fill(screen_width, screen_height);
     refresh_shadow_text_mode = REFRESH_NORMAL_MODE
@@ -222,7 +222,7 @@ int PonscripterLabel::textshowCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::textonCommand(const pstring& cmd)
+int ShioriLabel::textonCommand(const pstring& cmd)
 {
     int ret = enterTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -233,7 +233,7 @@ int PonscripterLabel::textonCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::textoffCommand(const pstring& cmd)
+int ShioriLabel::textoffCommand(const pstring& cmd)
 {
     refreshSurface(backup_surface, NULL, REFRESH_NORMAL_MODE);
 
@@ -246,7 +246,7 @@ int PonscripterLabel::textoffCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::texthideCommand(const pstring& cmd)
+int ShioriLabel::texthideCommand(const pstring& cmd)
 {
     dirty_rect.fill(screen_width, screen_height);
     refresh_shadow_text_mode = REFRESH_NORMAL_MODE | REFRESH_SHADOW_MODE;
@@ -256,14 +256,14 @@ int PonscripterLabel::texthideCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::textclearCommand(const pstring& cmd)
+int ShioriLabel::textclearCommand(const pstring& cmd)
 {
     newPage(false);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::texecCommand(const pstring& cmd)
+int ShioriLabel::texecCommand(const pstring& cmd)
 {
     int j;
     if (textgosub_clickstr_state == CLICK_NEWPAGE) {
@@ -289,14 +289,14 @@ int PonscripterLabel::texecCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::tateyokoCommand(const pstring& cmd)
+int ShioriLabel::tateyokoCommand(const pstring& cmd)
 {
     sentence_font.setTateYoko(script_h.readIntValue()!=0);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::talCommand(const pstring& cmd)
+int ShioriLabel::talCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -328,7 +328,7 @@ int PonscripterLabel::talCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::tablegotoCommand(const pstring& cmd)
+int ShioriLabel::tablegotoCommand(const pstring& cmd)
 {
     // Haeleth extension: tablegoto1 uses 1-based indexing
     int count = cmd == "tablegoto1";
@@ -349,7 +349,7 @@ int PonscripterLabel::tablegotoCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::systemcallCommand(const pstring& cmd)
+int ShioriLabel::systemcallCommand(const pstring& cmd)
 {
     system_menu_mode = getSystemCallNo(script_h.readStrValue());
     enterSystemCall();
@@ -358,7 +358,7 @@ int PonscripterLabel::systemcallCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::strspCommand(const pstring& cmd)
+int ShioriLabel::strspCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -409,7 +409,7 @@ int PonscripterLabel::strspCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::stopCommand(const pstring& cmd)
+int ShioriLabel::stopCommand(const pstring& cmd)
 {
     stopBGM(false);
     wavestopCommand("wavestop");
@@ -418,7 +418,7 @@ int PonscripterLabel::stopCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::sp_rgb_gradationCommand(const pstring& cmd)
+int ShioriLabel::sp_rgb_gradationCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -518,14 +518,14 @@ int PonscripterLabel::sp_rgb_gradationCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::spstrCommand(const pstring& cmd)
+int ShioriLabel::spstrCommand(const pstring& cmd)
 {
     decodeExbtnControl(script_h.readStrValue());
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::spreloadCommand(const pstring& cmd)
+int ShioriLabel::spreloadCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -545,7 +545,7 @@ int PonscripterLabel::spreloadCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::splitCommand(const pstring& cmd)
+int ShioriLabel::splitCommand(const pstring& cmd)
 {
     pstring buf = script_h.readStrValue();
     pstring delimiter = script_h.readStrValue();
@@ -565,7 +565,7 @@ int PonscripterLabel::splitCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::spclclkCommand(const pstring& cmd)
+int ShioriLabel::spclclkCommand(const pstring& cmd)
 {
     if (!force_button_shortcut_flag)
         spclclk_flag = true;
@@ -574,7 +574,7 @@ int PonscripterLabel::spclclkCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::spbtnCommand(const pstring& cmd)
+int ShioriLabel::spbtnCommand(const pstring& cmd)
 {
     // Haeleth extension: spbtn SPRITE1,SPRITE2,BTN assigns buttons
     // counting up from BTN to sprites in the range SPRITE1..SPRITE2.
@@ -617,7 +617,7 @@ int PonscripterLabel::spbtnCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::skipoffCommand(const pstring& cmd)
+int ShioriLabel::skipoffCommand(const pstring& cmd)
 {
     setSkipMode(false);
 
@@ -651,7 +651,7 @@ int tryToLaunch(const char* command, const char* target)
 }
 #endif
 
-int PonscripterLabel::shellCommand(const pstring& cmd)
+int ShioriLabel::shellCommand(const pstring& cmd)
 {
 #ifdef WIN32
     pstring url = script_h.readStrValue();
@@ -731,7 +731,7 @@ int PonscripterLabel::shellCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::sevolCommand(const pstring& cmd)
+int ShioriLabel::sevolCommand(const pstring& cmd)
 {
     se_volume = script_h.readIntValue();
 
@@ -751,7 +751,7 @@ int PonscripterLabel::sevolCommand(const pstring& cmd)
 }
 
 
-void PonscripterLabel::DoSetwindow(PonscripterLabel::WindowDef& def)
+void ShioriLabel::DoSetwindow(ShioriLabel::WindowDef& def)
 {
     sentence_font.top_x  = def.left;
     sentence_font.top_y  = def.top;
@@ -794,7 +794,7 @@ void PonscripterLabel::DoSetwindow(PonscripterLabel::WindowDef& def)
 }
 
 
-void PonscripterLabel::setwindowCore()
+void ShioriLabel::setwindowCore()
 {
     int res_multiplier = 1;
     #ifdef USE_2X_MODE
@@ -821,10 +821,10 @@ void PonscripterLabel::setwindowCore()
     wind.w_bottom  = script_h.hasMoreArgs() ? script_h.readIntValue() * res_multiplier : 0;
   
     // Window size is defined in characters
-    // (this used to be just for non-Ponscripter games, but as of
+    // (this used to be just for non-Shiori games, but as of
     // 20080122 we revert to the NScripter behaviour; new code should
     // really be using h_defwindow and h_usewindow anyway!)    
-    // if (!script_h.is_ponscripter) {
+    // if (!script_h.is_shiori) {
     wind.width  *= size_1 + wind.pitch_x;
     wind.height *= size_2 + wind.pitch_y;
     //}
@@ -833,7 +833,7 @@ void PonscripterLabel::setwindowCore()
 }
 
 
-int PonscripterLabel::setwindow3Command(const pstring& cmd)
+int ShioriLabel::setwindow3Command(const pstring& cmd)
 {
     setwindowCore();
 
@@ -844,7 +844,7 @@ int PonscripterLabel::setwindow3Command(const pstring& cmd)
 }
 
 
-int PonscripterLabel::setwindow2Command(const pstring& cmd)
+int ShioriLabel::setwindow2Command(const pstring& cmd)
 {
     pstring back = script_h.readStrValue();
     if (back[0] == '#') {
@@ -864,7 +864,7 @@ int PonscripterLabel::setwindow2Command(const pstring& cmd)
 }
 
 
-int PonscripterLabel::setwindowCommand(const pstring& cmd)
+int ShioriLabel::setwindowCommand(const pstring& cmd)
 {
     setwindowCore();
 
@@ -878,7 +878,7 @@ int PonscripterLabel::setwindowCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::setcursorCommand(const pstring& cmd)
+int ShioriLabel::setcursorCommand(const pstring& cmd)
 {
     int no    = script_h.readIntValue();
     pstring c = script_h.readStrValue();
@@ -891,7 +891,7 @@ int PonscripterLabel::setcursorCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::selectCommand(const pstring& cmd)
+int ShioriLabel::selectCommand(const pstring& cmd)
 {
     int ret = enterTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -1038,7 +1038,7 @@ int PonscripterLabel::selectCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::savetimeCommand(const pstring& cmd)
+int ShioriLabel::savetimeCommand(const pstring& cmd)
 {
     SaveFileInfo info;
     searchSaveFile(info, script_h.readIntValue());
@@ -1057,7 +1057,7 @@ int PonscripterLabel::savetimeCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::savescreenshotCommand(const pstring& cmd)
+int ShioriLabel::savescreenshotCommand(const pstring& cmd)
 {
     pstring filename = script_h.readStrValue();
     pstring ext = file_extension(filename);
@@ -1091,7 +1091,7 @@ int PonscripterLabel::savescreenshotCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::saveonCommand(const pstring& cmd)
+int ShioriLabel::saveonCommand(const pstring& cmd)
 {
     saveon_flag = true;
 
@@ -1099,7 +1099,7 @@ int PonscripterLabel::saveonCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::saveoffCommand(const pstring& cmd)
+int ShioriLabel::saveoffCommand(const pstring& cmd)
 {
     saveon_flag = false;
 
@@ -1107,7 +1107,7 @@ int PonscripterLabel::saveoffCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::savegameCommand(const pstring& cmd)
+int ShioriLabel::savegameCommand(const pstring& cmd)
 {
     bool savegame2_flag = false;
     if (cmd == "savegame2")
@@ -1129,7 +1129,7 @@ int PonscripterLabel::savegameCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::savefileexistCommand(const pstring& cmd)
+int ShioriLabel::savefileexistCommand(const pstring& cmd)
 {
     Expression e = script_h.readIntExpr();
     SaveFileInfo info;
@@ -1139,7 +1139,7 @@ int PonscripterLabel::savefileexistCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::rndCommand(const pstring& cmd)
+int ShioriLabel::rndCommand(const pstring& cmd)
 {
     int upper, lower;
     Expression e = script_h.readIntExpr();
@@ -1156,21 +1156,21 @@ int PonscripterLabel::rndCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::rmodeCommand(const pstring& cmd)
+int ShioriLabel::rmodeCommand(const pstring& cmd)
 {
     rmode_flag = script_h.readIntValue() == 1;
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::resettimerCommand(const pstring& cmd)
+int ShioriLabel::resettimerCommand(const pstring& cmd)
 {
     internal_timer = SDL_GetTicks();
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::resetCommand(const pstring& cmd)
+int ShioriLabel::resetCommand(const pstring& cmd)
 {
     resetSub();
     clearAllCurrentTextBuffers();
@@ -1183,7 +1183,7 @@ int PonscripterLabel::resetCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::repaintCommand(const pstring& cmd)
+int ShioriLabel::repaintCommand(const pstring& cmd)
 {
     dirty_rect.fill(screen_width, screen_height);
     flush(refreshMode());
@@ -1192,7 +1192,7 @@ int PonscripterLabel::repaintCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::quakeCommand(const pstring& cmd)
+int ShioriLabel::quakeCommand(const pstring& cmd)
 {
     int quake_type;
 
@@ -1234,7 +1234,7 @@ int PonscripterLabel::quakeCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::puttextCommand(const pstring& cmd)
+int ShioriLabel::puttextCommand(const pstring& cmd)
 {
     int ret = enterTextDisplayMode(false), j;
     if (ret != RET_NOMATCH) return ret;
@@ -1266,7 +1266,7 @@ int PonscripterLabel::puttextCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::prnumclearCommand(const pstring& cmd)
+int ShioriLabel::prnumclearCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -1283,7 +1283,7 @@ int PonscripterLabel::prnumclearCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::prnumCommand(const pstring& cmd)
+int ShioriLabel::prnumCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -1319,7 +1319,7 @@ int PonscripterLabel::prnumCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::printCommand(const pstring& cmd)
+int ShioriLabel::printCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -1333,14 +1333,14 @@ int PonscripterLabel::printCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::playstopCommand(const pstring& cmd)
+int ShioriLabel::playstopCommand(const pstring& cmd)
 {
     stopBGM(false);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::playCommand(const pstring& cmd)
+int ShioriLabel::playCommand(const pstring& cmd)
 {
     pstring buf = script_h.readStrValue();
     if (buf[0] == '*') {
@@ -1361,7 +1361,7 @@ int PonscripterLabel::playCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::ofscopyCommand(const pstring& cmd)
+int ShioriLabel::ofscopyCommand(const pstring& cmd)
 {
   fprintf(stderr, "Non-upgraded command, help\n");
     SDL_BlitSurface(screen_surface, NULL, accumulation_surface, NULL);
@@ -1370,7 +1370,7 @@ int PonscripterLabel::ofscopyCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::negaCommand(const pstring& cmd)
+int ShioriLabel::negaCommand(const pstring& cmd)
 {
     nega_mode = script_h.readIntValue();
     dirty_rect.fill(screen_width, screen_height);
@@ -1379,7 +1379,7 @@ int PonscripterLabel::negaCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::mspCommand(const pstring& cmd)
+int ShioriLabel::mspCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -1496,7 +1496,7 @@ void SubtitleDefs::sort()
     std::sort(text.begin(), text.end(), sublessthan);
 }
 
-SubtitleDefs PonscripterLabel::parseSubtitles(pstring file)
+SubtitleDefs ShioriLabel::parseSubtitles(pstring file)
 {
     SubtitleDefs defs;
     CBStringList lines = ScriptHandler::cBR->getFile(file).split(0x0a);
@@ -1528,7 +1528,7 @@ SubtitleDefs PonscripterLabel::parseSubtitles(pstring file)
     return defs;
 }
 
-int PonscripterLabel::mpegplayCommand(const pstring& cmd)
+int ShioriLabel::mpegplayCommand(const pstring& cmd)
 {
     pstring name = script_h.readStrValue();
     bool cancel  = script_h.readIntValue() == 1;
@@ -1543,7 +1543,7 @@ int PonscripterLabel::mpegplayCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::mp3volCommand(const pstring& cmd)
+int ShioriLabel::mp3volCommand(const pstring& cmd)
 {
     music_volume = script_h.readIntValue();
 
@@ -1553,7 +1553,7 @@ int PonscripterLabel::mp3volCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::mp3fadeoutCommand(const pstring& cmd)
+int ShioriLabel::mp3fadeoutCommand(const pstring& cmd)
 {
     mp3fadeout_start    = SDL_GetTicks();
     mp3fadeout_duration = script_h.readIntValue();
@@ -1565,7 +1565,7 @@ int PonscripterLabel::mp3fadeoutCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::mp3Command(const pstring& cmd)
+int ShioriLabel::mp3Command(const pstring& cmd)
 {
     bool loop_flag = false;
     if (cmd == "mp3save") {
@@ -1594,7 +1594,7 @@ int PonscripterLabel::mp3Command(const pstring& cmd)
 }
 
 
-int PonscripterLabel::movemousecursorCommand(const pstring& cmd)
+int ShioriLabel::movemousecursorCommand(const pstring& cmd)
 {
     int x = script_h.readIntValue() * screen_ratio1 / screen_ratio2;
     int y = script_h.readIntValue() * screen_ratio1 / screen_ratio2;
@@ -1605,7 +1605,7 @@ int PonscripterLabel::movemousecursorCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::monocroCommand(const pstring& cmd)
+int ShioriLabel::monocroCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -1629,7 +1629,7 @@ int PonscripterLabel::monocroCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::menu_windowCommand(const pstring& cmd)
+int ShioriLabel::menu_windowCommand(const pstring& cmd)
 {
     if (fullscreen_mode) {
 #if !defined (PSP)
@@ -1653,7 +1653,7 @@ int PonscripterLabel::menu_windowCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::menu_fullCommand(const pstring& cmd)
+int ShioriLabel::menu_fullCommand(const pstring& cmd)
 {
     if (!fullscreen_mode) {
 #if !defined (PSP)
@@ -1679,7 +1679,7 @@ int PonscripterLabel::menu_fullCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::menu_automodeCommand(const pstring& cmd)
+int ShioriLabel::menu_automodeCommand(const pstring& cmd)
 {
     setAutoMode(true);
     printf("menu_automode: change to automode\n");
@@ -1688,13 +1688,13 @@ int PonscripterLabel::menu_automodeCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getreadlangCommand(const pstring& cmd)
+int ShioriLabel::getreadlangCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(current_read_language);
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::showlangenCommand(const pstring& cmd)
+int ShioriLabel::showlangenCommand(const pstring& cmd)
 {
     current_language = 0;
     //loadSaveFile(15);
@@ -1704,7 +1704,7 @@ int PonscripterLabel::showlangenCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::showlangjpCommand(const pstring& cmd)
+int ShioriLabel::showlangjpCommand(const pstring& cmd)
 {
     current_language = 1;
     //loadSaveFile(15);
@@ -1714,14 +1714,14 @@ int PonscripterLabel::showlangjpCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::langenCommand(const pstring& cmd)
+int ShioriLabel::langenCommand(const pstring& cmd)
 {
     current_read_language = 0;
 
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::langjpCommand(const pstring& cmd)
+int ShioriLabel::langjpCommand(const pstring& cmd)
 {
     //if (current_read_language != 1) {
     //    saveSaveFile(15);
@@ -1731,14 +1731,14 @@ int PonscripterLabel::langjpCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::langallCommand(const pstring& cmd)
+int ShioriLabel::langallCommand(const pstring& cmd)
 {
     current_read_language = -1;
 
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::lspCommand(const pstring& cmd)
+int ShioriLabel::lspCommand(const pstring& cmd)
 {
 //TODO: add support for "lsp2add" etc.
     int ret = leaveTextDisplayMode();
@@ -1781,7 +1781,7 @@ int PonscripterLabel::lspCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::loopbgmstopCommand(const pstring& cmd)
+int ShioriLabel::loopbgmstopCommand(const pstring& cmd)
 {
     if (wave_sample[MIX_LOOPBGM_CHANNEL0]) {
         Mix_Pause(MIX_LOOPBGM_CHANNEL0);
@@ -1801,7 +1801,7 @@ int PonscripterLabel::loopbgmstopCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::loopbgmCommand(const pstring& cmd)
+int ShioriLabel::loopbgmCommand(const pstring& cmd)
 {
     loop_bgm_name[0] = script_h.readStrValue();
     loop_bgm_name[1] = script_h.readStrValue();    
@@ -1815,7 +1815,7 @@ int PonscripterLabel::loopbgmCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::lookbackflushCommand(const pstring& cmd)
+int ShioriLabel::lookbackflushCommand(const pstring& cmd)
 {
     int j;
     for (j = 0; j < 2; j++) {
@@ -1835,7 +1835,7 @@ int PonscripterLabel::lookbackflushCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::lookbackbuttonCommand(const pstring& cmd)
+int ShioriLabel::lookbackbuttonCommand(const pstring& cmd)
 {
     for (int i = 0; i < 4; i++) {
         lookback_info[i].image_name = script_h.readStrValue();
@@ -1847,7 +1847,7 @@ int PonscripterLabel::lookbackbuttonCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::logspCommand(const pstring& cmd)
+int ShioriLabel::logspCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -1911,13 +1911,13 @@ int PonscripterLabel::logspCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::locateCommand(const pstring& cmd)
+int ShioriLabel::locateCommand(const pstring& cmd)
 {
     int x = script_h.readIntValue();
     int y = script_h.readIntValue();
     // As of 20080122, pixel-oriented behaviour is provided with the
     // command name "h_locate", not with a UTF-8 script.
-    //if (!script_h.is_ponscripter) {
+    //if (!script_h.is_shiori) {
     if (cmd == "locate") {
     x *= sentence_font.size() + sentence_font.pitch_x;
     y *= sentence_font.line_space() + sentence_font.pitch_y;
@@ -1940,7 +1940,7 @@ int PonscripterLabel::locateCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::loadgameCommand(const pstring& cmd)
+int ShioriLabel::loadgameCommand(const pstring& cmd)
 {
     int no = script_h.readIntValue();
 
@@ -1982,14 +1982,14 @@ int PonscripterLabel::loadgameCommand(const pstring& cmd)
     }
 }
 
-int PonscripterLabel::tachistateCommand(const pstring& cmd)
+int ShioriLabel::tachistateCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate((tachi_info[0].showing() && tachi_info[0].file_name != "") ? 1 : 0);
     script_h.readIntExpr().mutate((tachi_info[1].showing() && tachi_info[1].file_name != "") ? 1 : 0);
     script_h.readIntExpr().mutate((tachi_info[2].showing() && tachi_info[2].file_name != "") ? 1 : 0);
     return RET_CONTINUE;
 }
-int PonscripterLabel::ldCommand(const pstring& cmd)
+int ShioriLabel::ldCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -2027,7 +2027,7 @@ int PonscripterLabel::ldCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::jumpfCommand(const pstring& cmd)
+int ShioriLabel::jumpfCommand(const pstring& cmd)
 {
     const char* buf = script_h.getNext();
     while (*buf != '\0' && *buf != '~') buf++;
@@ -2041,7 +2041,7 @@ int PonscripterLabel::jumpfCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::jumpbCommand(const pstring& cmd)
+int ShioriLabel::jumpbCommand(const pstring& cmd)
 {
     script_h.setCurrent(last_tilde);
     current_label_info = script_h.getLabelByAddress(last_tilde);
@@ -2051,21 +2051,21 @@ int PonscripterLabel::jumpbCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::ispageCommand(const pstring& cmd)
+int ShioriLabel::ispageCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(textgosub_clickstr_state == CLICK_NEWPAGE);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::isfullCommand(const pstring& cmd)
+int ShioriLabel::isfullCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(fullscreen_mode);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::isskipCommand(const pstring& cmd)
+int ShioriLabel::isskipCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(automode_flag         ? 2 :
 				  (skip_flag            ? 1 :
@@ -2075,14 +2075,14 @@ int PonscripterLabel::isskipCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::isdownCommand(const pstring& cmd)
+int ShioriLabel::isdownCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(current_button_state.down_flag);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::inputCommand(const pstring& cmd)
+int ShioriLabel::inputCommand(const pstring& cmd)
 {
     Expression e = script_h.readStrExpr();
 
@@ -2105,7 +2105,7 @@ int PonscripterLabel::inputCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::indentCommand(const pstring& cmd)
+int ShioriLabel::indentCommand(const pstring& cmd)
 {
     indent_offset = script_h.readIntValue();
     fprintf(stderr, " warning: [indent] command is broken\n");
@@ -2113,7 +2113,7 @@ int PonscripterLabel::indentCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::humanorderCommand(const pstring& cmd)
+int ShioriLabel::humanorderCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -2139,7 +2139,7 @@ int PonscripterLabel::humanorderCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getzxcCommand(const pstring& cmd)
+int ShioriLabel::getzxcCommand(const pstring& cmd)
 {
     getzxc_flag = true;
 
@@ -2147,21 +2147,21 @@ int PonscripterLabel::getzxcCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getvoicevolCommand(const pstring& cmd)
+int ShioriLabel::getvoicevolCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(voice_volume);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::getversionCommand(const pstring& cmd)
+int ShioriLabel::getversionCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(NSC_VERSION);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::gettimerCommand(const pstring& cmd)
+int ShioriLabel::gettimerCommand(const pstring& cmd)
 {
     if (cmd == "gettimer")
 	script_h.readIntExpr().mutate(SDL_GetTicks() - internal_timer);
@@ -2172,7 +2172,7 @@ int PonscripterLabel::gettimerCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::gettextCommand(const pstring& cmd)
+int ShioriLabel::gettextCommand(const pstring& cmd)
 {
     pstring buf = current_text_buffer[current_language]->contents;
     buf.findreplace("\x0a", "");
@@ -2181,7 +2181,7 @@ int PonscripterLabel::gettextCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::gettagCommand(const pstring& cmd)
+int ShioriLabel::gettagCommand(const pstring& cmd)
 {
     if (nest_infos.empty() ||
         nest_infos.back().nest_mode != NestInfo::TEXTGOSUB)
@@ -2236,7 +2236,7 @@ int PonscripterLabel::gettagCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::gettabCommand(const pstring& cmd)
+int ShioriLabel::gettabCommand(const pstring& cmd)
 {
     gettab_flag = true;
 
@@ -2244,7 +2244,7 @@ int PonscripterLabel::gettabCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getspsizeCommand(const pstring& cmd)
+int ShioriLabel::getspsizeCommand(const pstring& cmd)
 {
     int no = script_h.readIntValue();
 
@@ -2259,7 +2259,7 @@ int PonscripterLabel::getspsizeCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getspmodeCommand(const pstring& cmd)
+int ShioriLabel::getspmodeCommand(const pstring& cmd)
 {
     Expression e = script_h.readIntExpr();
     e.mutate(sprite_info[script_h.readIntValue()].showing());
@@ -2267,14 +2267,14 @@ int PonscripterLabel::getspmodeCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getsevolCommand(const pstring& cmd)
+int ShioriLabel::getsevolCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(se_volume);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::getscreenshotCommand(const pstring& cmd)
+int ShioriLabel::getscreenshotCommand(const pstring& cmd)
 {
     int w = script_h.readIntValue();
     int h = script_h.readIntValue();
@@ -2301,7 +2301,7 @@ int PonscripterLabel::getscreenshotCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getpageupCommand(const pstring& cmd)
+int ShioriLabel::getpageupCommand(const pstring& cmd)
 {
     getpageup_flag = true;
 
@@ -2309,7 +2309,7 @@ int PonscripterLabel::getpageupCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getpageCommand(const pstring& cmd)
+int ShioriLabel::getpageCommand(const pstring& cmd)
 {
     getpageup_flag   = true;
     getpagedown_flag = true;
@@ -2318,7 +2318,7 @@ int PonscripterLabel::getpageCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getretCommand(const pstring& cmd)
+int ShioriLabel::getretCommand(const pstring& cmd)
 {
     Expression e = script_h.readExpr();
     if (e.is_numeric()) e.mutate(getret_int); else e.mutate(getret_str);
@@ -2326,7 +2326,7 @@ int PonscripterLabel::getretCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getregCommand(const pstring& cmd)
+int ShioriLabel::getregCommand(const pstring& cmd)
 {
     Expression ex = script_h.readStrExpr();
 
@@ -2377,14 +2377,14 @@ int PonscripterLabel::getregCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getmp3volCommand(const pstring& cmd)
+int ShioriLabel::getmp3volCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(music_volume);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::getmouseposCommand(const pstring& cmd)
+int ShioriLabel::getmouseposCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(current_button_state.x *
 				  screen_ratio2 / screen_ratio1);
@@ -2394,7 +2394,7 @@ int PonscripterLabel::getmouseposCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getlogCommand(const pstring& cmd)
+int ShioriLabel::getlogCommand(const pstring& cmd)
 {
     Expression e = script_h.readStrExpr();
     int page_no = script_h.readIntValue();
@@ -2408,28 +2408,28 @@ int PonscripterLabel::getlogCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getinsertCommand(const pstring& cmd)
+int ShioriLabel::getinsertCommand(const pstring& cmd)
 {
     getinsert_flag = true;
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::getfunctionCommand(const pstring& cmd)
+int ShioriLabel::getfunctionCommand(const pstring& cmd)
 {
     getfunction_flag = true;
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::getenterCommand(const pstring& cmd)
+int ShioriLabel::getenterCommand(const pstring& cmd)
 {
     if (!force_button_shortcut_flag) getenter_flag = true;
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::getcursorposCommand(const pstring& cmd)
+int ShioriLabel::getcursorposCommand(const pstring& cmd)
 {
     int res_divider = 1;
     #ifdef USE_2X_MODE
@@ -2441,14 +2441,14 @@ int PonscripterLabel::getcursorposCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getcursorCommand(const pstring& cmd)
+int ShioriLabel::getcursorCommand(const pstring& cmd)
 {
     if (!force_button_shortcut_flag) getcursor_flag = true;
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::getcselstrCommand(const pstring& cmd)
+int ShioriLabel::getcselstrCommand(const pstring& cmd)
 {
     Expression e = script_h.readStrExpr();
     int csel_no = script_h.readIntValue();
@@ -2459,14 +2459,14 @@ int PonscripterLabel::getcselstrCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::getcselnumCommand(const pstring& cmd)
+int ShioriLabel::getcselnumCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate(int(select_links.size()));
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::gameCommand(const pstring& cmd)
+int ShioriLabel::gameCommand(const pstring& cmd)
 {
     int i, j;
     current_mode = NORMAL_MODE;
@@ -2531,7 +2531,7 @@ int PonscripterLabel::gameCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::fileexistCommand(const pstring& cmd)
+int ShioriLabel::fileexistCommand(const pstring& cmd)
 {
     Expression e = script_h.readIntExpr();
     e.mutate(ScriptHandler::cBR->getFileLength(script_h.readStrValue()) > 0);
@@ -2539,7 +2539,7 @@ int PonscripterLabel::fileexistCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::exec_dllCommand(const pstring& cmd)
+int ShioriLabel::exec_dllCommand(const pstring& cmd)
 {
     pstring dll_name = "[" + script_h.readStrValue().split("/", 2).at(0) + "]";
 
@@ -2590,7 +2590,7 @@ int PonscripterLabel::exec_dllCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::exbtnCommand(const pstring& cmd)
+int ShioriLabel::exbtnCommand(const pstring& cmd)
 {
     int sprite_no = -1, no = 0;
     ButtonElt* button = &exbtn_d_button;
@@ -2622,7 +2622,7 @@ int PonscripterLabel::exbtnCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::erasetextwindowCommand(const pstring& cmd)
+int ShioriLabel::erasetextwindowCommand(const pstring& cmd)
 {
     erase_text_window_mode = script_h.readIntValue();
     dirty_rect.add(sentence_font_info.pos);
@@ -2630,7 +2630,7 @@ int PonscripterLabel::erasetextwindowCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::endCommand(const pstring& cmd)
+int ShioriLabel::endCommand(const pstring& cmd)
 {
     quit();
     exit(0);
@@ -2638,7 +2638,7 @@ int PonscripterLabel::endCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::dwavestopCommand(const pstring& cmd)
+int ShioriLabel::dwavestopCommand(const pstring& cmd)
 {
     int ch = script_h.readIntValue();
     if (ch < 0) ch = 0;
@@ -2652,7 +2652,7 @@ int PonscripterLabel::dwavestopCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::dwaveCommand(const pstring& cmd)
+int ShioriLabel::dwaveCommand(const pstring& cmd)
 {
     int play_mode  = WAVE_PLAY;
     bool loop_flag = false;
@@ -2689,7 +2689,7 @@ int PonscripterLabel::dwaveCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::dvCommand(const pstring& cmd)
+int ShioriLabel::dvCommand(const pstring& cmd)
 {
     playSound("voice" DELIMITER + cmd.midstr(2, cmd.length()),
 	      SOUND_WAVE | SOUND_OGG, false, 0);
@@ -2697,7 +2697,7 @@ int PonscripterLabel::dvCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::drawtextCommand(const pstring& cmd)
+int ShioriLabel::drawtextCommand(const pstring& cmd)
 {
     SDL_Rect clip = { 0, 0, accumulation_surface->w, accumulation_surface->h };
     text_info.blendOnSurface(accumulation_surface, 0, 0, clip);
@@ -2706,7 +2706,7 @@ int PonscripterLabel::drawtextCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::drawsp3Command(const pstring& cmd)
+int ShioriLabel::drawsp3Command(const pstring& cmd)
 {
     int sprite_no = script_h.readIntValue();
     int cell_no   = script_h.readIntValue();
@@ -2748,7 +2748,7 @@ int PonscripterLabel::drawsp3Command(const pstring& cmd)
 }
 
 
-int PonscripterLabel::drawsp2Command(const pstring& cmd)
+int ShioriLabel::drawsp2Command(const pstring& cmd)
 {
     int sprite_no = script_h.readIntValue();
     int cell_no   = script_h.readIntValue();
@@ -2778,7 +2778,7 @@ int PonscripterLabel::drawsp2Command(const pstring& cmd)
 }
 
 
-int PonscripterLabel::drawspCommand(const pstring& cmd)
+int ShioriLabel::drawspCommand(const pstring& cmd)
 {
     int sprite_no = script_h.readIntValue();
     int cell_no   = script_h.readIntValue();
@@ -2803,7 +2803,7 @@ int PonscripterLabel::drawspCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::drawfillCommand(const pstring& cmd)
+int ShioriLabel::drawfillCommand(const pstring& cmd)
 {
     int r = script_h.readIntValue();
     int g = script_h.readIntValue();
@@ -2814,7 +2814,7 @@ int PonscripterLabel::drawfillCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::drawclearCommand(const pstring& cmd)
+int ShioriLabel::drawclearCommand(const pstring& cmd)
 {
     SDL_FillRect(accumulation_surface, NULL,
 		 SDL_MapRGBA(accumulation_surface->format, 0, 0, 0, 0xff));
@@ -2822,7 +2822,7 @@ int PonscripterLabel::drawclearCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::drawbgCommand(const pstring& cmd)
+int ShioriLabel::drawbgCommand(const pstring& cmd)
 {
     SDL_Rect clip = { 0, 0, accumulation_surface->w, accumulation_surface->h };
     bg_info.blendOnSurface(accumulation_surface, bg_info.pos.x, bg_info.pos.y,
@@ -2831,7 +2831,7 @@ int PonscripterLabel::drawbgCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::drawbg2Command(const pstring& cmd)
+int ShioriLabel::drawbg2Command(const pstring& cmd)
 {
     int x       = script_h.readIntValue() * screen_ratio1 / screen_ratio2;
     int y       = script_h.readIntValue() * screen_ratio1 / screen_ratio2;
@@ -2847,7 +2847,7 @@ int PonscripterLabel::drawbg2Command(const pstring& cmd)
 }
 
 
-int PonscripterLabel::drawCommand(const pstring& cmd)
+int ShioriLabel::drawCommand(const pstring& cmd)
 {
     SDL_Rect rect = { 0, 0, screen_width, screen_height };
     flushDirect(rect, REFRESH_NONE_MODE);
@@ -2856,7 +2856,7 @@ int PonscripterLabel::drawCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::deletescreenshotCommand(const pstring& cmd)
+int ShioriLabel::deletescreenshotCommand(const pstring& cmd)
 {
     if (screenshot_surface) {
         SDL_FreeSurface(screenshot_surface);
@@ -2865,7 +2865,7 @@ int PonscripterLabel::deletescreenshotCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::delayCommand(const pstring& cmd)
+int ShioriLabel::delayCommand(const pstring& cmd)
 {
     int t = script_h.readIntValue();
 
@@ -2886,7 +2886,7 @@ int PonscripterLabel::delayCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::defineresetCommand(const pstring& cmd)
+int ShioriLabel::defineresetCommand(const pstring& cmd)
 {
     script_h.reset();
     ScriptParser::reset();
@@ -2898,7 +2898,7 @@ int PonscripterLabel::defineresetCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::cspCommand(const pstring& cmd)
+int ShioriLabel::cspCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -2939,7 +2939,7 @@ int PonscripterLabel::cspCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::cselgotoCommand(const pstring& cmd)
+int ShioriLabel::cselgotoCommand(const pstring& cmd)
 {
     int csel_no = script_h.readIntValue();
     if (csel_no >= int(select_links.size()))
@@ -2953,7 +2953,7 @@ int PonscripterLabel::cselgotoCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::cselbtnCommand(const pstring& cmd)
+int ShioriLabel::cselbtnCommand(const pstring& cmd)
 {
     int csel_no   = script_h.readIntValue();
     int button_no = script_h.readIntValue();
@@ -2975,7 +2975,7 @@ int PonscripterLabel::cselbtnCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::clickCommand(const pstring& cmd)
+int ShioriLabel::clickCommand(const pstring& cmd)
 {
     if (event_mode & WAIT_INPUT_MODE) {
         event_mode = IDLE_EVENT_MODE;
@@ -2991,7 +2991,7 @@ int PonscripterLabel::clickCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::clCommand(const pstring& cmd)
+int ShioriLabel::clCommand(const pstring& cmd)
 {
     int ret = leaveTextDisplayMode();
     if (ret != RET_NOMATCH) return ret;
@@ -3022,7 +3022,7 @@ int PonscripterLabel::clCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::chvolCommand(const pstring& cmd)
+int ShioriLabel::chvolCommand(const pstring& cmd)
 {
     int ch  = script_h.readIntValue();
     int vol = script_h.readIntValue();
@@ -3039,7 +3039,7 @@ int PonscripterLabel::chvolCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::checkpageCommand(const pstring& cmd)
+int ShioriLabel::checkpageCommand(const pstring& cmd)
 {
     Expression e = script_h.readIntExpr();
     int page_no = script_h.readIntValue();
@@ -3053,7 +3053,7 @@ int PonscripterLabel::checkpageCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::cellCommand(const pstring& cmd)
+int ShioriLabel::cellCommand(const pstring& cmd)
 {
     // Haeleth extension: allow cell <sprite1>,<sprite2>,<set1>,[val1],[val2].
     // In this form, all sprites between sprite1 and sprite2 are changed:
@@ -3081,7 +3081,7 @@ int PonscripterLabel::cellCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::captionCommand(const pstring& cmd)
+int ShioriLabel::captionCommand(const pstring& cmd)
 {
     pstring buf = script_h.readStrValue();
     pstring cap = buf;
@@ -3119,7 +3119,7 @@ int PonscripterLabel::captionCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::btnwaitCommand(const pstring& cmd)
+int ShioriLabel::btnwaitCommand(const pstring& cmd)
 {
     bool del_flag = false, textbtn_flag = false;
 
@@ -3216,7 +3216,7 @@ int PonscripterLabel::btnwaitCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::btntimeCommand(const pstring& cmd)
+int ShioriLabel::btntimeCommand(const pstring& cmd)
 {
     btntime2_flag = cmd == "btntime2";
     btntime_value = script_h.readIntValue();
@@ -3224,14 +3224,14 @@ int PonscripterLabel::btntimeCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::btndownCommand(const pstring& cmd)
+int ShioriLabel::btndownCommand(const pstring& cmd)
 {
     btndown_flag = script_h.readIntValue() == 1;
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::btndefCommand(const pstring& cmd)
+int ShioriLabel::btndefCommand(const pstring& cmd)
 {
     Expression e = script_h.readStrExpr();
     if (!e.is_bareword("clear")) {
@@ -3258,7 +3258,7 @@ int PonscripterLabel::btndefCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::btnCommand(const pstring& cmd)
+int ShioriLabel::btnCommand(const pstring& cmd)
 {
     SDL_Rect src_rect;
 
@@ -3303,10 +3303,10 @@ int PonscripterLabel::btnCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::brCommand(const pstring& cmd)
+int ShioriLabel::brCommand(const pstring& cmd)
 {
     int delta = cmd == "br2" ? script_h.readIntValue()
-                         : (script_h.is_ponscripter ? 50 : 100);
+                         : (script_h.is_shiori ? 50 : 100);
 
     int ret = enterTextDisplayMode(), i;
     if (ret != RET_NOMATCH) return ret;
@@ -3335,7 +3335,7 @@ int PonscripterLabel::brCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::bltCommand(const pstring& cmd)
+int ShioriLabel::bltCommand(const pstring& cmd)
 {
   fprintf(stderr, "bltCommand used, but not updated to SDL2 properly\n");
     int dx, dy, dw, dh;
@@ -3431,7 +3431,7 @@ int PonscripterLabel::bltCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::endrollCommand(const pstring& cmd)
+int ShioriLabel::endrollCommand(const pstring& cmd)
 {
     int dx, dy, dw, dh;
     int sx, sy, sw, sh;
@@ -3583,14 +3583,14 @@ int PonscripterLabel::endrollCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::bidirectCommand(const pstring& cmd)
+int ShioriLabel::bidirectCommand(const pstring& cmd)
 {
     sentence_font.setRTL(script_h.readIntValue()!=0);
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::bgcopyCommand(const pstring& cmd)
+int ShioriLabel::bgcopyCommand(const pstring& cmd)
 {
     SDL_BlitSurface(screen_surface, NULL, accumulation_surface, NULL);
     fprintf(stderr, "Likely partially-updated command used bgcopyCommand\n");
@@ -3620,7 +3620,7 @@ int PonscripterLabel::bgcopyCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::bgCommand(const pstring& cmd)
+int ShioriLabel::bgCommand(const pstring& cmd)
 {
     //Mion: prefer removing textwindow for bg change effects even during skip;
     //but don't remove text window if erasetextwindow == 0
@@ -3649,7 +3649,7 @@ int PonscripterLabel::bgCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::barclearCommand(const pstring& cmd)
+int ShioriLabel::barclearCommand(const pstring& cmd)
 {
     for (int i = 0; i < MAX_PARAM_NUM; i++) {
         if (bar_info[i]) {
@@ -3663,7 +3663,7 @@ int PonscripterLabel::barclearCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::barCommand(const pstring& cmd)
+int ShioriLabel::barCommand(const pstring& cmd)
 {
     int no = script_h.readIntValue();
     if (bar_info[no]) {
@@ -3704,7 +3704,7 @@ int PonscripterLabel::barCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::aviCommand(const pstring& cmd)
+int ShioriLabel::aviCommand(const pstring& cmd)
 {
     pstring name = script_h.readStrValue();
     stopBGM(false);
@@ -3713,21 +3713,21 @@ int PonscripterLabel::aviCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::automode_timeCommand(const pstring& cmd)
+int ShioriLabel::automode_timeCommand(const pstring& cmd)
 {
     automode_time = script_h.readIntValue();
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::autoclickCommand(const pstring& cmd)
+int ShioriLabel::autoclickCommand(const pstring& cmd)
 {
     autoclick_time = script_h.readIntValue();
     return RET_CONTINUE;
 }
 
 
-int PonscripterLabel::allspresumeCommand(const pstring& cmd)
+int ShioriLabel::allspresumeCommand(const pstring& cmd)
 {
     all_sprite_hide_flag = false;
     for (int i = 0; i < MAX_SPRITE_NUM; i++) {
@@ -3739,7 +3739,7 @@ int PonscripterLabel::allspresumeCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::allsphideCommand(const pstring& cmd)
+int ShioriLabel::allsphideCommand(const pstring& cmd)
 {
     all_sprite_hide_flag = true;
     for (int i = 0; i < MAX_SPRITE_NUM; i++) {
@@ -3750,7 +3750,7 @@ int PonscripterLabel::allsphideCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::allsp2resumeCommand(const pstring& cmd)
+int ShioriLabel::allsp2resumeCommand(const pstring& cmd)
 {
     all_sprite2_hide_flag = false;
     for (int i = 0; i < MAX_SPRITE2_NUM; i++) {
@@ -3762,7 +3762,7 @@ int PonscripterLabel::allsp2resumeCommand(const pstring& cmd)
 }
 
 
-int PonscripterLabel::allsp2hideCommand(const pstring& cmd)
+int ShioriLabel::allsp2hideCommand(const pstring& cmd)
 {
     all_sprite2_hide_flag = true;
     for (int i = 0; i < MAX_SPRITE2_NUM; i++) {
@@ -3773,7 +3773,7 @@ int PonscripterLabel::allsp2hideCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::steamsetachieveCommand(const pstring& cmd) {
+int ShioriLabel::steamsetachieveCommand(const pstring& cmd) {
     pstring name = script_h.readStrValue();
     /* Noop if steam isn't defined so scripts with this command work anyways */
 #ifdef STEAM

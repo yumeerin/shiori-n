@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel_ext.cpp - Ponscripter extensions to the NScripter API
+ *  ShioriLabel_ext.cpp - Shiori extensions to the NScripter API
  *
  *  Copyright (c) 2006-9 Peter Jolly
  *
@@ -22,7 +22,7 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 
 /* h_speedpercent <percent>
  *
@@ -37,7 +37,7 @@
  *
  *   !s20
  */
-int PonscripterLabel::haeleth_speedpercentCommand(const pstring& cmd)
+int ShioriLabel::haeleth_speedpercentCommand(const pstring& cmd)
 {
     global_speed_modifier = script_h.readIntValue();
     return RET_CONTINUE;
@@ -56,7 +56,7 @@ int PonscripterLabel::haeleth_speedpercentCommand(const pstring& cmd)
  * h_usewindow* selects the stored style <name>, as though a setwindow*
  * command with the given parameters had been issued.
  */
-int PonscripterLabel::haeleth_defwindowCommand(const pstring& cmd)
+int ShioriLabel::haeleth_defwindowCommand(const pstring& cmd)
 {
     WindowDef wind;
     pstring name   = script_h.readStrValue();
@@ -78,7 +78,7 @@ int PonscripterLabel::haeleth_defwindowCommand(const pstring& cmd)
     stored_windows[name] = wind;
     return RET_CONTINUE;
 }
-int PonscripterLabel::haeleth_usewindowCommand(const pstring& cmd)
+int ShioriLabel::haeleth_usewindowCommand(const pstring& cmd)
 {
     pstring name = script_h.readStrValue();
     DoSetwindow(stored_windows[name]);
@@ -102,7 +102,7 @@ int PonscripterLabel::haeleth_usewindowCommand(const pstring& cmd)
  * Sets <ivar> to the width, in pixels, of <string> as rendered in the
  * current sentence font.
  */
-int PonscripterLabel::haeleth_text_extentCommand(const pstring& cmd)
+int ShioriLabel::haeleth_text_extentCommand(const pstring& cmd)
 {
     Expression ivar = script_h.readIntExpr();
 
@@ -128,7 +128,7 @@ int PonscripterLabel::haeleth_text_extentCommand(const pstring& cmd)
  * taken up by rendering each <string> as a separate line in the
  * current text window.
  */
-int PonscripterLabel::haeleth_text_heightCommand(const pstring& cmd)
+int ShioriLabel::haeleth_text_heightCommand(const pstring& cmd)
 {
     Expression ivar = script_h.readIntExpr();
 
@@ -151,7 +151,7 @@ int PonscripterLabel::haeleth_text_heightCommand(const pstring& cmd)
     f.SetXY(0, 0);
 
     // Bad factoring: we already have a line breaking routine in
-    // PonscripterLabel.cpp, but we had to write our own here to
+    // ShioriLabel.cpp, but we had to write our own here to
     // handle breaking a complete string as opposed to just finding
     // the next breakpoint...
     const char* first = buf;
@@ -216,7 +216,7 @@ int PonscripterLabel::haeleth_text_heightCommand(const pstring& cmd)
  * which must be large enough and appropriately positioned!) in the
  * current sentence font.
  */
-int PonscripterLabel::haeleth_centre_lineCommand(const pstring& cmd)
+int ShioriLabel::haeleth_centre_lineCommand(const pstring& cmd)
 {
     pstring buf = script_h.readStrValue();
     if (buf[0] == file_encoding->TextMarker()) buf.remove(0, 1);
@@ -234,7 +234,7 @@ int PonscripterLabel::haeleth_centre_lineCommand(const pstring& cmd)
  * the start of a screen.  If the first character of a screen is not
  * in the given string, any set indent will be cleared.
  */
-int PonscripterLabel::haeleth_char_setCommand(const pstring& cmd)
+int ShioriLabel::haeleth_char_setCommand(const pstring& cmd)
 {
     bool is_indent = ((cmd == "h_indentstr") || (cmd == "pindentstr"));
     std::set<wchar>& char_set = is_indent ? indent_chars : break_chars;
@@ -277,7 +277,7 @@ int PonscripterLabel::haeleth_char_setCommand(const pstring& cmd)
  * the start of every subsequent text display command.  Note that this
  * has no effect on text sprites.
  */
-int PonscripterLabel::haeleth_font_styleCommand(const pstring& cmd)
+int ShioriLabel::haeleth_font_styleCommand(const pstring& cmd)
 {
     Fontinfo::default_encoding = 0;
     pstring buf = script_h.readStrValue();
@@ -302,7 +302,7 @@ int PonscripterLabel::haeleth_font_styleCommand(const pstring& cmd)
  *
  * Assigns a font file to be associated with the given style number.
  */
-int PonscripterLabel::haeleth_map_fontCommand(const pstring& cmd)
+int ShioriLabel::haeleth_map_fontCommand(const pstring& cmd)
 {
     int id = script_h.readIntValue();
     MapFont(id, script_h.readStrValue());
@@ -319,7 +319,7 @@ int PonscripterLabel::haeleth_map_fontCommand(const pstring& cmd)
  * Rendermode is light or normal; if not specified, it will be light
  * when hinting is light, otherwise normal.
  */
-int PonscripterLabel::haeleth_hinting_modeCommand(const pstring& cmd)
+int ShioriLabel::haeleth_hinting_modeCommand(const pstring& cmd)
 {
     pstring l = script_h.readStrValue();
     if (l == "light") hinting = LightHinting;
@@ -354,7 +354,7 @@ int PonscripterLabel::haeleth_hinting_modeCommand(const pstring& cmd)
  * Ligature definitions are LIFO, so e.g. you must define "ff" before
  * "ffi", or the latter will never be seen.
  */
-int PonscripterLabel::haeleth_ligate_controlCommand(const pstring& cmd)
+int ShioriLabel::haeleth_ligate_controlCommand(const pstring& cmd)
 {
     Expression e = script_h.readStrExpr();
     pstring s = e.as_string();
@@ -384,7 +384,7 @@ int PonscripterLabel::haeleth_ligate_controlCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::haeleth_sayCommand(const pstring& cmd)
+int ShioriLabel::haeleth_sayCommand(const pstring& cmd)
 {
     while (1) {
 	pstring s = script_h.readExpr().as_string();
@@ -405,7 +405,7 @@ int PonscripterLabel::haeleth_sayCommand(const pstring& cmd)
  * otherwise; "manual" does the opposite; "always" disables automatic
  * visibility controls.
  */
-int PonscripterLabel::vsp_whenCommand(const pstring& cmd)
+int ShioriLabel::vsp_whenCommand(const pstring& cmd)
 {
     int mode;
     pstring s = script_h.readStrExpr().as_string();
@@ -460,7 +460,7 @@ int PonscripterLabel::vsp_whenCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-int PonscripterLabel::localestringCommand(const pstring& cmd)
+int ShioriLabel::localestringCommand(const pstring& cmd)
 {
     Expression e = script_h.readStrExpr();
     pstring tm = file_encoding->TextMarker();
@@ -514,7 +514,7 @@ int PonscripterLabel::localestringCommand(const pstring& cmd)
     return RET_CONTINUE;
 }
 
-void PonscripterLabel::initLocale()
+void ShioriLabel::initLocale()
 {
     pstring months[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 	pstring days[7] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
@@ -522,7 +522,7 @@ void PonscripterLabel::initLocale()
     int i;
 
     pstring tm = file_encoding->TextMarker();
-    if (script_h.is_ponscripter) {
+    if (script_h.is_shiori) {
         locale.message_save_exist = tm + "%b %d%i %k:%i%M";
     } else {
         locale.message_save_exist = tm + "Date %_m/%d    Time %_H:%M";
@@ -551,7 +551,7 @@ void PonscripterLabel::initLocale()
 }
 
 //Mion: create integer strings using locale-defined digits
-pstring PonscripterLabel::stringFromInteger(int no, int num_column,
+pstring ShioriLabel::stringFromInteger(int no, int num_column,
                                             bool is_zero_inserted,
                                             bool use_locale_digits)
 {
@@ -573,7 +573,7 @@ pstring PonscripterLabel::stringFromInteger(int no, int num_column,
 }
 
 #define MAX_INDENTS 5
-float PonscripterLabel::processMessage(pstring &buffer, pstring message, SaveFileInfo &info, float **indents, int *num_ind, bool find_indents)
+float ShioriLabel::processMessage(pstring &buffer, pstring message, SaveFileInfo &info, float **indents, int *num_ind, bool find_indents)
 {
     const char *ptr = (const char *) message;
 
@@ -655,7 +655,7 @@ float PonscripterLabel::processMessage(pstring &buffer, pstring message, SaveFil
                     if (!find_indents && (num < *num_ind)) {
                         sz = (*indents)[num] - total_len + last_ind;
                         if (sz > 0) {
-                            if (script_h.is_ponscripter)
+                            if (script_h.is_shiori)
                                 tmp.format("~x+%d~", int(sz));
                             else {
                                 float sp_sz = current_font->StringAdvance(locale.message_space);

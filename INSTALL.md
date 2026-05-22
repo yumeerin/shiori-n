@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Building Ponscripter requires the following as a bare minimum:
+Building Shiori requires the following as a bare minimum:
 
   - A Unix-type environment with Bourne shell and standard utilities
   - GNU make
@@ -42,7 +42,7 @@ such as Intel's.
 
 The Sun Workshop compilers are known NOT to work.
 
-Microsoft's C++ compiler will not work with the Ponscripter build
+Microsoft's C++ compiler will not work with the Shiori build
 system, but should theoretically be capable of building the program.
 
 On OS X, clang has worked.
@@ -50,7 +50,7 @@ On OS X, clang has worked.
 
 # Building
 
-Building Ponscripter is done in the usual way:
+Building Shiori is done in the usual way:
 ```
 ./configure
 make
@@ -79,7 +79,7 @@ cd steam-runtime-sdk*
 bash setup.sh # all defaults
 bash setup.sh # always failed once and then worked for me.
 ./shell-i386.sh
-cd ~/ponscripter-fork
+cd ~/shiori-fork
 
 run.sh ./configure --with-external-sdl-mixer --steam
 run.sh make
@@ -94,7 +94,7 @@ On windows, just running `./configure --steam` in addition to the otherwise norm
 
 Compiling with OS X is a bit more difficult than most else, but it is confirmed to build with [Clang](http://clang.llvm.org/), the new OS X default compiler.
 
-This fork only builds with OS X 10.5+ support because of SDL2 and a few other things. Ponscripter does not yet see Clang as a legitimate compiler unfortunately, but with `--unsupported-compiler` it works fine.
+This fork only builds with OS X 10.5+ support because of SDL2 and a few other things. Shiori does not yet see Clang as a legitimate compiler unfortunately, but with `--unsupported-compiler` it works fine.
 
 OS X is best built with internal libs. Otherwise, you may run into issues with varying versions of operating systems and libraries.
 
@@ -115,7 +115,7 @@ Building a proper application on OS X is fairly easy. Simply make sure you're in
 make osxapp
 ```
 
-This will put a Ponscripter application in the root directory. If you drag this application into a directory containing Ponscripter game files, it will run that game!
+This will put a Shiori application in the root directory. If you drag this application into a directory containing Shiori game files, it will run that game!
 
 But the question most people want answered is "How do I bundle my game for distribution".
 
@@ -128,7 +128,7 @@ But the question most people want answered is "How do I bundle my game for distr
 make osxapp GAME=mygame
 ```
 
-Because it will be grabbing the required information from `Makefile.mygame`, it will automatically create your App in the base Ponscripter directory.
+Because it will be grabbing the required information from `Makefile.mygame`, it will automatically create your App in the base Shiori directory.
 
 NOTE: To set a custom icon for your application, simply create a file called `src/resources/mygame.icns`, and it will be automatically applied at make time. Or put the custom icon in `gamedata/icon.icns`.
 

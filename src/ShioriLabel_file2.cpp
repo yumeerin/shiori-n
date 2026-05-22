@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  *
- *  PonscripterLabel_file2.cpp - FILE I/O of Ponscripter
+ *  ShioriLabel_file2.cpp - FILE I/O of Shiori
  *
  *  Copyright (c) 2001-2006 Ogapee (original ONScripter, of which this
  *  is a fork).
@@ -23,9 +23,9 @@
  *  02111-1307 USA
  */
 
-#include "PonscripterLabel.h"
+#include "ShioriLabel.h"
 
-int PonscripterLabel::loadSaveFile2(SaveFileType file_type, int file_version)
+int ShioriLabel::loadSaveFile2(SaveFileType file_type, int file_version)
 {
     deleteNestInfo();
 
@@ -33,11 +33,11 @@ int PonscripterLabel::loadSaveFile2(SaveFileType file_type, int file_version)
 
     readInt(); // 1
 
-    if (file_type == Ponscripter) {
+    if (file_type == Shiori) {
         if (file_version >= 206) {
-            int i = readInt() - 1; // length of Ponscripter data
+            int i = readInt() - 1; // length of Shiori data
             Fontinfo::default_encoding = readInt();
-            while (i--) readInt(); // unknown Ponscripter data
+            while (i--) readInt(); // unknown Shiori data
         }
         else {
             Fontinfo::default_encoding = readInt();
@@ -377,7 +377,7 @@ int PonscripterLabel::loadSaveFile2(SaveFileType file_type, int file_version)
 		  false, MIX_LOOPBGM_CHANNEL0);
     }
 
-    if (file_type != Ponscripter && file_version >= 201) {
+    if (file_type != Shiori && file_version >= 201) {
 	// Ruby support has been stripped out.
 	readInt();
 	readInt();
@@ -457,16 +457,16 @@ int PonscripterLabel::loadSaveFile2(SaveFileType file_type, int file_version)
 }
 
 
-void PonscripterLabel::saveSaveFile2(bool output_flag)
+void ShioriLabel::saveSaveFile2(bool output_flag)
 {
     int i, j;
 
     writeInt(1, output_flag);
 
-    // Ponscripter additions
+    // Shiori additions
     writeInt(1, output_flag);
     writeInt(Fontinfo::default_encoding, output_flag);
-    // End Ponscripter additions
+    // End Shiori additions
     
     writeInt((sentence_font.is_bold ? 1 : 0), output_flag);
     writeInt((sentence_font.is_shadow ? 1 : 0), output_flag);
