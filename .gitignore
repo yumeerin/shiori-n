@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### Windows ###
 # Windows image file caches
 Thumbs.db
@@ -131,3 +132,29 @@ Makefile*
 /pons.creator.user
 /pons.files
 /pons.includes
+=======
+*~
+*.o
+*.lo
+*.a
+*.la
+*.gcno
+/resources.cpp
+/embed
+/onscripter-en
+tools/*conv
+tools/*dec
+tools/*make
+*.exe
+onscripter.rc
+test/googletest
+test/test_*.exe
+build*/
+.vscode/
+.vs/
+eps/
+
+# CLion project files
+.idea
+cmake-build-*
+>>>>>>> on/master

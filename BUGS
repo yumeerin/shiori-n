@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 This file is not kept up to date.  Some/all of these bugs may not
 actually exist any more.  Consider this "notes", really.
 
@@ -38,3 +39,167 @@ HEISENBUGS
 FEATURES
 
 * SHY (U+00AD) support would be nice.  Also non-breaking hyphens.
+=======
+INDEX
+* BUGS OR MISFEATURES
+* FEATURES REQUESTED
+* DOCUMENTATION UPDATING LIST
+* TODO LIST
+* COMPLETED
+
+
+BUGS OR MISFEATURES
+
+* OS X: should look for missing files (eg font) inside bundles, even
+  if the main game data is outside the bundle.
+
+* Global variables cannot be set above 4095, even if ;value is set to
+  4096 or higher.
+
+* PDA build will be broken; screen ratio cannot be set properly when
+  using custom resolutions
+
+* The windows build uses system libraries (but can still build a
+  portable executable)
+
+* Linux pop-ups cause a segfault, but only after the script exits
+  successfully. This behaviour is the same even when running several
+  pop-ups one after another.
+
+* Sound bug related to Plumerai and using -s option (or ons.cfg
+  equivalent). See bug 1 on github.
+
+* Ruby text doesn't work on line 1 in UTF-8 mode (I hate this error)
+* Body is not centred beneath ruby
+
+* UTF-8 save and load menus are *slightly* misaligned due to space
+  sizes in proportional fonts. This will be a right pain to fix.
+* rmenuCommand probably needs fixing - still assuming columns
+* Seung is working on a fix for this in onscripter-insani which can
+  probably be adapted to onsen later down the line. Thanks Seung!
+
+* KINSOKU mode needs fixing in processBreaks like SPACEBREAK mode
+  \--> Hopefully this is fine but I'm leaving this here for now since
+       I haven't properly tested it
+
+* Bug 2 on gh - looks like midi issues - try with old version of
+  SDL_mixer as well
+
+* Random crashing when using movie (but not mpegplay) with async on
+  Linux
+  \--> Only happens on Void, and not on Gentoo
+
+* enginereset causes audio to fail until game is hard reset?
+
+* Engine doesn't give warning when you try to assign to the same alias
+  multiple times - currently silently maintains initial value
+
+* There was a Sekai Project employee who commented on PONscripter,
+  saying something to the effect of "the entire design of this
+  interpreter is arguably a bug." I'm starting to think that about the
+  effects timing system in ONScripter-EN. There is only one timer for
+  every animated sprite to share, and it obviously gets messy. The
+  system ideally needs a re-write to take into account the times for
+  every animation, and then provide a command to reset that timer and
+  sync animations. The current system becomes particularly egregious
+  when you have a slow (say, 5 second) animation and then add a fast
+  (say, 100ms) animation. Until the slow animation's timer is
+  complete, the fast animation will not advance. Then, the timer will
+  be set to the lowest common denominator, and the slow animation will
+  be forced to play at 10fps since that's the speed of the fastest
+  required timer. I don't know who thought this was a good idea, and
+  even if it is for parity with NScripter I don't think anyone would
+  resist it being fixed. I'll still have to check, though.
+
+FEATURES REQUESTED
+  
+* Allow the specification of a "fallback" font to use for characters
+  missing from the main font -- this would make mix-and-match Japanese
+  and English easier.
+
+* Restore support for MOD, XM and OPUS audio.
+
+* Support inbuilt MIDI synthesis.
+
+* Allow the switching of font files mid-line, for example through the
+  use of a !fX command, similar to the !wX command.
+
+* Red borders for the Linux pop-ups (do these even exist any more?)
+
+* There should be an option for fullscreen without changing the aspect
+  ratio. Perhaps a define-block command which sets this functionality?
+  Or should it be changeable at any time during the script?
+
+
+DOCUMENTATION UPDATING LIST
+* This section contains changes which need to be made to the
+  *NScripter API reference
+
+* Is kinsoku enabled in onsen's english mode?
+
+* ~ and ^ may (will) need updating in relation to onsen's and onani's
+  UTF-8 integration
+
+* Enginereset didn't appear to be on the documentation page, was it
+  ever added or does my website just need updating? (Galladite)
+  Is this still bugged?
+
+* Add splitonce command (also check if code is fixed lol)
+
+* Add skipspeed command
+
+* Add strpxlen command
+
+* Add notes for CSV commands & update to mention onsen support with
+  version number (once released)
+  \--> Add csvdelete command
+
+* Add tablegosub command
+
+
+TODO LIST
+
+* Quickly check if splitCommand and splitonceCommand need to use script_h.enc.getBytes()
+  \--> Update: they do. This needs fixing.
+* Quickly check if enginereset breaks when used in define block
+* --key doesn't do anything? Also see OnscripterYuri
+* OGG video support for 1080p
+* Update Windows makefiles
+* Bring over UTF-8 suport from onscripter-insani
+  - Interpret font styles
+    * Hold more font styles in FontInfo
+    * Recognise ~ tags in script
+* UTF-8 features which need properly testing
+  - ScriptParser_command (basic kinsoku functionality,
+    addkinsokuCommand, setkinsokuCommand)
+* Continue working on Windows support with insani
+  - Building with internal libraries
+  - Integrating custom configure and Makefile into main ones
+    * Start by buxfixing the failing checks and tests, primarily
+      checks for system libraries
+    * Fix the 32/64bit assumptions - broken config.guess?
+* Porting additional commands from nscripter?
+* "Requested features"
+* Implement a fix for the PDA build for the sake of completion
+* Redo the "dist" target to make building releases easier
+
+
+COMPLETED
+
+* The freetype-config replacement checks that it is being
+  executed from the correct folder
+* Updated dependencies
+* Fix to allow saving and loading game during choice selections
+* Fix for this fix to allow rgosub to be used in such situations
+* Windows builds, plus some compilation changes
+* yesnobox and okcancelbox implementation for Linux
+* .otf, .otc and .ttc are now allowed in addition to .ttf
+* Engine checks for UTF-8 scripts
+* Kinsoku system has been converted to UTF-8
+* --dll option now only visible on Windows
+* ;gameid fixed - ADD TO RELEASE NOTES
+* Pretext tags have been converted to UTF-8 (also they're cool)
+* Captions and clickwait characters can be UTF-8
+* Modified linewrap algorithm to work with proportional fonts
+* Major bug causing enginereset to wipe global variables
+>>>>>>> on/master

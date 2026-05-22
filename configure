@@ -103,6 +103,11 @@ do
         STRICT="-Wall -Wextra -Wno-unused-parameter -Wvla" ;;
       --pedantic | -pedantic)
         STRICT+=" -pedantic" ;;
+
+      --werror | -werror)
+        WERROR="-Werror"
+        ;;
+
       --no-werror | -no-werror)
         WERROR=""
         ;;
@@ -112,6 +117,7 @@ do
         UNSUPPORTED_COMPILER=$arg
         ;;
       --no-cpu-gfx | -no-cpu-gfx)
+
         USE_CPU_GFX=false
         ;;
       --enable-internal-libs | -enable-internal-libs | --with-internal-libs | -with-internal-libs)
@@ -248,10 +254,40 @@ if test -n "$prev"; then
   exit 2
 fi
 
+
+fetch_EPS() {
+    echo "Downloading EPS content..."
+    if ./fetch-eps-content.sh >/dev/null 2>&1; then
+        :
+    else
+        echo "EPS content download failed"
+        exit 1
+    fi
+
+    # If we got here, we are going to give control to the EPS config script. So, if it returns an error, please exit.
+    # NOT TESTED
+    set -e
+}
+
+# 3 ways to signal we want to use cmake
+# The first way simply allows cmake to do its thing assuming the same target as the host. NOTE Should be static.
+# The second way runs a script within the EPS repo which presents the current target options and allows the user to choose.
+# The third way allows the user to pass a specific value (the same as presented in the second way) if he knows what he wants (or is a robot. beep boop.)
+$echo_n "Checking for requested cmake usage... ${nobr}"
+case "$CMAKE" in
+    false)  echo "False"               ;;
+#   true)   echo "True - auto-detect"  ; fetch_EPS ; eps/config.sh auto ;;
+#   config) echo "True - begin config" ; fetch_EPS ; eps/config.sh config ;;
+    *)      echo "True" ; fetch_EPS ; eps/config.sh "$CMAKE" ; exit 0 ;; # We'll just handle "true" and "config" from within config.sh
+esac
+
+
+
 internalise_SDL() {
     INTERNAL_SDL=true	
     INTERNAL_SDL_IMAGE=true
     INTERNAL_SDL_MIXER=true
+
     INTERNAL_SMPEG=true
     SDL_CONFIG=$EXTLIB/bin/sdl2-config
     SMPEG_CONFIG=$EXTLIB/bin/smpeg2-config
@@ -870,12 +906,6 @@ then
   OURINCS="$OURINCS `pkg-config --cflags gtk+-2.0`"
   OURDEFS="$OURDEFS -DLIBNOTIFY"
 fi
-
-$echo_n "Writing Makefile... ${nobr}"
-
-case "$SYS" in
-Posix)  EXE=     ; OBJ=.o ; LIB=.a ; W32=     ;;
-MacOSX) EXE=     ; OBJ=.o ; LIB=.a ; W32=     ;;
 MinGW)  EXE=.exe ; OBJ=.o ; LIB=.a ; W32=true ;;
 *) echo "error: unsupported system";
    exit 1 ;;
@@ -896,6 +926,10 @@ OBJSUFFIX=$OBJ
 LIBSUFFIX=$LIB
 EXESUFFIX=$EXE
 
+
+PREFIX ?= $PREFIX
+
+
 # Extra handling for internal libraries.
 EXTRADEPS=$DEPS
 INTERNAL_SDL=\$(findstring true,$INTERNAL_SDL)
@@ -904,6 +938,7 @@ INTERNAL_LIBPNG=\$(findstring true,$INTERNAL_LIBPNG)
 INTERNAL_LIBJPEG=\$(findstring true,$INTERNAL_LIBJPEG)
 INTERNAL_OGGLIBS=\$(findstring true,$INTERNAL_OGGLIBS)
 SDL_CONFIG=$SDL_CONFIG
+
 export PKG_CONFIG_PATH := \$(shell pwd)/extlib/lib/pkgconfig:\$(PKG_CONFIG_PATH)
 SHELLENV = PKG_CONFIG_PATH=\$(PKG_CONFIG_PATH)
 
